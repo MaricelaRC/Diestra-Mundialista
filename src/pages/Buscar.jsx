@@ -1,0 +1,236 @@
+import { useEffect, useMemo, useRef } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { ArrowLeft, Search, MapPin, Flame, Calendar, Newspaper } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { hotelesDiestra } from '../data/hoteles.js';
+import { useWorldCupData } from '../hooks/useWorldCupData.js';
+
+function norm(s) {
+  return (s ?? '')
+    .toString()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '');
+}
+
+function buildResults(query) {
+  if (!query) return { hoteles: [], promos: [], partidos: [], noticias: [] };
+  const q = norm(query);
+
+  const hoteles = hotelesDiestra.filter(
+    (h) => norm(h.name).includes(q) || norm(h.ciudad).includes(q)
+  );
+
+  const promos = [];
+  hotelesDiestra.forEach((h) => {
+    h.restaurantes.forEach((r, idx) => {
+      if (
+        norm(r.nombreCentroConsumo).includes(q) ||
+        norm(r.nombrePromocion).includes(q) ||
+        norm(r.descuento).includes(q) ||
+        norm(r.descripcionPromo).includes(q)
+      ) {
+        promos.push({ hotel: h, rest: r, idx });
+      }
+    });
+  });
+
+  return { hoteles, promos, q };
+}
+
+export default function Buscar() {
+  const { t } = useTranslation();
+  const [params, setParams] = useSearchParams();
+  const query = params.get('q') || '';
+  const inputRef = useRef(null);
+  const { matches, news } = useWorldCupData();
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  const results = useMemo(() => {
+    const base = buildResults(query);
+    const q = norm(query);
+    const partidos = q
+      ? matches.filter(
+          (m) =>
+            norm(m.home).includes(q) ||
+            norm(m.away).includes(q) ||
+            norm(m.city).includes(q) ||
+            norm(m.stadium).includes(q)
+        )
+      : [];
+    const noticias = q
+      ? news.filter((n) => norm(n.title).includes(q) || norm(n.source).includes(q))
+      : [];
+    return { ...base, partidos, noticias };
+  }, [query, matches, news]);
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    if (value) setParams({ q: value });
+    else setParams({});
+  };
+
+  const hasQuery = query.trim().length > 0;
+  const totalResults =
+    results.hoteles.length +
+    results.promos.length +
+    results.partidos.length +
+    results.noticias.length;
+
+  return (
+    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
+      <div className="max-w-md md:max-w-3xl lg:max-w-5xl mx-auto bg-white md:bg-transparent shadow-2xl md:shadow-none border-x md:border-x-0 border-gray-200 min-h-screen flex flex-col">
+        <header className="sticky top-0 z-30 bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center gap-3">
+          <Link
+            to="/"
+            className="p-1 text-gray-500 hover:text-blue-600"
+            aria-label={t('contacto.volver')}
+          >
+            <ArrowLeft size={20} />
+          </Link>
+          <div className="flex-1 bg-gray-100 rounded-full px-4 py-2 flex items-center gap-2 border border-gray-200/50">
+            <Search size={16} className="text-gray-400" />
+            <input
+              ref={inputRef}
+              type="search"
+              value={query}
+              onChange={handleChange}
+              placeholder={t('buscar.placeholder')}
+              className="bg-transparent flex-1 text-sm focus:outline-none"
+            />
+          </div>
+        </header>
+
+        <main className="flex-1 p-4 md:p-6 lg:p-8 space-y-6">
+          {!hasQuery && (
+            <div className="text-center py-16 text-gray-400">
+              <Search size={32} className="mx-auto mb-3" />
+              <p className="text-sm">{t('buscar.empty')}</p>
+            </div>
+          )}
+
+          {hasQuery && totalResults === 0 && (
+            <div className="text-center py-16 text-gray-400">
+              <p className="text-sm">{t('buscar.sinResultados', { q: query })}</p>
+            </div>
+          )}
+
+          {results.hoteles.length > 0 && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+                {t('buscar.secciones.hoteles')} · {results.hoteles.length}
+              </h2>
+              <ul className="space-y-2">
+                {results.hoteles.map((h) => (
+                  <li key={h.id}>
+                    <Link
+                      to={`/hotel/${h.id}`}
+                      className="block bg-white border border-gray-200 hover:border-blue-300 rounded-xl p-3 transition-colors"
+                    >
+                      <p className="font-bold text-gray-900 text-sm">{h.name}</p>
+                      <p className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
+                        <MapPin size={11} /> {h.ciudad}
+                      </p>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {results.promos.length > 0 && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+                {t('buscar.secciones.promos')} · {results.promos.length}
+              </h2>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {results.promos.map(({ hotel, rest, idx }) => (
+                  <li key={`${hotel.id}-${idx}`}>
+                    <Link
+                      to={`/promo/${hotel.id}/${idx}`}
+                      className="flex items-start gap-3 bg-white border border-gray-200 hover:border-blue-300 rounded-xl p-3 transition-colors"
+                    >
+                      {rest.portada && (
+                        <img
+                          src={rest.portada}
+                          alt=""
+                          className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+                          loading="lazy"
+                        />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] text-gray-400 uppercase tracking-wide truncate">
+                          {hotel.name}
+                        </p>
+                        <p className="font-bold text-gray-900 text-sm truncate">
+                          {rest.nombrePromocion}
+                        </p>
+                        <p className="text-[11px] text-amber-700 flex items-center gap-1 mt-0.5">
+                          <Flame size={11} /> {rest.porcentaje} OFF · {rest.descuento}
+                        </p>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {results.partidos.length > 0 && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+                {t('buscar.secciones.partidos')} · {results.partidos.length}
+              </h2>
+              <ul className="space-y-2">
+                {results.partidos.map((m) => (
+                  <li key={m.id}>
+                    <Link
+                      to={`/partido/${m.id}`}
+                      className="block bg-white border border-gray-200 hover:border-blue-300 rounded-xl p-3 transition-colors"
+                    >
+                      <p className="text-[10px] text-gray-400 uppercase flex items-center gap-1">
+                        <Calendar size={11} /> {m.date} · {m.time}
+                      </p>
+                      <p className="font-bold text-gray-900 text-sm mt-0.5">
+                        {m.home} <span className="text-gray-300 italic mx-1">vs</span> {m.away}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-0.5">{m.stadium} · {m.city}</p>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {results.noticias.length > 0 && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+                {t('buscar.secciones.noticias')} · {results.noticias.length}
+              </h2>
+              <ul className="space-y-2">
+                {results.noticias.map((n, i) => (
+                  <li key={i}>
+                    <a
+                      href={n.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block bg-white border border-gray-200 hover:border-blue-300 rounded-xl p-3 transition-colors"
+                    >
+                      <p className="text-[10px] text-blue-600 uppercase font-bold flex items-center gap-1">
+                        <Newspaper size={11} /> {n.source}
+                      </p>
+                      <p className="font-bold text-gray-900 text-sm mt-0.5">{n.title}</p>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </main>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,136 @@
+{
+  "header": {
+    "searchPlaceholder": "FIFA World Cup 2026",
+    "suscribirse": "Suscribirme",
+    "openMenu": "Abrir menú"
+  },
+  "drawer": {
+    "label": "Menú principal",
+    "close": "Cerrar menú",
+    "sections": {
+      "pestanas": "Secciones",
+      "acciones": "Acciones",
+      "idioma": "Idioma"
+    },
+    "acciones": {
+      "buscar": "Buscar",
+      "suscribirme": "Suscribirme a promos"
+    }
+  },
+  "tabs": {
+    "alimentos": "🍽️ Alimentos",
+    "partidos": "Partidos",
+    "noticias": "Noticias",
+    "tablas": "Tablas",
+    "alineaciones": "Alineaciones"
+  },
+  "loading": "Sincronizando con Google...",
+  "alimentos": {
+    "intro": {
+      "title": "Gastronomía de Grupo Diestra",
+      "body": "Sigue toda la acción de la Copa Mundial desde los mejores spots culinarios de nuestras propiedades. Explora platillos y promociones oficiales:"
+    },
+    "centroSingular": "Centro de Consumo",
+    "centroPlural": "Centros de Consumo",
+    "publicacion": "Publicación",
+    "contactar": "Contactar al",
+    "horarios": "Horarios",
+    "off": "OFF"
+  },
+  "horarios": {
+    "abierto": "Abierto ahora",
+    "cerrado": "Cerrado",
+    "cierra": "cierra {{time}}",
+    "abre": "abre {{time}}"
+  },
+  "partidos": {
+    "title": "Partidos del Mundial",
+    "vs": "vs",
+    "sugerencia": "Sugerencia en {{name}}"
+  },
+  "partido": {
+    "detalle": {
+      "dondeVerlo": "¿Dónde verlo?",
+      "disclaimer": "Horarios sujetos a confirmación de FIFA. La sugerencia de hotel se basa en la sede del partido."
+    }
+  },
+  "promo": {
+    "verHotel": "Ver todas las promos de {{name}}",
+    "detalle": {
+      "sobre": "Sobre el restaurante",
+      "especialidades": "Especialidades",
+      "horarios": "Horarios",
+      "sitioOficial": "Ver en sitio oficial"
+    }
+  },
+  "tablas": {
+    "title": "Fase de Grupos · {{nombre}}",
+    "header": {
+      "club": "Club / Selección",
+      "pj": "PJ",
+      "dg": "DG",
+      "pts": "PTS"
+    }
+  },
+  "alineaciones": {
+    "title": "Alineación Probable · {{equipo}} ({{formacion}})"
+  },
+  "hotel": {
+    "detail": {
+      "centros": "Centros de Consumo"
+    }
+  },
+  "contacto": {
+    "title": "Recibe las mejores promos del Mundial",
+    "subtitle": "Déjanos tus datos y te avisaremos por correo cuando haya nuevas promociones en los hoteles Diestra durante la Copa del Mundo 2026.",
+    "volver": "Volver al inicio"
+  },
+  "newsletter": {
+    "title": "Suscríbete a las promos",
+    "subtitle": "Recibe las mejores promociones gastronómicas del Mundial 2026 en tu correo.",
+    "fields": {
+      "nombre": "Nombre",
+      "email": "Correo",
+      "ciudad": "Ciudad de interés",
+      "ciudadAny": "Todas las ciudades"
+    },
+    "consentimiento": "Acepto recibir comunicaciones de Grupo Diestra y conozco que mis datos serán tratados conforme al aviso de privacidad.",
+    "submit": "Quiero recibir las promos",
+    "success": {
+      "title": "¡Suscripción confirmada!",
+      "body": "Te enviaremos las próximas promociones a tu correo."
+    },
+    "errors": {
+      "faltantes": "Ingresa tu nombre y correo.",
+      "email": "El correo no parece válido.",
+      "consentimiento": "Necesitamos tu consentimiento para enviarte comunicaciones."
+    }
+  },
+  "mobileNav": {
+    "label": "Navegación principal",
+    "items": {
+      "alimentos": "Alimentos",
+      "partidos": "Partidos",
+      "noticias": "Noticias",
+      "tablas": "Tablas",
+      "alineaciones": "Equipos"
+    }
+  },
+  "buscar": {
+    "cta": "Abrir buscador",
+    "placeholder": "Busca hotel, promo, equipo o sede…",
+    "empty": "Escribe algo para encontrar hoteles, promociones, partidos o noticias.",
+    "sinResultados": "Sin resultados para \"{{q}}\".",
+    "secciones": {
+      "hoteles": "Hoteles",
+      "promos": "Promociones",
+      "partidos": "Partidos",
+      "noticias": "Noticias"
+    }
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "body": "El contenido que buscas no existe o fue movido.",
+    "cta": "← Volver al inicio"
+  }
+}

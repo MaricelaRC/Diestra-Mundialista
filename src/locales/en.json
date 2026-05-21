@@ -1,0 +1,136 @@
+{
+  "header": {
+    "searchPlaceholder": "FIFA World Cup 2026",
+    "suscribirse": "Subscribe",
+    "openMenu": "Open menu"
+  },
+  "drawer": {
+    "label": "Main menu",
+    "close": "Close menu",
+    "sections": {
+      "pestanas": "Sections",
+      "acciones": "Actions",
+      "idioma": "Language"
+    },
+    "acciones": {
+      "buscar": "Search",
+      "suscribirme": "Subscribe to promos"
+    }
+  },
+  "tabs": {
+    "alimentos": "🍽️ Food",
+    "partidos": "Matches",
+    "noticias": "News",
+    "tablas": "Standings",
+    "alineaciones": "Lineups"
+  },
+  "loading": "Syncing with Google...",
+  "alimentos": {
+    "intro": {
+      "title": "Diestra Group Gastronomy",
+      "body": "Follow all the World Cup action from the best culinary spots in our properties. Explore dishes and official promotions:"
+    },
+    "centroSingular": "Venue",
+    "centroPlural": "Venues",
+    "publicacion": "Published",
+    "contactar": "Contact at",
+    "horarios": "Hours",
+    "off": "OFF"
+  },
+  "horarios": {
+    "abierto": "Open now",
+    "cerrado": "Closed",
+    "cierra": "closes {{time}}",
+    "abre": "opens {{time}}"
+  },
+  "partidos": {
+    "title": "World Cup Matches",
+    "vs": "vs",
+    "sugerencia": "Suggestion at {{name}}"
+  },
+  "partido": {
+    "detalle": {
+      "dondeVerlo": "Where to watch",
+      "disclaimer": "Times subject to FIFA confirmation. Hotel suggestion is based on the match venue."
+    }
+  },
+  "promo": {
+    "verHotel": "See all promos at {{name}}",
+    "detalle": {
+      "sobre": "About the restaurant",
+      "especialidades": "Specialties",
+      "horarios": "Hours",
+      "sitioOficial": "View on official site"
+    }
+  },
+  "tablas": {
+    "title": "Group Stage · {{nombre}}",
+    "header": {
+      "club": "Club / Team",
+      "pj": "MP",
+      "dg": "GD",
+      "pts": "PTS"
+    }
+  },
+  "alineaciones": {
+    "title": "Probable Lineup · {{equipo}} ({{formacion}})"
+  },
+  "hotel": {
+    "detail": {
+      "centros": "Venues"
+    }
+  },
+  "contacto": {
+    "title": "Get the best World Cup promos",
+    "subtitle": "Leave your details and we'll email you when new promotions launch at Diestra hotels during the FIFA World Cup 2026.",
+    "volver": "Back to home"
+  },
+  "newsletter": {
+    "title": "Subscribe to our promos",
+    "subtitle": "Get the best 2026 World Cup dining promotions delivered to your inbox.",
+    "fields": {
+      "nombre": "Name",
+      "email": "Email",
+      "ciudad": "Preferred city",
+      "ciudadAny": "All cities"
+    },
+    "consentimiento": "I agree to receive communications from Grupo Diestra and understand my data will be handled under the privacy policy.",
+    "submit": "Send me the promos",
+    "success": {
+      "title": "Subscription confirmed!",
+      "body": "We'll send the next promotions to your inbox."
+    },
+    "errors": {
+      "faltantes": "Please enter your name and email.",
+      "email": "That email doesn't look valid.",
+      "consentimiento": "We need your consent to send you communications."
+    }
+  },
+  "mobileNav": {
+    "label": "Main navigation",
+    "items": {
+      "alimentos": "Food",
+      "partidos": "Matches",
+      "noticias": "News",
+      "tablas": "Standings",
+      "alineaciones": "Teams"
+    }
+  },
+  "buscar": {
+    "cta": "Open search",
+    "placeholder": "Search hotel, promo, team or venue…",
+    "empty": "Type something to find hotels, promotions, matches or news.",
+    "sinResultados": "No results for \"{{q}}\".",
+    "secciones": {
+      "hoteles": "Hotels",
+      "promos": "Promotions",
+      "partidos": "Matches",
+      "noticias": "News"
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The content you're looking for doesn't exist or has been moved.",
+    "cta": "← Back to home"
+  }
+}
