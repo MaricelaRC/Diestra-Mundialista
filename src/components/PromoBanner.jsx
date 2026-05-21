@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { hotelesDiestra } from '../data/hoteles.js';
 import { destacados } from '../data/destacados.js';
@@ -62,19 +62,20 @@ export default function PromoBanner() {
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-4 md:p-6 text-white">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="bg-red-600 text-white text-[10px] md:text-xs font-black px-2 py-0.5 rounded-full">
+              <div className="absolute inset-x-0 bottom-0 p-4 pb-9 md:p-6 md:pb-12 text-white">
+                <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mb-2">
+                  <span className="inline-flex items-center bg-red-600 text-white text-[10px] md:text-xs font-black px-2.5 py-1 rounded-full shadow-md tracking-wide">
                     {rest.porcentaje} {t('alimentos.off')}
                   </span>
-                  <span className="text-[10px] md:text-xs opacity-90 uppercase tracking-wide">
+                  <span className="inline-flex items-center gap-1 bg-white/20 backdrop-blur-md text-white text-[10px] md:text-xs font-bold px-2.5 py-1 rounded-full border border-white/30 shadow-md tracking-wide">
+                    <MapPin size={11} className="opacity-90" />
                     {hotel.name}
                   </span>
                 </div>
-                <h3 className="font-black text-base md:text-2xl tracking-tight drop-shadow leading-tight">
+                <h3 className="font-black text-base md:text-2xl tracking-tight drop-shadow-lg leading-tight">
                   {rest.nombrePromocion}
                 </h3>
-                <p className="text-xs md:text-sm opacity-90 mt-1 line-clamp-1 md:line-clamp-2">
+                <p className="text-xs md:text-sm opacity-95 mt-1 line-clamp-1 md:line-clamp-2 drop-shadow">
                   {rest.descuento}
                 </p>
               </div>
