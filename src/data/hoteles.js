@@ -9,7 +9,7 @@ export const hotelesDiestra = [
     ciudad: 'Veracruz',
     restaurantes: [
       {
-        nombreCentroConsumo: 'Condimento Veracruz',
+        nombreCentroConsumo: 'Restaurante Condimento',
         nombrePromocion: 'Tradición Veracruzana Mundialista',
         descuento: '15% de descuento en el consumo total',
         porcentaje: '15%',
@@ -46,22 +46,23 @@ export const hotelesDiestra = [
     ciudad: 'Zacatecas',
     restaurantes: [
       {
-        nombreCentroConsumo: 'Condimento Zacatecas',
+        nombreCentroConsumo: 'Restaurante Condimento',
         nombrePromocion: 'Asado Mundialista',
         descuento: 'Mezcal zacatecano de cortesía',
         porcentaje: '10%',
         descripcionPromo: 'Celebra cada anotación de tu equipo favorito degustando el tradicional asado de boda zacatecano. Te obsequiamos un trago de mezcal de la casa para abrir apetito.',
-        contacto: '+524929251285',
+        contacto: '+524929256500',
+        extension: '1732',
         fechaHorarioPublicacion: '2026-06-11T09:00:00Z',
         portada: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=250&fit=crop'
       },
       {
-        nombreCentroConsumo: 'Bar Los Milagros',
+        nombreCentroConsumo: 'Bar Los Canteros',
         nombrePromocion: 'Cerveza artesanal al 3x2',
         descuento: '3x2 en Cervezas Artesanales',
         porcentaje: '33%',
         descripcionPromo: 'En el corazón colonial de Zacatecas, vive la pasión futbolera en nuestra cantina contemporánea con el mejor surtido de cervezas y botana mexicana.',
-        contacto: '+524929251286',
+        contacto: '+524929256500',
         fechaHorarioPublicacion: '2026-06-11T13:00:00Z',
         portada: 'https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=400&h=250&fit=crop'
       }
@@ -73,12 +74,12 @@ export const hotelesDiestra = [
     ciudad: 'Mazatlán',
     restaurantes: [
       {
-        nombreCentroConsumo: 'Condimento Mazatlán',
+        nombreCentroConsumo: 'Restaurante Condimento',
         nombrePromocion: 'Pacific Gol & Aguachile',
         descuento: 'Cubeta de cerveza nacional de regalo',
         porcentaje: '25%',
         descripcionPromo: 'Prueba el mejor marisco de la Perla del Pacífico. En el consumo de un Aguachile familiar o un pescado zarandeado, te regalamos la primera cubeta de cervezas locales.',
-        contacto: '+526699833333',
+        contacto: '+526699834611',
         fechaHorarioPublicacion: '2026-06-12T11:00:00Z',
         portada: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=250&fit=crop'
       },
@@ -137,7 +138,7 @@ export const hotelesDiestra = [
         porcentaje: '15%',
         descripcionPromo:
           'Vive las transmisiones matutinas desde nuestra terraza sobre Paseo de la Reforma. En la compra de cualquier postre de la casa —cheesecake, tarta de pera o pastelería del día— te obsequiamos un café americano artesanal.',
-        contacto: '+525585266436',
+        contacto: '+525547245100',
         fechaHorarioPublicacion: '2026-06-12T08:00:00Z',
         portada:
           'https://hotelesemporio.com/wp-content/uploads/2021/10/GC-MEX3-1920x1124-1.jpg'
@@ -198,7 +199,8 @@ export const hotelesDiestra = [
         porcentaje: '15%',
         descripcionPromo:
           'Empieza tu día mundialista frente a la bahía de Acapulco con nuestro buffet de especialidades del chef: pan horneado en casa, fruta fresca y platillos mexicanos e internacionales mientras siguen las transmisiones matutinas.',
-        contacto: '+525585266436',
+        contacto: '+527444690505',
+        extension: '5036',
         fechaHorarioPublicacion: '2026-06-14T07:00:00Z',
         portada:
           'https://hotelesemporio.com/wp-content/uploads/2021/10/CONDI-ACA1-1920X1124.jpg'
@@ -221,7 +223,8 @@ export const hotelesDiestra = [
         porcentaje: '50%',
         descripcionPromo:
           'Vive los partidos estelares al atardecer frente al mar de Acapulco. Nuestra coctelería artesanal al 2x1 y mariscos frescos para acompañar cada anotación: aguachile, pulpo a las brasas y pescado a la talla.',
-        contacto: '+525585266436',
+        contacto: '+527444690505',
+        extension: '5056',
         fechaHorarioPublicacion: '2026-06-14T18:00:00Z',
         portada:
           'https://hotelesemporio.com/wp-content/uploads/2021/08/Sunset-nuevo-4.jpg'
@@ -244,7 +247,8 @@ export const hotelesDiestra = [
         porcentaje: '20%',
         descripcionPromo:
           'Sigue los partidos del Mundial sin salir de la alberca. Snacks al grill, alitas adobadas, hamburguesas de camarón y bebidas tropicales a precio especial mientras te refrescas en el agua.',
-        contacto: '+525585266436',
+        contacto: '+527444690505',
+        extension: '5075',
         fechaHorarioPublicacion: '2026-06-14T11:00:00Z',
         portada:
           'https://hotelesemporio.com/wp-content/uploads/2021/10/ISLA2-1920X1124.jpg'
@@ -262,7 +266,8 @@ export const hotelesDiestra = [
         porcentaje: '25%',
         descripcionPromo:
           'El sports bar oficial del Mundial en Acapulco: pantallas dedicadas a todos los partidos, coctelería de autor, cubetas de cerveza con descuento y la mejor atmósfera para vivir cada gol.',
-        contacto: '+525585266436',
+        contacto: '+527444690505',
+        extension: '5057',
         fechaHorarioPublicacion: '2026-06-14T19:00:00Z',
         portada:
           'https://hotelesemporio.com/wp-content/uploads/2021/10/ARKA3-1920X1124.jpg'

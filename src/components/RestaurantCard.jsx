@@ -1,11 +1,11 @@
 import { Clock, Flame, Phone, UtensilsCrossed } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import OpenStatusBadge from './OpenStatusBadge.jsx';
+import { formatPhone, buildTelHref } from '../lib/phone.js';
 
 export default function RestaurantCard({ restaurante }) {
   const { t, i18n } = useTranslation();
   const locale = i18n.language?.startsWith('en') ? 'en-US' : 'es-MX';
-  const phoneNumber = restaurante.contacto.replace('+', '');
 
   return (
     <div className="border border-gray-100 rounded-xl overflow-hidden bg-gray-50/30 p-3 space-y-3 shadow-sm">
@@ -78,12 +78,11 @@ export default function RestaurantCard({ restaurante }) {
 
       <div className="pt-1">
         <a
-          href={`https://wa.me/${phoneNumber}`}
-          target="_blank"
-          rel="noopener noreferrer"
+          href={buildTelHref(restaurante.contacto, restaurante.extension)}
           className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 shadow-sm transition-colors uppercase tracking-wider"
         >
-          <Phone size={12} /> {t('alimentos.contactar')} {restaurante.contacto}
+          <Phone size={12} /> {t('alimentos.llamar')} {formatPhone(restaurante.contacto)}
+          {restaurante.extension ? ` · ${t('alimentos.ext')} ${restaurante.extension}` : ''}
         </a>
       </div>
     </div>

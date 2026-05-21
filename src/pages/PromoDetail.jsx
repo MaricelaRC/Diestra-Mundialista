@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { hotelesDiestra } from '../data/hoteles.js';
+import { formatPhone, buildTelHref } from '../lib/phone.js';
 import OpenStatusBadge from '../components/OpenStatusBadge.jsx';
 import NotFound from './NotFound.jsx';
 
@@ -25,7 +26,6 @@ export default function PromoDetail() {
   if (!hotel || !rest) return <NotFound />;
 
   const locale = i18n.language?.startsWith('en') ? 'en-US' : 'es-MX';
-  const phoneNumber = rest.contacto.replace('+', '');
   const hasRestaurantInfo =
     rest.descripcionRestaurante ||
     rest.tipoCocina ||
@@ -191,20 +191,13 @@ export default function PromoDetail() {
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+          <div className="pt-2">
             <a
-              href={`https://wa.me/${phoneNumber}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-colors uppercase tracking-wider text-sm"
+              href={buildTelHref(rest.contacto, rest.extension)}
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-colors uppercase tracking-wider text-sm"
             >
-              <Phone size={14} /> WhatsApp
-            </a>
-            <a
-              href={`tel:${rest.contacto}`}
-              className="bg-gray-900 hover:bg-gray-800 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-colors uppercase tracking-wider text-sm"
-            >
-              <Phone size={14} /> {rest.contacto}
+              <Phone size={14} /> {t('alimentos.llamar')} {formatPhone(rest.contacto)}
+              {rest.extension ? ` · ${t('alimentos.ext')} ${rest.extension}` : ''}
             </a>
           </div>
 
