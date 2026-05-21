@@ -8,11 +8,12 @@ import { destacados } from '../data/destacados.js';
 const AUTO_INTERVAL_MS = 5000;
 
 function resolveSlides() {
+  // El banner solo muestra centros con promoción activa.
   return destacados
     .map(({ hotelId, idx }) => {
       const hotel = hotelesDiestra.find((h) => h.id === hotelId);
       const rest = hotel?.restaurantes?.[idx];
-      if (!hotel || !rest) return null;
+      if (!hotel || !rest || !rest.porcentaje) return null;
       return { hotel, rest, idx };
     })
     .filter(Boolean);

@@ -6,6 +6,7 @@ import { formatPhone, buildTelHref } from '../lib/phone.js';
 export default function RestaurantCard({ restaurante }) {
   const { t, i18n } = useTranslation();
   const locale = i18n.language?.startsWith('en') ? 'en-US' : 'es-MX';
+  const tienePromo = Boolean(restaurante.porcentaje);
 
   return (
     <div className="border border-gray-100 rounded-xl overflow-hidden bg-gray-50/30 p-3 space-y-3 shadow-sm">
@@ -17,9 +18,11 @@ export default function RestaurantCard({ restaurante }) {
             className="w-full h-full object-cover"
             loading="lazy"
           />
-          <span className="absolute top-2 right-2 bg-red-600 text-white font-black text-xs px-2.5 py-1 rounded-full shadow-md">
-            {restaurante.porcentaje} {t('alimentos.off')}
-          </span>
+          {tienePromo && (
+            <span className="absolute top-2 right-2 bg-red-600 text-white font-black text-xs px-2.5 py-1 rounded-full shadow-md">
+              {restaurante.porcentaje} {t('alimentos.off')}
+            </span>
+          )}
         </div>
       )}
 
@@ -28,29 +31,41 @@ export default function RestaurantCard({ restaurante }) {
           <h5 className="font-extrabold text-blue-950 text-sm leading-tight">
             {restaurante.nombreCentroConsumo}
           </h5>
-          <span className="text-[9px] text-gray-400 font-mono flex items-center gap-1 bg-white px-2 py-0.5 rounded-full border border-gray-200 whitespace-nowrap">
-            <Clock size={10} /> {t('alimentos.publicacion')}:{' '}
-            {new Date(restaurante.fechaHorarioPublicacion).toLocaleDateString(locale)}
-          </span>
+          {tienePromo && restaurante.fechaHorarioPublicacion && (
+            <span className="text-[9px] text-gray-400 font-mono flex items-center gap-1 bg-white px-2 py-0.5 rounded-full border border-gray-200 whitespace-nowrap">
+              <Clock size={10} /> {t('alimentos.publicacion')}:{' '}
+              {new Date(restaurante.fechaHorarioPublicacion).toLocaleDateString(locale)}
+            </span>
+          )}
         </div>
         {restaurante.tipoCocina && (
           <p className="inline-flex items-center gap-1 text-[10px] text-gray-500 font-semibold bg-gray-100 px-2 py-0.5 rounded-full">
             <UtensilsCrossed size={10} /> {restaurante.tipoCocina}
           </p>
         )}
-        <p className="text-xs font-black text-blue-600 leading-snug">
-          {restaurante.nombrePromocion}
-        </p>
+        {tienePromo && (
+          <p className="text-xs font-black text-blue-600 leading-snug">
+            {restaurante.nombrePromocion}
+          </p>
+        )}
       </div>
 
-      <div className="bg-amber-50/50 border border-amber-200/60 p-2.5 rounded-lg space-y-1">
-        <p className="text-[9px] font-black text-amber-800 uppercase tracking-tight flex items-center gap-1">
-          <Flame size={12} className="text-amber-600" /> {restaurante.descuento}
-        </p>
-        <p className="text-[11px] text-gray-600 font-medium leading-normal">
-          {restaurante.descripcionPromo}
-        </p>
-      </div>
+      {tienePromo ? (
+        <div className="bg-amber-50/50 border border-amber-200/60 p-2.5 rounded-lg space-y-1">
+          <p className="text-[9px] font-black text-amber-800 uppercase tracking-tight flex items-center gap-1">
+            <Flame size={12} className="text-amber-600" /> {restaurante.descuento}
+          </p>
+          <p className="text-[11px] text-gray-600 font-medium leading-normal">
+            {restaurante.descripcionPromo}
+          </p>
+        </div>
+      ) : (
+        restaurante.descripcionRestaurante && (
+          <p className="text-[11px] text-gray-600 font-medium leading-normal">
+            {restaurante.descripcionRestaurante}
+          </p>
+        )
+      )}
 
       {restaurante.horarios?.length > 0 && (
         <div className="bg-white border border-gray-100 rounded-lg p-2.5 space-y-1.5">
@@ -76,15 +91,17 @@ export default function RestaurantCard({ restaurante }) {
         </div>
       )}
 
-      <div className="pt-1">
-        <a
-          href={buildTelHref(restaurante.contacto, restaurante.extension)}
-          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 shadow-sm transition-colors uppercase tracking-wider"
-        >
-          <Phone size={12} /> {t('alimentos.llamar')} {formatPhone(restaurante.contacto)}
-          {restaurante.extension ? ` · ${t('alimentos.ext')} ${restaurante.extension}` : ''}
-        </a>
-      </div>
+      {restaurante.contacto && (
+        <div className="pt-1">
+          <a
+            href={buildTelHref(restaurante.contacto, restaurante.extension)}
+            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-bold py-2 px-3 rounded-lg flex items-center justify-center gap-1.5 shadow-sm transition-colors uppercase tracking-wider"
+          >
+            <Phone size={12} /> {t('alimentos.llamar')} {formatPhone(restaurante.contacto)}
+            {restaurante.extension ? ` · ${t('alimentos.ext')} ${restaurante.extension}` : ''}
+          </a>
+        </div>
+      )}
     </div>
   );
 }

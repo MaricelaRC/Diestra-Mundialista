@@ -1,6 +1,9 @@
 // Utilidades para calcular el estado "Abierto / Cerrado" a partir del array
 // de horarios que vive en cada centro de consumo:
-//   [{ servicio: 'Desayuno', horario: '07:00 — 12:00' }, ...]
+//   [{ servicio: 'Desayuno', horario: '07:00 — 12:00', dias: [1,2,3,4,5] }, ...]
+//
+// `dias` es opcional: números de día de la semana (0=domingo .. 6=sábado).
+// Si no se especifica, el servicio aplica todos los días.
 //
 // Convención: cuando el horario es "HH:MM — 00:00", interpretamos 00:00 como
 // medianoche del mismo día (24:00) — el negocio cierra al filo del día.
@@ -30,51 +33,9 @@ function parseRange(rangeStr) {
   return { start, end };
 }
 
-function appliesToday(servicio, dayOfWeek) {
-  // Normaliza: minúsculas, puntos a espacio, colapsa espacios.
-  const s = (servicio || '')
-    .toLowerCase()
-    .replace(/\./g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-  const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
-
-  // 1. Frases que significan "todos los días" — chequear primero porque
-  //    "lunes a domingo" contiene "domingo" y dispararía el filtro de fin de semana.
-  if (
-    /\blun(es)?\s+a\s+dom(ingo)?\b/.test(s) ||
-    /\btodos\s+los\s+d[íi]as\b/.test(s) ||
-    /\bdiario\b/.test(s) ||
-    /\bevery\s*day\b/.test(s) ||
-    /\bdaily\b/.test(s)
-  ) {
-    return true;
-  }
-
-  // 2. Solo fin de semana. Usamos \b para no confundir "dom" con substring.
-  if (
-    /\bs[áa]b(ado)?s?\b/.test(s) ||
-    /\bdom(ingo)?s?\b/.test(s) ||
-    /\bfines?\s+de\s+semana\b/.test(s) ||
-    /\bweekend\b/.test(s) ||
-    /\b(sat|sun)(urday|day)?s?\b/.test(s)
-  ) {
-    return isWeekend;
-  }
-
-  // 3. Solo entre semana.
-  if (
-    /\blun(es)?\s+a\s+vier(nes)?\b/.test(s) ||
-    /\bmon(day)?\s*(a|to|-)\s*fri(day)?\b/.test(s) ||
-    /\bweekday\b/.test(s) ||
-    /\bentre\s+semana\b/.test(s)
-  ) {
-    return !isWeekend;
-  }
-
-  // 4. Default: aplica todos los días (servicios genéricos como
-  //    Desayuno, Comida, Cena, Terraza, Brunch sin día explícito, etc.).
-  return true;
+function appliesToday(horario, dayOfWeek) {
+  // Si el horario no trae `dias`, aplica todos los días.
+  return !horario.dias || horario.dias.includes(dayOfWeek);
 }
 
 export function computeOpenStatus(horarios, now = new Date()) {
@@ -84,7 +45,7 @@ export function computeOpenStatus(horarios, now = new Date()) {
   const dayOfWeek = now.getDay();
 
   const todayRanges = horarios
-    .filter((h) => appliesToday(h.servicio, dayOfWeek))
+    .filter((h) => appliesToday(h, dayOfWeek))
     .map((h) => {
       const r = parseRange(h.horario);
       return r ? { ...r, servicio: h.servicio } : null;

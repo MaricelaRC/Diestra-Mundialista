@@ -28,7 +28,9 @@ function buildResults(query) {
         norm(r.nombreCentroConsumo).includes(q) ||
         norm(r.nombrePromocion).includes(q) ||
         norm(r.descuento).includes(q) ||
-        norm(r.descripcionPromo).includes(q)
+        norm(r.descripcionPromo).includes(q) ||
+        norm(r.descripcionRestaurante).includes(q) ||
+        norm(r.tipoCocina).includes(q)
       ) {
         promos.push({ hotel: h, rest: r, idx });
       }
@@ -166,11 +168,19 @@ export default function Buscar() {
                           {hotel.name}
                         </p>
                         <p className="font-bold text-gray-900 text-sm truncate">
-                          {rest.nombrePromocion}
+                          {rest.nombreCentroConsumo}
                         </p>
-                        <p className="text-[11px] text-amber-700 flex items-center gap-1 mt-0.5">
-                          <Flame size={11} /> {rest.porcentaje} OFF · {rest.descuento}
-                        </p>
+                        {rest.porcentaje ? (
+                          <p className="text-[11px] text-amber-700 flex items-center gap-1 mt-0.5">
+                            <Flame size={11} /> {rest.porcentaje} OFF · {rest.descuento}
+                          </p>
+                        ) : (
+                          rest.tipoCocina && (
+                            <p className="text-[11px] text-gray-500 truncate mt-0.5">
+                              {rest.tipoCocina}
+                            </p>
+                          )
+                        )}
                       </div>
                     </Link>
                   </li>

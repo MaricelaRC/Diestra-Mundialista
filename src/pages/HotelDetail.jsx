@@ -34,18 +34,14 @@ export default function HotelDetail() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
       <div className="max-w-md md:max-w-3xl lg:max-w-5xl mx-auto bg-white md:bg-transparent shadow-2xl md:shadow-none border-x md:border-x-0 border-gray-200 min-h-screen">
-        {/* Hero con imagen */}
+        {/* Hero: imagen del centro destacado, o gradiente si el hotel no tiene foto */}
         <div className="relative">
-          {cover && (
-            <div className="w-full h-56 md:h-80 lg:h-96 bg-gray-200 overflow-hidden">
-              <img
-                src={cover}
-                alt={hotel.name}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
-            </div>
-          )}
+          <div className="w-full h-56 md:h-80 lg:h-96 overflow-hidden bg-gradient-to-br from-blue-700 to-indigo-800">
+            {cover && (
+              <img src={cover} alt={hotel.name} className="w-full h-full object-cover" />
+            )}
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/55" />
 
           <div className="absolute top-0 inset-x-0 p-4 md:p-6 flex items-center justify-between">
             <Link

@@ -26,6 +26,7 @@ export default function PromoDetail() {
   if (!hotel || !rest) return <NotFound />;
 
   const locale = i18n.language?.startsWith('en') ? 'en-US' : 'es-MX';
+  const hasPromo = Boolean(rest.porcentaje);
   const hasRestaurantInfo =
     rest.descripcionRestaurante ||
     rest.tipoCocina ||
@@ -35,8 +36,8 @@ export default function PromoDetail() {
 
   const handleShare = async () => {
     const shareData = {
-      title: `${rest.nombrePromocion} · ${hotel.name}`,
-      text: rest.descripcionPromo,
+      title: `${rest.nombrePromocion || rest.nombreCentroConsumo} · ${hotel.name}`,
+      text: rest.descripcionPromo || rest.descripcionRestaurante || '',
       url: window.location.href
     };
     try {
@@ -80,16 +81,18 @@ export default function PromoDetail() {
             </button>
           </div>
 
-          <span className="absolute top-16 md:top-20 right-4 md:right-6 bg-red-600 text-white font-black text-base md:text-xl px-3 py-1 rounded-full shadow-lg">
-            {rest.porcentaje} {t('alimentos.off')}
-          </span>
+          {hasPromo && (
+            <span className="absolute top-16 md:top-20 right-4 md:right-6 bg-red-600 text-white font-black text-base md:text-xl px-3 py-1 rounded-full shadow-lg">
+              {rest.porcentaje} {t('alimentos.off')}
+            </span>
+          )}
 
           <div className="absolute bottom-0 inset-x-0 p-4 md:p-6 text-white">
             <p className="text-[11px] md:text-sm uppercase tracking-widest opacity-90">
               {hotel.name}
             </p>
             <h1 className="font-black text-2xl md:text-4xl tracking-tight drop-shadow leading-tight">
-              {rest.nombrePromocion}
+              {rest.nombrePromocion || rest.nombreCentroConsumo}
             </h1>
             <p className="text-sm md:text-base flex items-center gap-1 mt-1 drop-shadow">
               <MapPin size={14} /> {rest.nombreCentroConsumo} · {hotel.ciudad}
@@ -98,25 +101,31 @@ export default function PromoDetail() {
         </div>
 
         <section className="p-4 md:p-6 lg:p-8 space-y-5">
-          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 md:p-5 space-y-2">
-            <p className="text-xs md:text-sm font-black text-amber-800 uppercase tracking-tight flex items-center gap-2">
-              <Flame size={16} className="text-amber-600" /> {rest.descuento}
-            </p>
-            <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-              {rest.descripcionPromo}
-            </p>
-          </div>
+          {hasPromo && (
+            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 md:p-5 space-y-2">
+              <p className="text-xs md:text-sm font-black text-amber-800 uppercase tracking-tight flex items-center gap-2">
+                <Flame size={16} className="text-amber-600" /> {rest.descuento}
+              </p>
+              <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                {rest.descripcionPromo}
+              </p>
+            </div>
+          )}
 
-          <div className="flex items-center flex-wrap gap-3">
-            {rest.horarios?.length > 0 && (
-              <OpenStatusBadge horarios={rest.horarios} size="lg" />
-            )}
-            <span className="text-xs md:text-sm text-gray-500 flex items-center gap-1.5">
-              <Clock size={14} />
-              {t('alimentos.publicacion')}:{' '}
-              {new Date(rest.fechaHorarioPublicacion).toLocaleDateString(locale)}
-            </span>
-          </div>
+          {(rest.horarios?.length > 0 || (hasPromo && rest.fechaHorarioPublicacion)) && (
+            <div className="flex items-center flex-wrap gap-3">
+              {rest.horarios?.length > 0 && (
+                <OpenStatusBadge horarios={rest.horarios} size="lg" />
+              )}
+              {hasPromo && rest.fechaHorarioPublicacion && (
+                <span className="text-xs md:text-sm text-gray-500 flex items-center gap-1.5">
+                  <Clock size={14} />
+                  {t('alimentos.publicacion')}:{' '}
+                  {new Date(rest.fechaHorarioPublicacion).toLocaleDateString(locale)}
+                </span>
+              )}
+            </div>
+          )}
 
           {hasRestaurantInfo && (
             <div className="border border-gray-200 rounded-2xl p-4 md:p-5 space-y-4 bg-white">
