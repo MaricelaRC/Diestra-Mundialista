@@ -9,6 +9,7 @@ import MobileDrawer from './MobileDrawer.jsx';
 export default function Header({ activeTab, onTabChange }) {
   const { t, i18n } = useTranslation();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [logoOk, setLogoOk] = useState(true);
 
   const toggleLang = () => {
     const next = i18n.language?.startsWith('en') ? 'es' : 'en';
@@ -30,9 +31,18 @@ export default function Header({ activeTab, onTabChange }) {
           </button>
 
           <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-            <span className="text-blue-600 font-black text-lg md:text-xl tracking-tight">
-              DIESTRA
-            </span>
+            {logoOk ? (
+              <img
+                src="/logo-diestra.png"
+                alt="Grupo Diestra"
+                className="h-7 md:h-9 w-auto"
+                onError={() => setLogoOk(false)}
+              />
+            ) : (
+              <span className="text-blue-600 font-black text-lg md:text-xl tracking-tight">
+                DIESTRA
+              </span>
+            )}
             <span className="hidden md:inline text-[10px] text-gray-400 font-semibold uppercase tracking-widest">
               World Cup 2026
             </span>

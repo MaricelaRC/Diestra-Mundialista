@@ -32,6 +32,8 @@
     },
     "centroSingular": "Centro de Consumo",
     "centroPlural": "Centros de Consumo",
+    "cuentaSingular": "centro",
+    "cuentaPlural": "centros",
     "publicacion": "Publicación",
     "contactar": "Contactar al",
     "llamar": "Llamar al",

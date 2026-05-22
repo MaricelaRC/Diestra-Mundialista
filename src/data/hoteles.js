@@ -217,6 +217,56 @@ export const hotelesDiestra = [
     ]
   },
   {
+    id: 'e-mexico',
+    name: 'Emporio Ciudad de México',
+    ciudad: 'CDMX · Paseo de la Reforma',
+    restaurantes: [
+      {
+        nombreCentroConsumo: 'Restaurante Condimento',
+        tipoCocina: 'Mexicana e internacional · Buffet y a la carta',
+        descripcionRestaurante:
+          'Cocina mexicana e internacional con especialidades del chef en formato buffet o a la carta. Pan recién horneado, paella valenciana mixta, sushi y pizza al horno de piedra. Brunch los fines de semana.',
+        especialidades: ['Paella valenciana mixta', 'Rib eye', 'Sushi', 'Pizza al horno de piedra'],
+        horarios: [
+          { servicio: 'Desayuno',           horario: '07:00 — 12:00' },
+          { servicio: 'Comida y cena',      horario: '13:00 — 23:00' },
+          { servicio: 'Brunch sáb. y dom.', horario: '10:00 — 17:00', dias: [0, 6] }
+        ],
+        web: 'https://hotelesemporio.com/restaurantes/ciudad-de-mexico-restaurante-condimento/',
+        nombrePromocion: 'Buffet Ejecutivo Mundialista',
+        descuento: '2x1 en buffet de desayuno',
+        porcentaje: '50%',
+        descripcionPromo:
+          'Vive el debut mundialista desde el corazón de Paseo de la Reforma. Nuestro buffet de desayuno al 2x1 durante los partidos matutinos: pan recién horneado, fruta fresca, sushi, paella valenciana los viernes y mixología de autor.',
+        contacto: '+525519265091',
+        fechaHorarioPublicacion: '2026-06-12T07:00:00Z',
+        portada:
+          'https://hotelesemporio.com/wp-content/uploads/2021/10/CONDI-MEX5-1920x1124-1.jpg'
+      },
+      {
+        nombreCentroConsumo: 'Galería del Café',
+        tipoCocina: 'Cafetería europea · Pastelería gourmet',
+        descripcionRestaurante:
+          'Cafetería con aire europeo y terraza al aire libre sobre Paseo de la Reforma. Café gourmet, repostería de primera calidad y barra de mixología con carajillos y martinis.',
+        especialidades: ['Short Rib Braseado', 'New York Cheesecake', 'Tarta de pera', 'Carajillo'],
+        horarios: [
+          { servicio: 'Lunes a domingo', horario: '07:00 — 23:00' },
+          { servicio: 'Terraza',         horario: '08:00 — 22:00' }
+        ],
+        web: 'https://hotelesemporio.com/restaurantes/ciudad-de-mexico-galeria-del-cafe/',
+        nombrePromocion: 'Café Mundialista en Reforma',
+        descuento: 'Café americano de cortesía con cualquier postre',
+        porcentaje: '15%',
+        descripcionPromo:
+          'Vive las transmisiones matutinas desde nuestra terraza sobre Paseo de la Reforma. En la compra de cualquier postre de la casa —cheesecake, tarta de pera o pastelería del día— te obsequiamos un café americano artesanal.',
+        contacto: '+525547245100',
+        fechaHorarioPublicacion: '2026-06-12T08:00:00Z',
+        portada:
+          'https://hotelesemporio.com/wp-content/uploads/2021/10/GC-MEX3-1920x1124-1.jpg'
+      }
+    ]
+  },
+  {
     id: 'e-ixtapa',
     name: 'Emporio Ixtapa',
     ciudad: 'Ixtapa · Zihuatanejo',
@@ -328,56 +378,6 @@ export const hotelesDiestra = [
         web: 'https://hotelesemporio.com/restaurantes/mazatlan-restaurante-condimento/',
         contacto: '+526699834611',
         portada: 'https://hotelesemporio.com/wp-content/uploads/2021/08/GaleriaCondimento.jpg'
-      }
-    ]
-  },
-  {
-    id: 'e-mexico',
-    name: 'Emporio Ciudad de México',
-    ciudad: 'CDMX · Paseo de la Reforma',
-    restaurantes: [
-      {
-        nombreCentroConsumo: 'Restaurante Condimento',
-        tipoCocina: 'Mexicana e internacional · Buffet y a la carta',
-        descripcionRestaurante:
-          'Cocina mexicana e internacional con especialidades del chef en formato buffet o a la carta. Pan recién horneado, paella valenciana mixta, sushi y pizza al horno de piedra. Brunch los fines de semana.',
-        especialidades: ['Paella valenciana mixta', 'Rib eye', 'Sushi', 'Pizza al horno de piedra'],
-        horarios: [
-          { servicio: 'Desayuno',           horario: '07:00 — 12:00' },
-          { servicio: 'Comida y cena',      horario: '13:00 — 23:00' },
-          { servicio: 'Brunch sáb. y dom.', horario: '10:00 — 17:00', dias: [0, 6] }
-        ],
-        web: 'https://hotelesemporio.com/restaurantes/ciudad-de-mexico-restaurante-condimento/',
-        nombrePromocion: 'Buffet Ejecutivo Mundialista',
-        descuento: '2x1 en buffet de desayuno',
-        porcentaje: '50%',
-        descripcionPromo:
-          'Vive el debut mundialista desde el corazón de Paseo de la Reforma. Nuestro buffet de desayuno al 2x1 durante los partidos matutinos: pan recién horneado, fruta fresca, sushi, paella valenciana los viernes y mixología de autor.',
-        contacto: '+525519265091',
-        fechaHorarioPublicacion: '2026-06-12T07:00:00Z',
-        portada:
-          'https://hotelesemporio.com/wp-content/uploads/2021/10/CONDI-MEX5-1920x1124-1.jpg'
-      },
-      {
-        nombreCentroConsumo: 'Galería del Café',
-        tipoCocina: 'Cafetería europea · Pastelería gourmet',
-        descripcionRestaurante:
-          'Cafetería con aire europeo y terraza al aire libre sobre Paseo de la Reforma. Café gourmet, repostería de primera calidad y barra de mixología con carajillos y martinis.',
-        especialidades: ['Short Rib Braseado', 'New York Cheesecake', 'Tarta de pera', 'Carajillo'],
-        horarios: [
-          { servicio: 'Lunes a domingo', horario: '07:00 — 23:00' },
-          { servicio: 'Terraza',         horario: '08:00 — 22:00' }
-        ],
-        web: 'https://hotelesemporio.com/restaurantes/ciudad-de-mexico-galeria-del-cafe/',
-        nombrePromocion: 'Café Mundialista en Reforma',
-        descuento: 'Café americano de cortesía con cualquier postre',
-        porcentaje: '15%',
-        descripcionPromo:
-          'Vive las transmisiones matutinas desde nuestra terraza sobre Paseo de la Reforma. En la compra de cualquier postre de la casa —cheesecake, tarta de pera o pastelería del día— te obsequiamos un café americano artesanal.',
-        contacto: '+525547245100',
-        fechaHorarioPublicacion: '2026-06-12T08:00:00Z',
-        portada:
-          'https://hotelesemporio.com/wp-content/uploads/2021/10/GC-MEX3-1920x1124-1.jpg'
       }
     ]
   },

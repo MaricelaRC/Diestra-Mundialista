@@ -32,6 +32,8 @@
     },
     "centroSingular": "Venue",
     "centroPlural": "Venues",
+    "cuentaSingular": "venue",
+    "cuentaPlural": "venues",
     "publicacion": "Published",
     "contactar": "Contact at",
     "llamar": "Call",

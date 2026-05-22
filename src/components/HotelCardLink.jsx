@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 export default function HotelCardLink({ hotel }) {
   const { t } = useTranslation();
   const count = hotel.restaurantes.length;
-  const label = count === 1 ? t('alimentos.centroSingular') : t('alimentos.centroPlural');
+  const label = count === 1 ? t('alimentos.cuentaSingular') : t('alimentos.cuentaPlural');
   const cover = hotel.restaurantes[0]?.portada;
 
   return (
@@ -31,7 +31,7 @@ export default function HotelCardLink({ hotel }) {
       )}
       <div className="p-4 flex-1 flex flex-col justify-between gap-3">
         <div>
-          <h4 className="font-bold text-gray-900 text-base tracking-tight leading-tight">
+          <h4 className="font-bold text-gray-900 text-[15px] tracking-tight leading-tight">
             {hotel.name}
           </h4>
           <span className="text-xs text-gray-400 flex items-center gap-1 mt-1">
@@ -39,7 +39,7 @@ export default function HotelCardLink({ hotel }) {
           </span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-[11px] bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-bold">
+          <span className="text-[11px] bg-blue-50 text-blue-600 px-2 py-1 rounded-full font-bold whitespace-nowrap">
             {count} {label}
           </span>
           <ChevronRight
