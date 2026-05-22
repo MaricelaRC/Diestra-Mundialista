@@ -19,7 +19,7 @@ export default function Header({ activeTab, onTabChange }) {
   return (
     <>
       <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="flex items-center justify-between p-4 md:px-6 lg:px-8 pb-2 gap-3">
+        <div className="flex items-center justify-between px-4 md:px-6 lg:px-8 py-3 gap-3">
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
