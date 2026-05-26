@@ -1,6 +1,8 @@
+import { useTranslation } from 'react-i18next';
 import { hotelesDiestra } from '../data/hoteles.js';
 
 export default function Stories() {
+  const { t } = useTranslation();
   return (
     <div className="flex gap-4 overflow-x-auto px-4 md:px-6 py-4 no-scrollbar">
       {hotelesDiestra.map((hotel) => (
@@ -9,7 +11,7 @@ export default function Stories() {
           href={hotel.instagram}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`Instagram de ${hotel.name}`}
+          aria-label={t('a11y.instagramOf', { name: hotel.name })}
           className="flex flex-col items-center flex-shrink-0 active:scale-95 transition-transform"
         >
           <div className="w-16 h-16 md:w-20 md:h-20 rounded-full p-[2px] bg-gradient-to-tr from-red-500 to-yellow-500">

@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight, MapPin, Pause, Play } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { hotelesDiestra } from '../data/hoteles.js';
 import { destacados } from '../data/destacados.js';
+import { useTr } from '../lib/i18nData.js';
 
 const AUTO_INTERVAL_MS = 5000;
 const SWIPE_THRESHOLD_PX = 40;
@@ -22,6 +23,7 @@ function resolveSlides() {
 
 export default function PromoBanner() {
   const { t } = useTranslation();
+  const { tr } = useTr();
   const slides = resolveSlides();
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -72,11 +74,11 @@ export default function PromoBanner() {
               key={`${hotel.id}-${idx}`}
               to={`/promo/${hotel.id}/${idx}`}
               className="relative w-full h-full flex-shrink-0"
-              aria-label={`${rest.nombrePromocion} · ${hotel.name}`}
+              aria-label={`${tr(rest.nombrePromocion)} · ${hotel.name}`}
             >
               <img
                 src={rest.portada}
-                alt={rest.nombrePromocion}
+                alt={tr(rest.nombrePromocion)}
                 className="w-full h-full object-cover pointer-events-none"
                 draggable={false}
               />
@@ -92,10 +94,10 @@ export default function PromoBanner() {
                   </span>
                 </div>
                 <h3 className="font-black text-base md:text-2xl tracking-tight drop-shadow-lg leading-tight">
-                  {rest.nombrePromocion}
+                  {tr(rest.nombrePromocion)}
                 </h3>
                 <p className="text-xs md:text-sm opacity-95 mt-1 line-clamp-1 md:line-clamp-2 drop-shadow">
-                  {rest.descuento}
+                  {tr(rest.descuento)}
                 </p>
               </div>
             </Link>
@@ -109,7 +111,7 @@ export default function PromoBanner() {
             type="button"
             onClick={() => setPaused((p) => !p)}
             className="absolute top-2 right-2 md:top-3 md:right-3 bg-white/80 hover:bg-white active:scale-90 rounded-full p-1.5 shadow-md transition-all"
-            aria-label={paused ? 'Reanudar reproducción automática' : 'Pausar reproducción automática'}
+            aria-label={paused ? t('a11y.play') : t('a11y.pause')}
           >
             {paused ? <Play size={14} /> : <Pause size={14} />}
           </button>
@@ -119,7 +121,7 @@ export default function PromoBanner() {
               type="button"
               onClick={() => goTo(current - 1)}
               className="bg-white/80 hover:bg-white active:scale-90 rounded-full p-1.5 shadow-md transition-all"
-              aria-label="Anterior"
+              aria-label={t('a11y.prev')}
             >
               <ChevronLeft size={16} />
             </button>
@@ -129,7 +131,7 @@ export default function PromoBanner() {
                   key={i}
                   type="button"
                   onClick={() => goTo(i)}
-                  aria-label={`Ir al slide ${i + 1}`}
+                  aria-label={t('a11y.gotoSlide', { n: i + 1 })}
                   className={`h-1.5 rounded-full transition-all ${
                     i === current ? 'w-6 bg-white' : 'w-1.5 bg-white/60 hover:bg-white/80'
                   }`}
@@ -140,7 +142,7 @@ export default function PromoBanner() {
               type="button"
               onClick={() => goTo(current + 1)}
               className="bg-white/80 hover:bg-white active:scale-90 rounded-full p-1.5 shadow-md transition-all"
-              aria-label="Siguiente"
+              aria-label={t('a11y.next')}
             >
               <ChevronRight size={16} />
             </button>

@@ -22,7 +22,7 @@ export default function MatchDetail() {
           <Link
             to="/"
             className="absolute top-4 left-4 md:top-6 md:left-6 bg-white/15 hover:bg-white/25 backdrop-blur rounded-full p-2 transition-colors"
-            aria-label="Volver"
+            aria-label={t('a11y.back')}
           >
             <ArrowLeft size={18} />
           </Link>

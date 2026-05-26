@@ -10,6 +10,7 @@ import NewsItem from '../components/NewsItem.jsx';
 import StandingsTable from '../components/StandingsTable.jsx';
 import Lineup from '../components/Lineup.jsx';
 import PromoBanner from '../components/PromoBanner.jsx';
+import MundialCountdown from '../components/MundialCountdown.jsx';
 import NewsletterForm from '../components/NewsletterForm.jsx';
 import MobileNavBar from '../components/MobileNavBar.jsx';
 import { hotelesDiestra } from '../data/hoteles.js';
@@ -30,6 +31,7 @@ export default function Home() {
         <Header activeTab={activeTab} onTabChange={setActiveTab} />
 
         <main className="flex-1 p-4 md:p-6 lg:p-8 pb-28 md:pb-12 space-y-8">
+          <MundialCountdown />
           {loading ? (
             <Loader />
           ) : (

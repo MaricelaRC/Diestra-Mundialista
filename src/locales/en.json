@@ -25,6 +25,24 @@
     "alineaciones": "Lineups"
   },
   "loading": "Syncing with Google...",
+  "a11y": {
+    "back": "Back",
+    "share": "Share",
+    "prev": "Previous",
+    "next": "Next",
+    "play": "Resume autoplay",
+    "pause": "Pause autoplay",
+    "gotoSlide": "Go to slide {{n}}",
+    "instagramOf": "Instagram of {{name}}"
+  },
+  "countdown": {
+    "faltan": "Countdown",
+    "enCurso": "World Cup live",
+    "uno": "1 day {{contexto}}",
+    "muchos": "{{dias}} days {{contexto}}",
+    "contextoInicio": "until the 2026 World Cup",
+    "contextoFin": "until the final"
+  },
   "alimentos": {
     "intro": {
       "title": "Diestra Group Gastronomy",
@@ -100,6 +118,7 @@
     },
     "consentimiento": "I agree to receive communications from Grupo Diestra and understand my data will be handled under the privacy policy.",
     "submit": "Send me the promos",
+    "sending": "Sending...",
     "success": {
       "title": "Subscription confirmed!",
       "body": "We'll send the next promotions to your inbox."
@@ -107,7 +126,8 @@
     "errors": {
       "faltantes": "Please enter your name and email.",
       "email": "That email doesn't look valid.",
-      "consentimiento": "We need your consent to send you communications."
+      "consentimiento": "We need your consent to send you communications.",
+      "envio": "We couldn't send your subscription. Please try again in a few minutes."
     }
   },
   "mobileNav": {

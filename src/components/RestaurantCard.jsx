@@ -2,9 +2,11 @@ import { Clock, Flame, Phone, UtensilsCrossed } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import OpenStatusBadge from './OpenStatusBadge.jsx';
 import { formatPhone, buildTelHref } from '../lib/phone.js';
+import { useTr } from '../lib/i18nData.js';
 
 export default function RestaurantCard({ restaurante }) {
   const { t, i18n } = useTranslation();
+  const { tr } = useTr();
   const locale = i18n.language?.startsWith('en') ? 'en-US' : 'es-MX';
   const tienePromo = Boolean(restaurante.porcentaje);
 
@@ -40,12 +42,12 @@ export default function RestaurantCard({ restaurante }) {
         </div>
         {restaurante.tipoCocina && (
           <p className="inline-flex items-center gap-1 text-[10px] text-gray-500 font-semibold bg-gray-100 px-2 py-0.5 rounded-full">
-            <UtensilsCrossed size={10} /> {restaurante.tipoCocina}
+            <UtensilsCrossed size={10} /> {tr(restaurante.tipoCocina)}
           </p>
         )}
         {tienePromo && (
           <p className="text-xs font-black text-blue-600 leading-snug">
-            {restaurante.nombrePromocion}
+            {tr(restaurante.nombrePromocion)}
           </p>
         )}
       </div>
@@ -53,16 +55,16 @@ export default function RestaurantCard({ restaurante }) {
       {tienePromo ? (
         <div className="bg-amber-50/50 border border-amber-200/60 p-2.5 rounded-lg space-y-1">
           <p className="text-[9px] font-black text-amber-800 uppercase tracking-tight flex items-center gap-1">
-            <Flame size={12} className="text-amber-600" /> {restaurante.descuento}
+            <Flame size={12} className="text-amber-600" /> {tr(restaurante.descuento)}
           </p>
           <p className="text-[11px] text-gray-600 font-medium leading-normal">
-            {restaurante.descripcionPromo}
+            {tr(restaurante.descripcionPromo)}
           </p>
         </div>
       ) : (
         restaurante.descripcionRestaurante && (
           <p className="text-[11px] text-gray-600 font-medium leading-normal">
-            {restaurante.descripcionRestaurante}
+            {tr(restaurante.descripcionRestaurante)}
           </p>
         )
       )}
@@ -76,12 +78,12 @@ export default function RestaurantCard({ restaurante }) {
             <OpenStatusBadge horarios={restaurante.horarios} />
           </div>
           <dl className="space-y-0.5">
-            {restaurante.horarios.map((h) => (
+            {restaurante.horarios.map((h, i) => (
               <div
-                key={h.servicio}
+                key={i}
                 className="flex justify-between items-baseline gap-2 text-[11px]"
               >
-                <dt className="text-gray-500 truncate">{h.servicio}</dt>
+                <dt className="text-gray-500 truncate">{tr(h.servicio)}</dt>
                 <dd className="font-bold text-gray-800 tabular-nums whitespace-nowrap">
                   {h.horario}
                 </dd>

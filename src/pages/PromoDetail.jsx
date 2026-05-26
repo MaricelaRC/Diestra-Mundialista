@@ -15,9 +15,11 @@ import { hotelesDiestra } from '../data/hoteles.js';
 import { formatPhone, buildTelHref } from '../lib/phone.js';
 import OpenStatusBadge from '../components/OpenStatusBadge.jsx';
 import NotFound from './NotFound.jsx';
+import { useTr } from '../lib/i18nData.js';
 
 export default function PromoDetail() {
   const { t, i18n } = useTranslation();
+  const { tr, trArray } = useTr();
   const { hotelId, idx } = useParams();
   const hotel = hotelesDiestra.find((h) => h.id === hotelId);
   const restIdx = Number(idx);
@@ -36,8 +38,8 @@ export default function PromoDetail() {
 
   const handleShare = async () => {
     const shareData = {
-      title: `${rest.nombrePromocion || rest.nombreCentroConsumo} · ${hotel.name}`,
-      text: rest.descripcionPromo || rest.descripcionRestaurante || '',
+      title: `${tr(rest.nombrePromocion) || rest.nombreCentroConsumo} · ${hotel.name}`,
+      text: tr(rest.descripcionPromo) || tr(rest.descripcionRestaurante) || '',
       url: window.location.href
     };
     try {
@@ -67,7 +69,7 @@ export default function PromoDetail() {
             <Link
               to={`/hotel/${hotel.id}`}
               className="bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-md backdrop-blur-sm transition-colors"
-              aria-label="Volver"
+              aria-label={t('a11y.back')}
             >
               <ArrowLeft size={18} />
             </Link>
@@ -75,7 +77,7 @@ export default function PromoDetail() {
               type="button"
               onClick={handleShare}
               className="bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-md backdrop-blur-sm transition-colors"
-              aria-label="Compartir"
+              aria-label={t('a11y.share')}
             >
               <Share2 size={18} />
             </button>
@@ -92,7 +94,7 @@ export default function PromoDetail() {
               {hotel.name}
             </p>
             <h1 className="font-black text-2xl md:text-4xl tracking-tight drop-shadow leading-tight">
-              {rest.nombrePromocion || rest.nombreCentroConsumo}
+              {tr(rest.nombrePromocion) || rest.nombreCentroConsumo}
             </h1>
             <p className="text-sm md:text-base flex items-center gap-1 mt-1 drop-shadow">
               <MapPin size={14} /> {rest.nombreCentroConsumo} · {hotel.ciudad}{hotel.zona ? ` · ${hotel.zona}` : ''}, {hotel.estado}
@@ -104,10 +106,10 @@ export default function PromoDetail() {
           {hasPromo && (
             <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 md:p-5 space-y-2">
               <p className="text-xs md:text-sm font-black text-amber-800 uppercase tracking-tight flex items-center gap-2">
-                <Flame size={16} className="text-amber-600" /> {rest.descuento}
+                <Flame size={16} className="text-amber-600" /> {tr(rest.descuento)}
               </p>
               <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                {rest.descripcionPromo}
+                {tr(rest.descripcionPromo)}
               </p>
             </div>
           )}
@@ -135,25 +137,25 @@ export default function PromoDetail() {
 
               {rest.tipoCocina && (
                 <p className="inline-flex items-center gap-1.5 text-xs md:text-sm text-blue-700 font-semibold bg-blue-50 border border-blue-100 px-3 py-1 rounded-full">
-                  <UtensilsCrossed size={14} /> {rest.tipoCocina}
+                  <UtensilsCrossed size={14} /> {tr(rest.tipoCocina)}
                 </p>
               )}
 
               {rest.descripcionRestaurante && (
                 <p className="text-sm md:text-base text-gray-600 leading-relaxed">
-                  {rest.descripcionRestaurante}
+                  {tr(rest.descripcionRestaurante)}
                 </p>
               )}
 
-              {rest.especialidades && rest.especialidades.length > 0 && (
+              {trArray(rest.especialidades).length > 0 && (
                 <div className="space-y-2">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 flex items-center gap-1.5">
                     <Sparkles size={12} /> {t('promo.detalle.especialidades')}
                   </p>
                   <div className="flex flex-wrap gap-1.5">
-                    {rest.especialidades.map((esp) => (
+                    {trArray(rest.especialidades).map((esp, i) => (
                       <span
-                        key={esp}
+                        key={i}
                         className="text-xs md:text-sm bg-gray-100 text-gray-700 px-2.5 py-1 rounded-full"
                       >
                         {esp}
@@ -172,12 +174,12 @@ export default function PromoDetail() {
                     <OpenStatusBadge horarios={rest.horarios} />
                   </div>
                   <dl className="border border-gray-100 rounded-xl overflow-hidden divide-y divide-gray-100">
-                    {rest.horarios.map((h) => (
+                    {rest.horarios.map((h, i) => (
                       <div
-                        key={h.servicio}
+                        key={i}
                         className="flex justify-between items-center gap-3 px-3 py-2.5 md:px-4 bg-gray-50/40"
                       >
-                        <dt className="text-sm text-gray-600 font-medium">{h.servicio}</dt>
+                        <dt className="text-sm text-gray-600 font-medium">{tr(h.servicio)}</dt>
                         <dd className="text-sm font-bold text-gray-900 tabular-nums whitespace-nowrap">
                           {h.horario}
                         </dd>

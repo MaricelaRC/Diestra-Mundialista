@@ -25,6 +25,24 @@
     "alineaciones": "Alineaciones"
   },
   "loading": "Sincronizando con Google...",
+  "a11y": {
+    "back": "Volver",
+    "share": "Compartir",
+    "prev": "Anterior",
+    "next": "Siguiente",
+    "play": "Reanudar reproducción automática",
+    "pause": "Pausar reproducción automática",
+    "gotoSlide": "Ir al slide {{n}}",
+    "instagramOf": "Instagram de {{name}}"
+  },
+  "countdown": {
+    "faltan": "Faltan",
+    "enCurso": "Mundial en curso",
+    "uno": "1 día {{contexto}}",
+    "muchos": "{{dias}} días {{contexto}}",
+    "contextoInicio": "para la Copa Mundial 2026",
+    "contextoFin": "para la final"
+  },
   "alimentos": {
     "intro": {
       "title": "Gastronomía de Grupo Diestra",
@@ -100,6 +118,7 @@
     },
     "consentimiento": "Acepto recibir comunicaciones de Grupo Diestra y conozco que mis datos serán tratados conforme al aviso de privacidad.",
     "submit": "Quiero recibir las promos",
+    "sending": "Enviando...",
     "success": {
       "title": "¡Suscripción confirmada!",
       "body": "Te enviaremos las próximas promociones a tu correo."
@@ -107,7 +126,8 @@
     "errors": {
       "faltantes": "Ingresa tu nombre y correo.",
       "email": "El correo no parece válido.",
-      "consentimiento": "Necesitamos tu consentimiento para enviarte comunicaciones."
+      "consentimiento": "Necesitamos tu consentimiento para enviarte comunicaciones.",
+      "envio": "No pudimos enviar tu suscripción. Intenta de nuevo en unos minutos."
     }
   },
   "mobileNav": {

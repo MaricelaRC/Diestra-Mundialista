@@ -47,7 +47,7 @@ export default function HotelDetail() {
             <Link
               to="/"
               className="bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-md backdrop-blur-sm transition-colors"
-              aria-label="Volver"
+              aria-label={t('a11y.back')}
             >
               <ArrowLeft size={18} />
             </Link>
@@ -55,7 +55,7 @@ export default function HotelDetail() {
               type="button"
               onClick={handleShare}
               className="bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-md backdrop-blur-sm transition-colors"
-              aria-label="Compartir"
+              aria-label={t('a11y.share')}
             >
               <Share2 size={18} />
             </button>

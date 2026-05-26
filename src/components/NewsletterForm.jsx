@@ -71,7 +71,7 @@ export default function NewsletterForm({ compact = false }) {
       setSubmitted(true);
     } catch (err) {
       console.error('[newsletter] envío fallido', err);
-      setError('No pudimos enviar tu suscripción. Intenta de nuevo en unos minutos.');
+      setError(t('newsletter.errors.envio'));
     } finally {
       setSending(false);
     }
@@ -174,7 +174,7 @@ export default function NewsletterForm({ compact = false }) {
         disabled={sending}
         className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-bold py-3 rounded-xl shadow-sm transition-colors uppercase tracking-wider text-sm"
       >
-        {sending ? 'Enviando...' : t('newsletter.submit')}
+        {sending ? t('newsletter.sending') : t('newsletter.submit')}
       </button>
     </form>
   );

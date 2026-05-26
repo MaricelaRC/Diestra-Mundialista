@@ -4,9 +4,15 @@ import { ArrowLeft, Search, MapPin, Flame, Calendar, Newspaper } from 'lucide-re
 import { useTranslation } from 'react-i18next';
 import { hotelesDiestra } from '../data/hoteles.js';
 import { useWorldCupData } from '../hooks/useWorldCupData.js';
+import { useTr } from '../lib/i18nData.js';
 
+// Búsqueda bilingüe: si recibe { es, en }, concatena ambos para que el filtro
+// haga match aunque el usuario esté en otro idioma. Arrays se concatenan también.
 function norm(s) {
-  return (s ?? '')
+  if (s == null) return '';
+  if (Array.isArray(s)) return s.map(norm).join(' ');
+  if (typeof s === 'object') return [s.es, s.en].filter(Boolean).map(norm).join(' ');
+  return s
     .toString()
     .toLowerCase()
     .normalize('NFD')
@@ -46,6 +52,7 @@ function buildResults(query) {
 
 export default function Buscar() {
   const { t } = useTranslation();
+  const { tr } = useTr();
   const [params, setParams] = useSearchParams();
   const query = params.get('q') || '';
   const inputRef = useRef(null);
@@ -176,12 +183,12 @@ export default function Buscar() {
                         </p>
                         {rest.porcentaje ? (
                           <p className="text-[11px] text-amber-700 flex items-center gap-1 mt-0.5">
-                            <Flame size={11} /> {rest.porcentaje} OFF · {rest.descuento}
+                            <Flame size={11} /> {rest.porcentaje} OFF · {tr(rest.descuento)}
                           </p>
                         ) : (
                           rest.tipoCocina && (
                             <p className="text-[11px] text-gray-500 truncate mt-0.5">
-                              {rest.tipoCocina}
+                              {tr(rest.tipoCocina)}
                             </p>
                           )
                         )}
