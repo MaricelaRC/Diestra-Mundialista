@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
+import { ChevronLeft, ChevronRight, MapPin, Pause, Play } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { hotelesDiestra } from '../data/hoteles.js';
 import { destacados } from '../data/destacados.js';
 
 const AUTO_INTERVAL_MS = 5000;
+const SWIPE_THRESHOLD_PX = 40;
 
 function resolveSlides() {
   // El banner solo muestra centros con promoción activa.
@@ -25,6 +26,7 @@ export default function PromoBanner() {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const timer = useRef(null);
+  const touchStartX = useRef(null);
 
   useEffect(() => {
     if (paused || slides.length <= 1) return;
@@ -36,16 +38,31 @@ export default function PromoBanner() {
 
   if (slides.length === 0) return null;
 
-  const goTo = (i) => setCurrent((i + slides.length) % slides.length);
+  // Cualquier navegación manual pausa el auto-avance; el usuario lo reanuda con play.
+  const goTo = (i) => {
+    setPaused(true);
+    setCurrent((i + slides.length) % slides.length);
+  };
+
+  const onTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(delta) > SWIPE_THRESHOLD_PX) {
+      goTo(current + (delta < 0 ? 1 : -1));
+    }
+    touchStartX.current = null;
+  };
 
   return (
-    <div
-      className="relative rounded-2xl overflow-hidden shadow-md group"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      aria-roledescription="carousel"
-    >
-      <div className="relative h-48 md:h-72 lg:h-80 bg-gray-200">
+    <div className="relative rounded-2xl overflow-hidden shadow-md" aria-roledescription="carousel">
+      <div
+        className="relative h-48 md:h-72 lg:h-80 bg-gray-200"
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+      >
         <div
           className="flex h-full transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${current * 100}%)` }}
@@ -60,10 +77,11 @@ export default function PromoBanner() {
               <img
                 src={rest.portada}
                 alt={rest.nombrePromocion}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover pointer-events-none"
+                draggable={false}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-4 pb-9 md:p-6 md:pb-12 text-white">
+              <div className="absolute inset-x-0 bottom-0 p-4 pb-12 md:p-6 md:pb-14 text-white">
                 <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mb-2">
                   <span className="inline-flex items-center bg-red-600 text-white text-[10px] md:text-xs font-black px-2.5 py-1 rounded-full shadow-md tracking-wide">
                     {rest.porcentaje} {t('alimentos.off')}
@@ -89,33 +107,43 @@ export default function PromoBanner() {
         <>
           <button
             type="button"
-            onClick={() => goTo(current - 1)}
-            className="hidden md:flex absolute top-1/2 left-3 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
-            aria-label="Anterior"
+            onClick={() => setPaused((p) => !p)}
+            className="absolute top-2 right-2 md:top-3 md:right-3 bg-white/80 hover:bg-white active:scale-90 rounded-full p-1.5 shadow-md transition-all"
+            aria-label={paused ? 'Reanudar reproducción automática' : 'Pausar reproducción automática'}
           >
-            <ChevronLeft size={18} />
-          </button>
-          <button
-            type="button"
-            onClick={() => goTo(current + 1)}
-            className="hidden md:flex absolute top-1/2 right-3 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow-md opacity-0 group-hover:opacity-100 transition-opacity"
-            aria-label="Siguiente"
-          >
-            <ChevronRight size={18} />
+            {paused ? <Play size={14} /> : <Pause size={14} />}
           </button>
 
-          <div className="absolute bottom-3 inset-x-0 flex justify-center gap-1.5">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => goTo(i)}
-                aria-label={`Ir al slide ${i + 1}`}
-                className={`h-1.5 rounded-full transition-all ${
-                  i === current ? 'w-6 bg-white' : 'w-1.5 bg-white/60 hover:bg-white/80'
-                }`}
-              />
-            ))}
+          <div className="absolute bottom-2 inset-x-2 md:inset-x-3 flex items-center justify-between gap-2">
+            <button
+              type="button"
+              onClick={() => goTo(current - 1)}
+              className="bg-white/80 hover:bg-white active:scale-90 rounded-full p-1.5 shadow-md transition-all"
+              aria-label="Anterior"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <div className="flex items-center gap-1.5">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => goTo(i)}
+                  aria-label={`Ir al slide ${i + 1}`}
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === current ? 'w-6 bg-white' : 'w-1.5 bg-white/60 hover:bg-white/80'
+                  }`}
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={() => goTo(current + 1)}
+              className="bg-white/80 hover:bg-white active:scale-90 rounded-full p-1.5 shadow-md transition-all"
+              aria-label="Siguiente"
+            >
+              <ChevronRight size={16} />
+            </button>
           </div>
         </>
       )}
