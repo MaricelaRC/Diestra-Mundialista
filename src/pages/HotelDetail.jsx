@@ -17,7 +17,7 @@ export default function HotelDetail() {
   const handleShare = async () => {
     const shareData = {
       title: hotel.name,
-      text: `${hotel.name} · ${hotel.ciudad}`,
+      text: `${hotel.name} · ${hotel.ciudad}${hotel.zona ? ` · ${hotel.zona}` : ''}, ${hotel.estado}`,
       url: window.location.href
     };
     try {
@@ -66,7 +66,7 @@ export default function HotelDetail() {
               {hotel.name}
             </h1>
             <p className="text-sm md:text-base flex items-center gap-1 mt-1 drop-shadow">
-              <MapPin size={14} /> {hotel.ciudad}
+              <MapPin size={14} /> {hotel.ciudad}{hotel.zona ? ` · ${hotel.zona}` : ''}, {hotel.estado}
             </p>
           </div>
         </div>

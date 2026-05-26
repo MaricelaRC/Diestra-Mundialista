@@ -27,7 +27,7 @@ export default function HotelCard({ hotel, expanded, onToggle }) {
             {hotel.name}
           </h4>
           <span className="text-[10px] text-gray-400 flex items-center gap-1 mt-0.5">
-            <MapPin size={10} /> {hotel.ciudad}
+            <MapPin size={10} /> {hotel.ciudad}{hotel.zona ? ` · ${hotel.zona}` : ''}
           </span>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">

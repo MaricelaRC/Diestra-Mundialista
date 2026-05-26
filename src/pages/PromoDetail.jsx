@@ -95,7 +95,7 @@ export default function PromoDetail() {
               {rest.nombrePromocion || rest.nombreCentroConsumo}
             </h1>
             <p className="text-sm md:text-base flex items-center gap-1 mt-1 drop-shadow">
-              <MapPin size={14} /> {rest.nombreCentroConsumo} · {hotel.ciudad}
+              <MapPin size={14} /> {rest.nombreCentroConsumo} · {hotel.ciudad}{hotel.zona ? ` · ${hotel.zona}` : ''}, {hotel.estado}
             </p>
           </div>
         </div>

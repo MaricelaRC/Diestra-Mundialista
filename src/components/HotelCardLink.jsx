@@ -35,7 +35,7 @@ export default function HotelCardLink({ hotel }) {
             {hotel.name}
           </h4>
           <span className="text-xs text-gray-400 flex items-center gap-1 mt-1">
-            <MapPin size={12} /> {hotel.ciudad}
+            <MapPin size={12} /> {hotel.ciudad}{hotel.zona ? ` · ${hotel.zona}` : ''}
           </span>
         </div>
         <div className="flex items-center justify-between">

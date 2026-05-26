@@ -7,6 +7,7 @@ export const hotelesDiestra = [
     id: 'e-acapulco',
     name: 'Emporio Acapulco',
     ciudad: 'Acapulco',
+    estado: 'Guerrero',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -108,7 +109,9 @@ export const hotelesDiestra = [
   {
     id: 'e-cancun',
     name: 'Emporio Cancún',
-    ciudad: 'Cancún · Zona Hotelera',
+    ciudad: 'Cancún',
+    estado: 'Quintana Roo',
+    zona: 'Zona Hotelera',
     restaurantes: [
       {
         nombreCentroConsumo: 'Fasano',
@@ -219,7 +222,9 @@ export const hotelesDiestra = [
   {
     id: 'e-mexico',
     name: 'Emporio Ciudad de México',
-    ciudad: 'CDMX · Paseo de la Reforma',
+    ciudad: 'Ciudad de México',
+    estado: 'CDMX',
+    zona: 'Paseo de la Reforma',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -269,7 +274,8 @@ export const hotelesDiestra = [
   {
     id: 'e-ixtapa',
     name: 'Emporio Ixtapa',
-    ciudad: 'Ixtapa · Zihuatanejo',
+    ciudad: 'Ixtapa-Zihuatanejo',
+    estado: 'Guerrero',
     restaurantes: [
       {
         nombreCentroConsumo: 'Pool Bar',
@@ -347,6 +353,7 @@ export const hotelesDiestra = [
     id: 'e-mazatlan',
     name: 'Emporio Mazatlán',
     ciudad: 'Mazatlán',
+    estado: 'Sinaloa',
     restaurantes: [
       {
         nombreCentroConsumo: 'Pool Bar',
@@ -385,6 +392,7 @@ export const hotelesDiestra = [
     id: 'e-veracruz',
     name: 'Emporio Veracruz',
     ciudad: 'Veracruz',
+    estado: 'Veracruz',
     restaurantes: [
       {
         nombreCentroConsumo: 'Sky Lounge',
@@ -471,6 +479,7 @@ export const hotelesDiestra = [
     id: 'e-zacatecas',
     name: 'Emporio Zacatecas',
     ciudad: 'Zacatecas',
+    estado: 'Zacatecas',
     restaurantes: [
       {
         nombreCentroConsumo: 'Bar Los Canteros',
@@ -510,7 +519,9 @@ export const hotelesDiestra = [
   {
     id: 'samba-vallarta',
     name: 'Samba Vallarta by Emporio',
-    ciudad: 'Riviera Nayarit',
+    ciudad: 'Nuevo Vallarta',
+    estado: 'Nayarit',
+    zona: 'Riviera Nayarit',
     restaurantes: [
       {
         nombreCentroConsumo: 'Lobby Bar',
@@ -582,6 +593,7 @@ export const hotelesDiestra = [
     id: 'm-aguascalientes',
     name: 'Marriott Aguascalientes',
     ciudad: 'Aguascalientes',
+    estado: 'Aguascalientes',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -595,6 +607,7 @@ export const hotelesDiestra = [
     id: 'm-tijuana',
     name: 'Marriott Tijuana',
     ciudad: 'Tijuana',
+    estado: 'Baja California',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -620,6 +633,8 @@ export const hotelesDiestra = [
     id: 'm-reforma',
     name: 'Marriott Reforma',
     ciudad: 'Ciudad de México',
+    estado: 'CDMX',
+    zona: 'Paseo de la Reforma',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -647,7 +662,8 @@ export const hotelesDiestra = [
   {
     id: 'm-villahermosa',
     name: 'Marriott Villahermosa',
-    ciudad: 'Tabasco',
+    ciudad: 'Villahermosa',
+    estado: 'Tabasco',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -660,7 +676,8 @@ export const hotelesDiestra = [
   {
     id: 'm-tuxtla',
     name: 'Marriott Tuxtla Gutiérrez',
-    ciudad: 'Chiapas',
+    ciudad: 'Tuxtla Gutiérrez',
+    estado: 'Chiapas',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -685,7 +702,9 @@ export const hotelesDiestra = [
   {
     id: 'renaissance-cancun',
     name: 'Renaissance Cancun Marina Resort',
-    ciudad: 'Cancún · Puerto Cancún',
+    ciudad: 'Cancún',
+    estado: 'Quintana Roo',
+    zona: 'Puerto Cancún',
     restaurantes: [
       {
         nombreCentroConsumo: 'Kaajal',
@@ -710,7 +729,9 @@ export const hotelesDiestra = [
   {
     id: 'jw-santa-fe',
     name: 'JW Marriott Santa Fe',
-    ciudad: 'CDMX · Santa Fe',
+    ciudad: 'Ciudad de México',
+    estado: 'CDMX',
+    zona: 'Santa Fe',
     restaurantes: [
       {
         nombreCentroConsumo: 'Quattro Gastronomia Italiana',
@@ -730,6 +751,7 @@ export const hotelesDiestra = [
     id: 'jw-los-cabos',
     name: 'JW Marriott Los Cabos Beach Resort & Spa',
     ciudad: 'San José del Cabo',
+    estado: 'Baja California Sur',
     restaurantes: [
       {
         nombreCentroConsumo: 'Café des Artistes',
@@ -781,6 +803,7 @@ export const hotelesDiestra = [
     id: 'casa-maat',
     name: 'Casa Maat at JW Marriott',
     ciudad: 'San José del Cabo',
+    estado: 'Baja California Sur',
     restaurantes: [
       {
         nombreCentroConsumo: 'El Santo José',

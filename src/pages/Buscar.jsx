@@ -18,7 +18,11 @@ function buildResults(query) {
   const q = norm(query);
 
   const hoteles = hotelesDiestra.filter(
-    (h) => norm(h.name).includes(q) || norm(h.ciudad).includes(q)
+    (h) =>
+      norm(h.name).includes(q) ||
+      norm(h.ciudad).includes(q) ||
+      norm(h.estado).includes(q) ||
+      (h.zona && norm(h.zona).includes(q))
   );
 
   const promos = [];
@@ -134,7 +138,7 @@ export default function Buscar() {
                     >
                       <p className="font-bold text-gray-900 text-sm">{h.name}</p>
                       <p className="text-xs text-gray-500 flex items-center gap-1 mt-0.5">
-                        <MapPin size={11} /> {h.ciudad}
+                        <MapPin size={11} /> {h.ciudad}{h.zona ? ` · ${h.zona}` : ''}, {h.estado}
                       </p>
                     </Link>
                   </li>
