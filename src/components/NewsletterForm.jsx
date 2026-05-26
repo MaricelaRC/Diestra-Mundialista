@@ -4,15 +4,37 @@ import { useTranslation } from 'react-i18next';
 import { hotelesDiestra } from '../data/hoteles.js';
 
 const STORAGE_KEY = 'diestra-newsletter-subs';
+const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/corporativogpodiestra@gmail.com';
 
-const ciudadesUnicas = Array.from(new Set(hotelesDiestra.map((h) => h.ciudad))).sort();
+const ubicacionesUnicas = Array.from(
+  new Set(hotelesDiestra.map((h) => `${h.ciudad}, ${h.estado}`))
+).sort((a, b) => a.localeCompare(b, 'es'));
 
-// TODO Fase 2: reemplazar persistencia local por escritura a Firestore
-// (colección `subscripciones`) vía una Cloud Function o el SDK del cliente.
 function persistLocal(payload) {
   const list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
   list.push({ ...payload, fecha: new Date().toISOString() });
   localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+}
+
+async function sendToInbox(payload) {
+  const res = await fetch(FORMSUBMIT_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    body: JSON.stringify({
+      nombre: payload.nombre,
+      email: payload.email,
+      ciudad: payload.ciudad || '(sin preferencia)',
+      fecha: new Date().toISOString(),
+      _subject: `Nueva suscripción newsletter — ${payload.nombre}`,
+      _template: 'table',
+      _captcha: 'false',
+    }),
+  });
+  if (!res.ok) throw new Error(`FormSubmit respondió ${res.status}`);
+  const data = await res.json();
+  if (data.success === 'false' || data.success === false) {
+    throw new Error(data.message || 'Envío rechazado por FormSubmit');
+  }
 }
 
 export default function NewsletterForm({ compact = false }) {
@@ -20,13 +42,14 @@ export default function NewsletterForm({ compact = false }) {
   const [form, setForm] = useState({ nombre: '', email: '', ciudad: '', acepta: false });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
+  const [sending, setSending] = useState(false);
 
   const update = (field) => (e) => {
     const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     if (!form.nombre.trim() || !form.email.trim()) {
@@ -41,8 +64,17 @@ export default function NewsletterForm({ compact = false }) {
       setError(t('newsletter.errors.consentimiento'));
       return;
     }
-    persistLocal(form);
-    setSubmitted(true);
+    setSending(true);
+    try {
+      await sendToInbox(form);
+      persistLocal(form);
+      setSubmitted(true);
+    } catch (err) {
+      console.error('[newsletter] envío fallido', err);
+      setError('No pudimos enviar tu suscripción. Intenta de nuevo en unos minutos.');
+    } finally {
+      setSending(false);
+    }
   };
 
   if (submitted) {
@@ -113,7 +145,7 @@ export default function NewsletterForm({ compact = false }) {
           className="w-full mt-1 border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-blue-500"
         >
           <option value="">{t('newsletter.fields.ciudadAny')}</option>
-          {ciudadesUnicas.map((c) => (
+          {ubicacionesUnicas.map((c) => (
             <option key={c} value={c}>
               {c}
             </option>
@@ -139,9 +171,10 @@ export default function NewsletterForm({ compact = false }) {
 
       <button
         type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl shadow-sm transition-colors uppercase tracking-wider text-sm"
+        disabled={sending}
+        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white font-bold py-3 rounded-xl shadow-sm transition-colors uppercase tracking-wider text-sm"
       >
-        {t('newsletter.submit')}
+        {sending ? 'Enviando...' : t('newsletter.submit')}
       </button>
     </form>
   );
