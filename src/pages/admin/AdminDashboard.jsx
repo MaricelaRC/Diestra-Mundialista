@@ -2,16 +2,24 @@
 // entre el catálogo de Firestore y adminDoc.hotelIds). Click en uno → editor.
 
 import { Link } from 'react-router-dom';
-import { ChevronRight, LogOut, MapPin, Pencil } from 'lucide-react';
+import { ChevronRight, Loader2, LogOut, MapPin, Pencil } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useHotels } from '../../hooks/useHotels.js';
 
 export default function AdminDashboard() {
   const { user, adminDoc, signOut } = useAuth();
-  const { hoteles } = useHotels();
+  const { hoteles, loading: hotelsLoading } = useHotels();
 
   const allowedIds = new Set(adminDoc?.hotelIds || []);
   const editableHotels = hoteles.filter((h) => allowedIds.has(h.id));
+
+  if (hotelsLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-blue-600">
+        <Loader2 size={32} className="animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

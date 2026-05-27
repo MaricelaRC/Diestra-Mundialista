@@ -15,6 +15,7 @@ import { useHotels } from '../hooks/useHotels.js';
 import { formatPhone, buildTelHref } from '../lib/phone.js';
 import OpenStatusBadge from '../components/OpenStatusBadge.jsx';
 import PromoImage from '../components/PromoImage.jsx';
+import Loader from '../components/Loader.jsx';
 import NotFound from './NotFound.jsx';
 import { useTr } from '../lib/i18nData.js';
 
@@ -22,11 +23,20 @@ export default function PromoDetail() {
   const { t, i18n } = useTranslation();
   const { tr, trArray } = useTr();
   const { hotelId, idx } = useParams();
-  const { hoteles } = useHotels();
+  const { hoteles, loading } = useHotels();
   const hotel = hoteles.find((h) => h.id === hotelId);
   const restIdx = Number(idx);
   const rest = hotel?.restaurantes?.[restIdx];
 
+  // Espera el primer snapshot de Firestore antes de pintar — si no, mostraríamos
+  // los valores del fallback estático y luego saltarían a los reales.
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
   if (!hotel || !rest) return <NotFound />;
 
   const locale = i18n.language?.startsWith('en') ? 'en-US' : 'es-MX';

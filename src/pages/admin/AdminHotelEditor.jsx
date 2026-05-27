@@ -9,7 +9,7 @@
 
 import { useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Calendar, Check, Flame, LogOut, Save, Star } from 'lucide-react';
+import { ArrowLeft, Calendar, Check, Flame, Loader2, LogOut, Save, Star } from 'lucide-react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase.js';
 import { useAuth } from '../../hooks/useAuth.jsx';
@@ -51,7 +51,7 @@ function fromDatetimeLocal(value) {
 export default function AdminHotelEditor() {
   const { id } = useParams();
   const { user, adminDoc, signOut } = useAuth();
-  const { hoteles } = useHotels();
+  const { hoteles, loading: hotelsLoading } = useHotels();
   const hotel = hoteles.find((h) => h.id === id);
 
   // Verifica permiso (defensa en profundidad además de Firestore Rules)
@@ -70,6 +70,15 @@ export default function AdminHotelEditor() {
   }, [hotel]);
 
   if (!allowed) return <Navigate to="/admin" replace />;
+  // Espera el primer snapshot de Firestore antes de pintar — evita el flash
+  // de los valores del fallback estático contra los reales del backend.
+  if (hotelsLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-blue-600">
+        <Loader2 size={32} className="animate-spin" />
+      </div>
+    );
+  }
   if (!hotel) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-500">

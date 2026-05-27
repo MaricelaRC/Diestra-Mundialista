@@ -20,8 +20,9 @@ export default function Home() {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('alimentos');
   const [selectedHotel, setSelectedHotel] = useState(null);
-  const { matches, news, loading } = useWorldCupData();
-  const { hoteles } = useHotels();
+  const { matches, news, loading: wcLoading } = useWorldCupData();
+  const { hoteles, loading: hotelsLoading } = useHotels();
+  const loading = wcLoading || hotelsLoading;
 
   const toggleHotel = (hotelId) =>
     setSelectedHotel((prev) => (prev === hotelId ? null : hotelId));

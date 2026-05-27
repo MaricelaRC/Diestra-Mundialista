@@ -3,14 +3,24 @@ import { ArrowLeft, MapPin, Share2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useHotels } from '../hooks/useHotels.js';
 import RestaurantCard from '../components/RestaurantCard.jsx';
+import Loader from '../components/Loader.jsx';
 import NotFound from './NotFound.jsx';
 
 export default function HotelDetail() {
   const { t } = useTranslation();
   const { id } = useParams();
-  const { hoteles } = useHotels();
+  const { hoteles, loading } = useHotels();
   const hotel = hoteles.find((h) => h.id === id);
 
+  // Evita renderizar con datos del fallback estático antes del primer
+  // snapshot de Firestore (causaba "flash" del valor viejo al recargar).
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Loader />
+      </div>
+    );
+  }
   if (!hotel) return <NotFound />;
 
   const cover = hotel.restaurantes[0]?.portada;
