@@ -2,11 +2,13 @@ import { Link } from 'react-router-dom';
 import { Beer, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { sedeAHotel, sedeFallback } from '../data/sedeAHotel.js';
+import { useTr } from '../lib/i18nData.js';
 
 export default function MatchCard({ match }) {
   const { t } = useTranslation();
+  const { tr } = useTr();
   const partner = sedeAHotel[match.city] || sedeFallback;
-  const isLive = match.status === 'En vivo' || match.status === 'Live';
+  const isLive = match.status === 'live';
 
   return (
     <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
@@ -16,20 +18,20 @@ export default function MatchCard({ match }) {
             {match.date} • {match.time}
           </span>
           <span className={isLive ? 'text-red-600 font-bold' : 'font-bold'}>
-            {match.status}
+            {t(`partidos.status.${match.status}`, match.status)}
           </span>
         </div>
 
         <div className="flex items-center justify-between px-2">
           <div className="flex flex-col items-center w-24 text-center">
-            <span className="text-sm font-bold text-gray-900">{match.home}</span>
+            <span className="text-sm font-bold text-gray-900">{tr(match.home)}</span>
           </div>
           <div className="flex flex-col items-center">
             <span className="text-xl font-light text-gray-300 italic">{t('partidos.vs')}</span>
             <span className="text-[9px] text-gray-400 uppercase mt-1">{match.city}</span>
           </div>
           <div className="text-center w-24">
-            <span className="text-sm font-bold text-gray-900">{match.away}</span>
+            <span className="text-sm font-bold text-gray-900">{tr(match.away)}</span>
           </div>
         </div>
       </Link>

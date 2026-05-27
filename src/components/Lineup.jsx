@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { alineaciones, equipoIds } from '../data/lineup.js';
+import { useTr } from '../lib/i18nData.js';
 
 function PlayerDot({ num, nombre, color }) {
   return (
@@ -20,6 +21,7 @@ function PlayerDot({ num, nombre, color }) {
 
 export default function Lineup() {
   const { t } = useTranslation();
+  const { tr } = useTr();
   const [selected, setSelected] = useState('mexico');
   const lineup = alineaciones[selected];
 
@@ -28,7 +30,7 @@ export default function Lineup() {
       <div className="flex items-center justify-between px-1">
         <h3 className="font-bold text-gray-800 text-sm md:text-lg flex items-center gap-2">
           <Users size={18} className="text-blue-600" />
-          {t('alineaciones.title', { equipo: lineup.equipo, formacion: lineup.formacion })}
+          {t('alineaciones.title', { equipo: tr(lineup.equipo), formacion: lineup.formacion })}
         </h3>
       </div>
 
@@ -50,7 +52,7 @@ export default function Lineup() {
               }`}
             >
               <span className="text-base">{team.flag}</span>
-              {team.equipo}
+              {tr(team.equipo)}
             </button>
           );
         })}

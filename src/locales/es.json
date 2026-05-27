@@ -68,7 +68,12 @@
   "partidos": {
     "title": "Partidos del Mundial",
     "vs": "vs",
-    "sugerencia": "Sugerencia en {{name}}"
+    "sugerencia": "Sugerencia en {{name}}",
+    "status": {
+      "upcoming": "Próximo",
+      "live": "En vivo",
+      "finished": "Finalizado"
+    }
   },
   "partido": {
     "detalle": {

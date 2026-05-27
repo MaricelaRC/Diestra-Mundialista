@@ -4,16 +4,18 @@ import { useTranslation } from 'react-i18next';
 import { findMatchById } from '../services/gemini.js';
 import { sedeAHotel, sedeFallback } from '../data/sedeAHotel.js';
 import NotFound from './NotFound.jsx';
+import { useTr } from '../lib/i18nData.js';
 
 export default function MatchDetail() {
   const { t } = useTranslation();
+  const { tr } = useTr();
   const { id } = useParams();
   const match = findMatchById(id);
 
   if (!match) return <NotFound />;
 
   const partner = sedeAHotel[match.city] || sedeFallback;
-  const isLive = match.status === 'En vivo' || match.status === 'Live';
+  const isLive = match.status === 'live';
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
@@ -35,17 +37,17 @@ export default function MatchDetail() {
                   isLive ? 'bg-red-600 text-white' : 'bg-white/20 text-white'
                 }`}
               >
-                {match.status}
+                {t(`partidos.status.${match.status}`, match.status)}
               </span>
             </div>
 
             <div className="flex items-center justify-center gap-4 md:gap-8 mt-6">
               <div className="flex-1 text-right">
-                <p className="text-2xl md:text-4xl font-black tracking-tight">{match.home}</p>
+                <p className="text-2xl md:text-4xl font-black tracking-tight">{tr(match.home)}</p>
               </div>
               <div className="text-xl md:text-3xl italic font-light opacity-60">vs</div>
               <div className="flex-1 text-left">
-                <p className="text-2xl md:text-4xl font-black tracking-tight">{match.away}</p>
+                <p className="text-2xl md:text-4xl font-black tracking-tight">{tr(match.away)}</p>
               </div>
             </div>
 

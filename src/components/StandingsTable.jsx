@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { BarChart3 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { grupos, grupoIds } from '../data/standings.js';
+import { useTr } from '../lib/i18nData.js';
 
 export default function StandingsTable() {
   const { t } = useTranslation();
+  const { tr } = useTr();
   const [selected, setSelected] = useState('A');
   const grupo = grupos[selected];
 
@@ -13,7 +15,7 @@ export default function StandingsTable() {
       <div className="flex items-center justify-between px-1">
         <h3 className="font-bold text-gray-800 text-sm md:text-lg flex items-center gap-2">
           <BarChart3 size={18} className="text-blue-600" />
-          {t('tablas.title', { nombre: grupo.nombre })}
+          {t('tablas.title', { nombre: tr(grupo.nombre) })}
         </h3>
       </div>
 
@@ -65,7 +67,7 @@ export default function StandingsTable() {
                   ? 'bg-red-50/10'
                   : '';
               return (
-                <tr key={equipo.name} className={rowClass}>
+                <tr key={idx} className={rowClass}>
                   <td className="py-3 px-4 flex items-center gap-2">
                     <span className="w-5 text-gray-400 font-bold">{idx + 1}</span>
                     <span className="text-base">{equipo.flag}</span>
@@ -78,7 +80,7 @@ export default function StandingsTable() {
                             : 'text-gray-700'
                       }
                     >
-                      {equipo.name}
+                      {tr(equipo.name)}
                     </span>
                   </td>
                   <td className="py-3 px-2 text-center text-gray-500">{equipo.pj}</td>

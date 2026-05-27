@@ -68,7 +68,12 @@
   "partidos": {
     "title": "World Cup Matches",
     "vs": "vs",
-    "sugerencia": "Suggestion at {{name}}"
+    "sugerencia": "Suggestion at {{name}}",
+    "status": {
+      "upcoming": "Upcoming",
+      "live": "Live",
+      "finished": "Finished"
+    }
   },
   "partido": {
     "detalle": {

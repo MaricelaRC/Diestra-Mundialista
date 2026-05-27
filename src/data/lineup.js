@@ -1,8 +1,10 @@
 // Alineaciones placeholder para validar la UI. La fuente final será Firestore.
 // Cada equipo respeta la misma estructura: portero + 4 defensas + 3 medios + 3 delanteros (4-3-3).
+// `equipo` es bilingüe { es, en }; los nombres de jugadores son nombres propios
+// (no se traducen).
 
-const team = (equipo, flag, delanteros, mediocampistas, defensas, portero) => ({
-  equipo,
+const team = (es, en, flag, delanteros, mediocampistas, defensas, portero) => ({
+  equipo: { es, en },
   flag,
   formacion: '4-3-3',
   delanteros,
@@ -13,7 +15,7 @@ const team = (equipo, flag, delanteros, mediocampistas, defensas, portero) => ({
 
 export const alineaciones = {
   mexico: team(
-    'México', '🇲🇽',
+    'México', 'Mexico', '🇲🇽',
     [
       { num: 11, nombre: 'J. Quiñones' },
       { num: 9,  nombre: 'S. Giménez' },
@@ -33,7 +35,7 @@ export const alineaciones = {
     { num: 1, nombre: 'L. Malagón' }
   ),
   argentina: team(
-    'Argentina', '🇦🇷',
+    'Argentina', 'Argentina', '🇦🇷',
     [
       { num: 11, nombre: 'Di María' },
       { num: 9,  nombre: 'L. Martínez' },
@@ -53,7 +55,7 @@ export const alineaciones = {
     { num: 23, nombre: 'D. Martínez' }
   ),
   brasil: team(
-    'Brasil', '🇧🇷',
+    'Brasil', 'Brazil', '🇧🇷',
     [
       { num: 7,  nombre: 'Vinicius Jr.' },
       { num: 9,  nombre: 'Endrick' },
@@ -73,7 +75,7 @@ export const alineaciones = {
     { num: 1, nombre: 'Alisson' }
   ),
   espana: team(
-    'España', '🇪🇸',
+    'España', 'Spain', '🇪🇸',
     [
       { num: 19, nombre: 'Yamal' },
       { num: 7,  nombre: 'Morata' },
@@ -93,7 +95,7 @@ export const alineaciones = {
     { num: 23, nombre: 'Unai Simón' }
   ),
   francia: team(
-    'Francia', '🇫🇷',
+    'Francia', 'France', '🇫🇷',
     [
       { num: 11, nombre: 'Dembélé' },
       { num: 9,  nombre: 'Giroud' },

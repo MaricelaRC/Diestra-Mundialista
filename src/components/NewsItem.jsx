@@ -1,4 +1,7 @@
+import { useTr } from '../lib/i18nData.js';
+
 export default function NewsItem({ item }) {
+  const { tr } = useTr();
   return (
     <a
       href={item.url}
@@ -7,7 +10,7 @@ export default function NewsItem({ item }) {
       className="block bg-white p-4 border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors"
     >
       <p className="text-[9px] font-bold text-blue-600 uppercase mb-1">{item.source}</p>
-      <h4 className="text-sm font-bold text-gray-800 leading-snug">{item.title}</h4>
+      <h4 className="text-sm font-bold text-gray-800 leading-snug">{tr(item.title)}</h4>
     </a>
   );
 }

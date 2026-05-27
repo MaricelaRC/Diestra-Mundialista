@@ -3,62 +3,100 @@
 // Mientras tanto devolvemos datos mock realistas para que la UI funcione
 // sin exponer claves ni depender de la red.
 
+// Nombres bilingües para los países que aparecen en partidos. Centralizado
+// para no repetir literales y mantener consistencia con standings.js.
+const T = {
+  mexico:       { es: 'México',           en: 'Mexico' },
+  italia:       { es: 'Italia',           en: 'Italy' },
+  camerun:      { es: 'Camerún',          en: 'Cameroon' },
+  nzl:          { es: 'Nueva Zelanda',    en: 'New Zealand' },
+  espana:       { es: 'España',           en: 'Spain' },
+  marruecos:    { es: 'Marruecos',        en: 'Morocco' },
+  usa:          { es: 'USA',              en: 'USA' },
+  australia:    { es: 'Australia',        en: 'Australia' },
+  argentina:    { es: 'Argentina',        en: 'Argentina' },
+  croacia:      { es: 'Croacia',          en: 'Croatia' },
+  brasil:       { es: 'Brasil',           en: 'Brazil' },
+  portugal:     { es: 'Portugal',         en: 'Portugal' },
+  paisesBajos:  { es: 'Países Bajos',     en: 'Netherlands' },
+  nigeria:      { es: 'Nigeria',          en: 'Nigeria' },
+  tbd:          { es: 'Por confirmar',    en: 'TBD' }
+};
+
+// 13 partidos plausibles en las 3 sedes mexicanas confirmadas por FIFA:
+// Estadio Azteca (CDMX, 5), Estadio Akron (Guadalajara, 4) y Estadio BBVA
+// (Monterrey, 4). Status como código ('upcoming' | 'live' | 'finished') que
+// los componentes traducen con i18n. Emparejamientos consistentes con los
+// grupos en src/data/standings.js.
 const mockMatches = [
-  {
-    id: 'mex-ita-2026-06-11',
-    home: 'México',
-    away: 'Italia',
-    date: '2026-06-11',
-    time: '18:00',
-    stadium: 'Estadio Azteca',
-    city: 'Ciudad de México',
-    status: 'Próximo'
-  },
-  {
-    id: 'arg-bra-2026-06-12',
-    home: 'Argentina',
-    away: 'Brasil',
-    date: '2026-06-12',
-    time: '20:00',
-    stadium: 'BBVA Stadium',
-    city: 'Monterrey',
-    status: 'Próximo'
-  },
-  {
-    id: 'esp-ale-2026-06-13',
-    home: 'España',
-    away: 'Alemania',
-    date: '2026-06-13',
-    time: '16:00',
-    stadium: 'Estadio Akron',
-    city: 'Guadalajara',
-    status: 'Próximo'
-  },
-  {
-    id: 'fra-ing-2026-06-14',
-    home: 'Francia',
-    away: 'Inglaterra',
-    date: '2026-06-14',
-    time: '14:00',
-    stadium: 'Estadio Pirata',
-    city: 'Veracruz',
-    status: 'En vivo'
-  }
+  // — Estadio Azteca (CDMX) —
+  { id: 'mex-ita-2026-06-11', home: T.mexico,  away: T.italia,    date: '2026-06-11', time: '18:00', stadium: 'Estadio Azteca', city: 'Ciudad de México', status: 'upcoming' },
+  { id: 'cam-nzl-2026-06-17', home: T.camerun, away: T.nzl,       date: '2026-06-17', time: '14:00', stadium: 'Estadio Azteca', city: 'Ciudad de México', status: 'upcoming' },
+  { id: 'mex-nzl-2026-06-22', home: T.mexico,  away: T.nzl,       date: '2026-06-22', time: '16:00', stadium: 'Estadio Azteca', city: 'Ciudad de México', status: 'upcoming' },
+  { id: 'r16-azt-2026-06-28', home: T.tbd,     away: T.tbd,       date: '2026-06-28', time: '14:00', stadium: 'Estadio Azteca', city: 'Ciudad de México', status: 'upcoming' },
+  { id: 'qf-azt-2026-07-04',  home: T.tbd,     away: T.tbd,       date: '2026-07-04', time: '16:00', stadium: 'Estadio Azteca', city: 'Ciudad de México', status: 'upcoming' },
+
+  // — Estadio Akron (Guadalajara) —
+  { id: 'esp-mar-2026-06-13', home: T.espana,  away: T.marruecos, date: '2026-06-13', time: '12:00', stadium: 'Estadio Akron',  city: 'Guadalajara',       status: 'upcoming' },
+  { id: 'usa-aus-2026-06-18', home: T.usa,     away: T.australia, date: '2026-06-18', time: '17:00', stadium: 'Estadio Akron',  city: 'Guadalajara',       status: 'upcoming' },
+  { id: 'ita-cam-2026-06-23', home: T.italia,  away: T.camerun,   date: '2026-06-23', time: '16:00', stadium: 'Estadio Akron',  city: 'Guadalajara',       status: 'upcoming' },
+  { id: 'r16-akr-2026-06-30', home: T.tbd,     away: T.tbd,       date: '2026-06-30', time: '16:00', stadium: 'Estadio Akron',  city: 'Guadalajara',       status: 'upcoming' },
+
+  // — Estadio BBVA (Monterrey) —
+  { id: 'arg-cro-2026-06-16', home: T.argentina,   away: T.croacia,  date: '2026-06-16', time: '20:00', stadium: 'Estadio BBVA', city: 'Monterrey', status: 'upcoming' },
+  { id: 'bra-por-2026-06-21', home: T.brasil,      away: T.portugal, date: '2026-06-21', time: '17:00', stadium: 'Estadio BBVA', city: 'Monterrey', status: 'upcoming' },
+  { id: 'ned-nig-2026-06-25', home: T.paisesBajos, away: T.nigeria,  date: '2026-06-25', time: '20:00', stadium: 'Estadio BBVA', city: 'Monterrey', status: 'upcoming' },
+  { id: 'r16-bbv-2026-07-02', home: T.tbd,         away: T.tbd,      date: '2026-07-02', time: '20:00', stadium: 'Estadio BBVA', city: 'Monterrey', status: 'upcoming' }
 ];
 
+// Noticias curadas mientras llega la Cloud Function con Gemini. Los títulos
+// se mantienen bilingües { es, en } igual que el catálogo de hoteles.
 const mockNews = [
   {
-    title: 'México alista alineación para el debut mundialista',
+    title: {
+      es: 'México alista alineación para el debut mundialista',
+      en: 'Mexico finalizes lineup for its World Cup opener'
+    },
     source: 'ESPN',
     url: 'https://www.espn.com.mx/futbol/'
   },
   {
-    title: 'Las sedes mexicanas confirmadas para la Copa del Mundo 2026',
+    title: {
+      es: 'FIFA confirma horarios completos de los 13 partidos en sedes mexicanas',
+      en: 'FIFA confirms full schedule for the 13 matches at Mexican venues'
+    },
+    source: 'FIFA.com',
+    url: 'https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026'
+  },
+  {
+    title: {
+      es: 'Estadio Azteca: así será la ceremonia de inauguración del Mundial 2026',
+      en: 'Estadio Azteca: what to expect from the 2026 World Cup opening ceremony'
+    },
+    source: 'Marca',
+    url: 'https://www.marca.com/futbol/mundial.html'
+  },
+  {
+    title: {
+      es: 'Las sedes mexicanas confirmadas para la Copa del Mundo 2026',
+      en: 'Confirmed Mexican host cities for the 2026 World Cup'
+    },
     source: 'Mediotiempo',
     url: 'https://www.mediotiempo.com/'
   },
   {
-    title: 'Grupo Diestra lanza experiencias gastronómicas para el Mundial',
+    title: {
+      es: 'Guía gastronómica del Mundial: qué probar en cada sede mexicana',
+      en: 'World Cup food guide: what to try in each Mexican host city'
+    },
+    source: 'El Universal',
+    url: 'https://www.eluniversal.com.mx/'
+  },
+  {
+    title: {
+      es: 'Grupo Diestra lanza experiencias gastronómicas para el Mundial',
+      en: 'Grupo Diestra unveils dining experiences for the World Cup'
+    },
     source: 'Diestra Press',
     url: 'https://www.hotelesemporio.com/'
   }
