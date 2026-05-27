@@ -11,9 +11,10 @@ import {
   UtensilsCrossed
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { hotelesDiestra } from '../data/hoteles.js';
+import { useHotels } from '../hooks/useHotels.js';
 import { formatPhone, buildTelHref } from '../lib/phone.js';
 import OpenStatusBadge from '../components/OpenStatusBadge.jsx';
+import PromoImage from '../components/PromoImage.jsx';
 import NotFound from './NotFound.jsx';
 import { useTr } from '../lib/i18nData.js';
 
@@ -21,7 +22,8 @@ export default function PromoDetail() {
   const { t, i18n } = useTranslation();
   const { tr, trArray } = useTr();
   const { hotelId, idx } = useParams();
-  const hotel = hotelesDiestra.find((h) => h.id === hotelId);
+  const { hoteles } = useHotels();
+  const hotel = hoteles.find((h) => h.id === hotelId);
   const restIdx = Number(idx);
   const rest = hotel?.restaurantes?.[restIdx];
 
@@ -55,17 +57,16 @@ export default function PromoDetail() {
       <div className="max-w-md md:max-w-3xl lg:max-w-4xl mx-auto bg-white md:bg-transparent shadow-2xl md:shadow-none border-x md:border-x-0 border-gray-200 min-h-screen">
         <div className="relative">
           {rest.portada && (
-            <div className="w-full h-56 md:h-80 lg:h-96 bg-gray-200 overflow-hidden">
-              <img
-                src={rest.portada}
-                alt={rest.nombreCentroConsumo}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
-            </div>
+            <PromoImage
+              src={rest.portada}
+              alt={rest.nombreCentroConsumo}
+              className="w-full h-56 md:h-80 lg:h-96"
+            >
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 z-20" />
+            </PromoImage>
           )}
 
-          <div className="absolute top-0 inset-x-0 p-4 md:p-6 flex items-center justify-between">
+          <div className="absolute top-0 inset-x-0 p-4 md:p-6 flex items-center justify-between z-30">
             <Link
               to={`/hotel/${hotel.id}`}
               className="bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-md backdrop-blur-sm transition-colors"
@@ -84,12 +85,12 @@ export default function PromoDetail() {
           </div>
 
           {hasPromo && (
-            <span className="absolute top-16 md:top-20 right-4 md:right-6 bg-red-600 text-white font-black text-base md:text-xl px-3 py-1 rounded-full shadow-lg">
+            <span className="absolute top-16 md:top-20 right-4 md:right-6 bg-red-600 text-white font-black text-base md:text-xl px-3 py-1 rounded-full shadow-lg z-30">
               {rest.porcentaje} {t('alimentos.off')}
             </span>
           )}
 
-          <div className="absolute bottom-0 inset-x-0 p-4 md:p-6 text-white">
+          <div className="absolute bottom-0 inset-x-0 p-4 md:p-6 text-white z-30">
             <p className="text-[11px] md:text-sm uppercase tracking-widest opacity-90">
               {hotel.name}
             </p>

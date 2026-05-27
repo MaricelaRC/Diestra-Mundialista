@@ -1,14 +1,15 @@
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, MapPin, Share2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { hotelesDiestra } from '../data/hoteles.js';
+import { useHotels } from '../hooks/useHotels.js';
 import RestaurantCard from '../components/RestaurantCard.jsx';
 import NotFound from './NotFound.jsx';
 
 export default function HotelDetail() {
   const { t } = useTranslation();
   const { id } = useParams();
-  const hotel = hotelesDiestra.find((h) => h.id === id);
+  const { hoteles } = useHotels();
+  const hotel = hoteles.find((h) => h.id === id);
 
   if (!hotel) return <NotFound />;
 

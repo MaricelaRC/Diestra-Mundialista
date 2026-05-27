@@ -1,11 +1,12 @@
 import { useTranslation } from 'react-i18next';
-import { hotelesDiestra } from '../data/hoteles.js';
+import { useHotels } from '../hooks/useHotels.js';
 
 export default function Stories() {
   const { t } = useTranslation();
+  const { hoteles } = useHotels();
   return (
     <div className="flex gap-4 overflow-x-auto px-4 md:px-6 py-4 no-scrollbar">
-      {hotelesDiestra.map((hotel) => (
+      {hoteles.map((hotel) => (
         <a
           key={hotel.id}
           href={hotel.instagram}

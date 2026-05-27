@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, Search, MapPin, Flame, Calendar, Newspaper } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { hotelesDiestra } from '../data/hoteles.js';
+import { useHotels } from '../hooks/useHotels.js';
 import { useWorldCupData } from '../hooks/useWorldCupData.js';
 import { useTr } from '../lib/i18nData.js';
 
@@ -19,11 +19,11 @@ function norm(s) {
     .replace(/[̀-ͯ]/g, '');
 }
 
-function buildResults(query) {
+function buildResults(query, hotelList) {
   if (!query) return { hoteles: [], promos: [], partidos: [], noticias: [] };
   const q = norm(query);
 
-  const hoteles = hotelesDiestra.filter(
+  const hoteles = hotelList.filter(
     (h) =>
       norm(h.name).includes(q) ||
       norm(h.ciudad).includes(q) ||
@@ -32,7 +32,7 @@ function buildResults(query) {
   );
 
   const promos = [];
-  hotelesDiestra.forEach((h) => {
+  hotelList.forEach((h) => {
     h.restaurantes.forEach((r, idx) => {
       if (
         norm(r.nombreCentroConsumo).includes(q) ||
@@ -53,6 +53,7 @@ function buildResults(query) {
 export default function Buscar() {
   const { t } = useTranslation();
   const { tr } = useTr();
+  const { hoteles: hotelList } = useHotels();
   const [params, setParams] = useSearchParams();
   const query = params.get('q') || '';
   const inputRef = useRef(null);
@@ -63,7 +64,7 @@ export default function Buscar() {
   }, []);
 
   const results = useMemo(() => {
-    const base = buildResults(query);
+    const base = buildResults(query, hotelList);
     const q = norm(query);
     const partidos = q
       ? matches.filter(
@@ -78,7 +79,7 @@ export default function Buscar() {
       ? news.filter((n) => norm(n.title).includes(q) || norm(n.source).includes(q))
       : [];
     return { ...base, partidos, noticias };
-  }, [query, matches, news]);
+  }, [query, hotelList, matches, news]);
 
   const handleChange = (e) => {
     const value = e.target.value;

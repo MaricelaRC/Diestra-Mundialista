@@ -2,18 +2,40 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, MapPin, Pause, Play } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { hotelesDiestra } from '../data/hoteles.js';
+import { useHotels } from '../hooks/useHotels.js';
 import { destacados } from '../data/destacados.js';
 import { useTr } from '../lib/i18nData.js';
+import PromoImage from './PromoImage.jsx';
 
 const AUTO_INTERVAL_MS = 5000;
 const SWIPE_THRESHOLD_PX = 40;
 
-function resolveSlides() {
-  // El banner solo muestra centros con promoción activa.
+function resolveSlides(hoteles) {
+  // Fuente de verdad: campo `destacada` por restaurante en Firestore.
+  // En cuanto el admin marca AL MENOS UNO como destacada, el fallback se
+  // desactiva (aunque algunos no tengan porcentaje aún).
+  const anyDestacada = hoteles.some((h) =>
+    (h.restaurantes || []).some((r) => r?.destacada)
+  );
+
+  if (anyDestacada) {
+    const flagged = [];
+    for (const hotel of hoteles) {
+      (hotel.restaurantes || []).forEach((rest, idx) => {
+        // Mínimo necesario para una slide: que sea destacada y tenga portada.
+        if (rest?.destacada && rest?.portada) {
+          flagged.push({ hotel, rest, idx });
+        }
+      });
+    }
+    return flagged;
+  }
+
+  // Fallback: si nadie ha marcado destacadas todavía, usa la lista curada
+  // de destacados.js (los 4 originales).
   return destacados
     .map(({ hotelId, idx }) => {
-      const hotel = hotelesDiestra.find((h) => h.id === hotelId);
+      const hotel = hoteles.find((h) => h.id === hotelId);
       const rest = hotel?.restaurantes?.[idx];
       if (!hotel || !rest || !rest.porcentaje) return null;
       return { hotel, rest, idx };
@@ -24,7 +46,8 @@ function resolveSlides() {
 export default function PromoBanner() {
   const { t } = useTranslation();
   const { tr } = useTr();
-  const slides = resolveSlides();
+  const { hoteles } = useHotels();
+  const slides = resolveSlides(hoteles);
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const timer = useRef(null);
@@ -76,29 +99,33 @@ export default function PromoBanner() {
               className="relative w-full h-full flex-shrink-0"
               aria-label={`${tr(rest.nombrePromocion)} · ${hotel.name}`}
             >
-              <img
+              <PromoImage
                 src={rest.portada}
                 alt={tr(rest.nombrePromocion)}
-                className="w-full h-full object-cover pointer-events-none"
-                draggable={false}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-4 pb-12 md:p-6 md:pb-14 text-white">
+                className="w-full h-full"
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent z-20" />
+              </PromoImage>
+              <div className="absolute inset-x-0 bottom-0 p-4 pb-12 md:p-6 md:pb-14 text-white z-30">
                 <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mb-2">
-                  <span className="inline-flex items-center bg-red-600 text-white text-[10px] md:text-xs font-black px-2.5 py-1 rounded-full shadow-md tracking-wide">
-                    {rest.porcentaje} {t('alimentos.off')}
-                  </span>
+                  {rest.porcentaje && (
+                    <span className="inline-flex items-center bg-red-600 text-white text-[10px] md:text-xs font-black px-2.5 py-1 rounded-full shadow-md tracking-wide">
+                      {rest.porcentaje} {t('alimentos.off')}
+                    </span>
+                  )}
                   <span className="inline-flex items-center gap-1 bg-white/20 backdrop-blur-md text-white text-[10px] md:text-xs font-bold px-2.5 py-1 rounded-full border border-white/30 shadow-md tracking-wide">
                     <MapPin size={11} className="opacity-90" />
                     {hotel.name}
                   </span>
                 </div>
                 <h3 className="font-black text-base md:text-2xl tracking-tight drop-shadow-lg leading-tight">
-                  {tr(rest.nombrePromocion)}
+                  {tr(rest.nombrePromocion) || rest.nombreCentroConsumo}
                 </h3>
-                <p className="text-xs md:text-sm opacity-95 mt-1 line-clamp-1 md:line-clamp-2 drop-shadow">
-                  {tr(rest.descuento)}
-                </p>
+                {tr(rest.descuento) && (
+                  <p className="text-xs md:text-sm opacity-95 mt-1 line-clamp-1 md:line-clamp-2 drop-shadow">
+                    {tr(rest.descuento)}
+                  </p>
+                )}
               </div>
             </Link>
           ))}

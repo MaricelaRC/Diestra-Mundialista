@@ -1,14 +1,10 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CheckCircle2, Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { hotelesDiestra } from '../data/hoteles.js';
+import { useHotels } from '../hooks/useHotels.js';
 
 const STORAGE_KEY = 'diestra-newsletter-subs';
 const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/ajax/corporativogpodiestra@gmail.com';
-
-const ubicacionesUnicas = Array.from(
-  new Set(hotelesDiestra.map((h) => `${h.ciudad}, ${h.estado}`))
-).sort((a, b) => a.localeCompare(b, 'es'));
 
 function persistLocal(payload) {
   const list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
@@ -39,6 +35,14 @@ async function sendToInbox(payload) {
 
 export default function NewsletterForm({ compact = false }) {
   const { t } = useTranslation();
+  const { hoteles } = useHotels();
+  const ubicacionesUnicas = useMemo(
+    () =>
+      Array.from(new Set(hoteles.map((h) => `${h.ciudad}, ${h.estado}`))).sort((a, b) =>
+        a.localeCompare(b, 'es')
+      ),
+    [hoteles]
+  );
   const [form, setForm] = useState({ nombre: '', email: '', ciudad: '', acepta: false });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);

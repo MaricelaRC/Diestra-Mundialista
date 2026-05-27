@@ -13,7 +13,7 @@ import PromoBanner from '../components/PromoBanner.jsx';
 import MundialCountdown from '../components/MundialCountdown.jsx';
 import NewsletterForm from '../components/NewsletterForm.jsx';
 import MobileNavBar from '../components/MobileNavBar.jsx';
-import { hotelesDiestra } from '../data/hoteles.js';
+import { useHotels } from '../hooks/useHotels.js';
 import { useWorldCupData } from '../hooks/useWorldCupData.js';
 
 export default function Home() {
@@ -21,6 +21,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState('alimentos');
   const [selectedHotel, setSelectedHotel] = useState(null);
   const { matches, news, loading } = useWorldCupData();
+  const { hoteles } = useHotels();
 
   const toggleHotel = (hotelId) =>
     setSelectedHotel((prev) => (prev === hotelId ? null : hotelId));
@@ -51,7 +52,7 @@ export default function Home() {
                   </div>
 
                   <div className="space-y-3 md:hidden">
-                    {hotelesDiestra.map((hotel) => (
+                    {hoteles.map((hotel) => (
                       <HotelCard
                         key={hotel.id}
                         hotel={hotel}
@@ -62,7 +63,7 @@ export default function Home() {
                   </div>
 
                   <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {hotelesDiestra.map((hotel) => (
+                    {hoteles.map((hotel) => (
                       <HotelCardLink key={hotel.id} hotel={hotel} />
                     ))}
                   </div>

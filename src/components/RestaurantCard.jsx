@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import OpenStatusBadge from './OpenStatusBadge.jsx';
 import { formatPhone, buildTelHref } from '../lib/phone.js';
 import { useTr } from '../lib/i18nData.js';
+import PromoImage from './PromoImage.jsx';
 
 export default function RestaurantCard({ restaurante }) {
   const { t, i18n } = useTranslation();
@@ -13,19 +14,17 @@ export default function RestaurantCard({ restaurante }) {
   return (
     <div className="border border-gray-100 rounded-xl overflow-hidden bg-gray-50/30 p-3 space-y-3 shadow-sm">
       {restaurante.portada && (
-        <div className="w-full h-32 md:h-40 rounded-lg overflow-hidden relative border border-gray-100 shadow-sm bg-gray-100">
-          <img
-            src={restaurante.portada}
-            alt={restaurante.nombreCentroConsumo}
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
+        <PromoImage
+          src={restaurante.portada}
+          alt={restaurante.nombreCentroConsumo}
+          className="w-full h-32 md:h-40 rounded-lg border border-gray-100 shadow-sm"
+        >
           {tienePromo && (
-            <span className="absolute top-2 right-2 bg-red-600 text-white font-black text-xs px-2.5 py-1 rounded-full shadow-md">
+            <span className="absolute top-2 right-2 bg-red-600 text-white font-black text-xs px-2.5 py-1 rounded-full shadow-md z-20">
               {restaurante.porcentaje} {t('alimentos.off')}
             </span>
           )}
-        </div>
+        </PromoImage>
       )}
 
       <div className="space-y-1.5">
