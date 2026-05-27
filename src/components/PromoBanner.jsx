@@ -3,44 +3,28 @@ import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, MapPin, Pause, Play } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useHotels } from '../hooks/useHotels.js';
-import { destacados } from '../data/destacados.js';
 import { useTr } from '../lib/i18nData.js';
 import PromoImage from './PromoImage.jsx';
 
 const AUTO_INTERVAL_MS = 5000;
 const SWIPE_THRESHOLD_PX = 40;
 
+// Aplana los hoteles a una lista de promos destacadas (con su contexto
+// de centro y hotel). Solo entran las promos con `destacada=true` y que
+// tengan alguna portada (la suya vertical, o la del centro como fallback).
 function resolveSlides(hoteles) {
-  // Fuente de verdad: campo `destacada` por restaurante en Firestore.
-  // En cuanto el admin marca AL MENOS UNO como destacada, el fallback se
-  // desactiva (aunque algunos no tengan porcentaje aún).
-  const anyDestacada = hoteles.some((h) =>
-    (h.restaurantes || []).some((r) => r?.destacada)
-  );
-
-  if (anyDestacada) {
-    const flagged = [];
-    for (const hotel of hoteles) {
-      (hotel.restaurantes || []).forEach((rest, idx) => {
-        // Mínimo necesario para una slide: que sea destacada y tenga portada.
-        if (rest?.destacada && rest?.portada) {
-          flagged.push({ hotel, rest, idx });
-        }
-      });
+  const slides = [];
+  for (const hotel of hoteles) {
+    for (const rest of hotel.restaurantes || []) {
+      for (const promo of rest.promos || []) {
+        if (!promo?.destacada) continue;
+        const portada = promo.portada || rest.portada;
+        if (!portada) continue;
+        slides.push({ hotel, rest, promo, portada });
+      }
     }
-    return flagged;
   }
-
-  // Fallback: si nadie ha marcado destacadas todavía, usa la lista curada
-  // de destacados.js (los 4 originales).
-  return destacados
-    .map(({ hotelId, idx }) => {
-      const hotel = hoteles.find((h) => h.id === hotelId);
-      const rest = hotel?.restaurantes?.[idx];
-      if (!hotel || !rest || !rest.porcentaje) return null;
-      return { hotel, rest, idx };
-    })
-    .filter(Boolean);
+  return slides;
 }
 
 export default function PromoBanner() {
@@ -92,25 +76,25 @@ export default function PromoBanner() {
           className="flex h-full transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${current * 100}%)` }}
         >
-          {slides.map(({ hotel, rest, idx }) => (
+          {slides.map(({ hotel, rest, promo, portada }) => (
             <Link
-              key={`${hotel.id}-${idx}`}
-              to={`/promo/${hotel.id}/${idx}`}
+              key={`${hotel.id}-${promo.id}`}
+              to={`/promo/${hotel.id}/${promo.id}`}
               className="relative w-full h-full flex-shrink-0"
-              aria-label={`${tr(rest.nombrePromocion)} · ${hotel.name}`}
+              aria-label={`${tr(promo.nombrePromocion)} · ${hotel.name}`}
             >
               <PromoImage
-                src={rest.portada}
-                alt={tr(rest.nombrePromocion)}
+                src={portada}
+                alt={tr(promo.nombrePromocion)}
                 className="w-full h-full"
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent z-20" />
               </PromoImage>
               <div className="absolute inset-x-0 bottom-0 p-4 pb-12 md:p-6 md:pb-14 text-white z-30">
                 <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mb-2">
-                  {rest.porcentaje && (
+                  {promo.porcentaje && (
                     <span className="inline-flex items-center bg-red-600 text-white text-[10px] md:text-xs font-black px-2.5 py-1 rounded-full shadow-md tracking-wide">
-                      {rest.porcentaje} {t('alimentos.off')}
+                      {promo.porcentaje} {t('alimentos.off')}
                     </span>
                   )}
                   <span className="inline-flex items-center gap-1 bg-white/20 backdrop-blur-md text-white text-[10px] md:text-xs font-bold px-2.5 py-1 rounded-full border border-white/30 shadow-md tracking-wide">
@@ -119,11 +103,11 @@ export default function PromoBanner() {
                   </span>
                 </div>
                 <h3 className="font-black text-base md:text-2xl tracking-tight drop-shadow-lg leading-tight">
-                  {tr(rest.nombrePromocion) || rest.nombreCentroConsumo}
+                  {tr(promo.nombrePromocion) || rest.nombreCentroConsumo}
                 </h3>
-                {tr(rest.descuento) && (
+                {tr(promo.descuento) && (
                   <p className="text-xs md:text-sm opacity-95 mt-1 line-clamp-1 md:line-clamp-2 drop-shadow">
-                    {tr(rest.descuento)}
+                    {tr(promo.descuento)}
                   </p>
                 )}
               </div>

@@ -1,51 +1,58 @@
-// Editor de promociones por hotel. Lista cada centro de consumo del hotel y
-// expone los campos editables (alcance V2 = solo promo: nombre, descuento,
-// porcentaje, descripción, fecha publicación, portada). Los datos base del
-// restaurante (tipoCocina, descripciones, horarios) se muestran como contexto
-// pero no se editan.
+// Editor por hotel: el admin ve cada centro de consumo como header read-only
+// con su lista de promociones debajo. Por cada centro puede AGREGAR /
+// EDITAR / ELIMINAR promos. Cada promo se guarda individualmente para no
+// arrastrar cambios pendientes de otra.
 //
-// Cada centro tiene su propio botón "Guardar" para que cambios accidentales
-// en uno no afecten los otros.
+// Estado:
+//   drafts[centroIdx].promos[] — copia local mutable. Los promos nuevos
+//   llevan _isNew=true hasta que se guardan; ese flag los protege de ser
+//   reemplazados cuando llega un snapshot fresco de Firestore.
 
 import { useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Calendar, Check, Flame, Loader2, LogOut, Save, Star } from 'lucide-react';
+import {
+  ArrowLeft, Calendar, Check, Flame, Loader2, LogOut,
+  Plus, Save, Star, Trash2, UtensilsCrossed
+} from 'lucide-react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase.js';
 import { useAuth } from '../../hooks/useAuth.jsx';
 import { useHotels } from '../../hooks/useHotels.js';
+import { uniquePromoId } from '../../lib/slug.js';
 import BilingualField from '../../components/admin/BilingualField.jsx';
 import ImageUploadButton from '../../components/admin/ImageUploadButton.jsx';
 
-// Inicializa la estructura de promo de un restaurante, llenando objetos
-// vacíos para campos bilingües ausentes (así BilingualField no recibe undefined).
-function defaultPromo(rest) {
+function emptyPromo() {
   return {
-    nombrePromocion: rest.nombrePromocion || { es: '', en: '' },
-    descuento: rest.descuento || { es: '', en: '' },
-    porcentaje: rest.porcentaje || '',
-    descripcionPromo: rest.descripcionPromo || { es: '', en: '' },
-    fechaHorarioPublicacion: rest.fechaHorarioPublicacion || '',
-    portada: rest.portada || '',
-    destacada: Boolean(rest.destacada)
+    id: null,
+    nombrePromocion: { es: '', en: '' },
+    descuento: { es: '', en: '' },
+    porcentaje: '',
+    descripcionPromo: { es: '', en: '' },
+    fechaHorarioPublicacion: '',
+    portada: '',
+    destacada: false,
+    _isNew: true
   };
 }
 
-// Convierte el ISO de Firestore a formato datetime-local que entiende el input.
 function toDatetimeLocal(iso) {
   if (!iso) return '';
-  // El input <type=datetime-local> espera "YYYY-MM-DDTHH:mm" sin zona.
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return '';
   const pad = (n) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-// Y de vuelta a ISO al guardar (asumimos zona local del admin; suficiente
-// para promos que se muestran sin precisión de zona horaria).
 function fromDatetimeLocal(value) {
   if (!value) return '';
   return new Date(value).toISOString();
+}
+
+// Quita los campos de control local (_isNew) antes de persistir.
+function toPersisted(promo, generatedId) {
+  const { _isNew, id, ...rest } = promo;
+  return { id: generatedId || id, ...rest };
 }
 
 export default function AdminHotelEditor() {
@@ -53,25 +60,30 @@ export default function AdminHotelEditor() {
   const { user, adminDoc, signOut } = useAuth();
   const { hoteles, loading: hotelsLoading } = useHotels();
   const hotel = hoteles.find((h) => h.id === id);
-
-  // Verifica permiso (defensa en profundidad además de Firestore Rules)
   const allowed = adminDoc?.hotelIds?.includes(id);
 
-  // Estado de edición: array paralelo a hotel.restaurantes con los campos
-  // editables de cada uno. Se rehidrata cuando cambia el hotel desde Firestore.
+  // drafts[centroIdx] = { promos: [...] } — refleja lo de Firestore + los
+  // nuevos locales (_isNew=true) que aún no se han guardado.
   const [drafts, setDrafts] = useState([]);
-  const [savingIdx, setSavingIdx] = useState(null);
-  const [savedAt, setSavedAt] = useState({}); // { [idx]: timestamp }
-  const [errors, setErrors] = useState({});   // { [idx]: 'mensaje' }
+  // Por key 'ci:pi' — estado UI ephemeral.
+  const [savingKey, setSavingKey] = useState(null);
+  const [savedAt, setSavedAt] = useState({});
+  const [errors, setErrors] = useState({});
+  const [confirmingDelete, setConfirmingDelete] = useState(null); // 'ci:pi' o null
 
   useEffect(() => {
     if (!hotel) return;
-    setDrafts(hotel.restaurantes.map(defaultPromo));
+    setDrafts((prev) => {
+      return hotel.restaurantes.map((rest, ci) => {
+        const localPromos = prev[ci]?.promos || [];
+        const localOnly = localPromos.filter((p) => p._isNew);
+        const firestoreCopy = (rest.promos || []).map((p) => ({ ...p }));
+        return { promos: [...firestoreCopy, ...localOnly] };
+      });
+    });
   }, [hotel]);
 
   if (!allowed) return <Navigate to="/admin" replace />;
-  // Espera el primer snapshot de Firestore antes de pintar — evita el flash
-  // de los valores del fallback estático contra los reales del backend.
   if (hotelsLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center text-blue-600">
@@ -87,39 +99,139 @@ export default function AdminHotelEditor() {
     );
   }
 
-  const updateDraft = (idx, patch) => {
-    setDrafts((prev) => prev.map((d, i) => (i === idx ? { ...d, ...patch } : d)));
-    // limpia error/saved de ese centro al editar
-    setErrors((e) => ({ ...e, [idx]: undefined }));
-    setSavedAt((s) => ({ ...s, [idx]: undefined }));
+  const keyOf = (ci, pi) => `${ci}:${pi}`;
+
+  const updatePromo = (ci, pi, patch) => {
+    setDrafts((prev) =>
+      prev.map((centro, i) =>
+        i === ci
+          ? {
+              ...centro,
+              promos: centro.promos.map((p, j) => (j === pi ? { ...p, ...patch } : p))
+            }
+          : centro
+      )
+    );
+    setErrors((e) => ({ ...e, [keyOf(ci, pi)]: undefined }));
+    setSavedAt((s) => ({ ...s, [keyOf(ci, pi)]: undefined }));
   };
 
-  const handleSave = async (idx) => {
-    setSavingIdx(idx);
-    setErrors((e) => ({ ...e, [idx]: undefined }));
+  const addPromo = (ci) => {
+    setDrafts((prev) =>
+      prev.map((centro, i) =>
+        i === ci ? { ...centro, promos: [...centro.promos, emptyPromo()] } : centro
+      )
+    );
+  };
+
+  const removePromoLocal = (ci, pi) => {
+    setDrafts((prev) =>
+      prev.map((centro, i) =>
+        i === ci ? { ...centro, promos: centro.promos.filter((_, j) => j !== pi) } : centro
+      )
+    );
+    setConfirmingDelete(null);
+  };
+
+  // Persiste la lista de promos del centro `ci` a Firestore. Toma como base
+  // lo que YA está en Firestore para los otros centros (no arrastra drafts
+  // ajenos), y para este centro arma la lista a partir de los drafts EXCEPTO
+  // los _isNew que no son la promo objetivo (para no persistir drafts a
+  // medias de otras promos hermanas).
+  const savePromo = async (ci, pi) => {
+    const key = keyOf(ci, pi);
+    const draft = drafts[ci]?.promos?.[pi];
+    if (!draft) return;
+
+    // Validación mínima: la promo debe tener un nombre (al menos en español)
+    // para poder generar un id estable y ser útil al público.
+    if (!draft.nombrePromocion?.es?.trim()) {
+      setErrors((e) => ({ ...e, [key]: 'Pon al menos el nombre en español.' }));
+      return;
+    }
+
+    setSavingKey(key);
+    setErrors((e) => ({ ...e, [key]: undefined }));
     try {
-      // Construir el array de restaurantes actualizado (manteniendo todos
-      // los campos no-editables del original)
-      const original = hotel.restaurantes[idx];
-      const draft = drafts[idx];
-      const updated = {
-        ...original,
-        nombrePromocion: draft.nombrePromocion,
-        descuento: draft.descuento,
-        porcentaje: draft.porcentaje,
-        descripcionPromo: draft.descripcionPromo,
-        fechaHorarioPublicacion: draft.fechaHorarioPublicacion,
-        portada: draft.portada,
-        destacada: draft.destacada
-      };
-      const nuevoArray = hotel.restaurantes.map((r, i) => (i === idx ? updated : r));
-      await updateDoc(doc(db, 'hoteles', hotel.id), { restaurantes: nuevoArray });
-      setSavedAt((s) => ({ ...s, [idx]: Date.now() }));
+      const newRestaurantes = hotel.restaurantes.map((rest, idx) => {
+        if (idx !== ci) return rest;
+
+        const existingPromos = (rest.promos || []).map((p) => ({ ...p }));
+        const otherIds = existingPromos.filter((p) => p.id !== draft.id).map((p) => p.id);
+
+        const id = draft.id || uniquePromoId(draft.nombrePromocion.es, otherIds);
+        const persisted = toPersisted(draft, id);
+
+        // Reemplaza si ya existe el id, si no la pone al final.
+        const existingIdx = existingPromos.findIndex((p) => p.id === id);
+        if (existingIdx >= 0) {
+          existingPromos[existingIdx] = persisted;
+        } else {
+          existingPromos.push(persisted);
+        }
+        return { ...rest, promos: existingPromos };
+      });
+
+      await updateDoc(doc(db, 'hoteles', hotel.id), { restaurantes: newRestaurantes });
+
+      // Marca como ya no-nueva localmente y asigna id si era nuevo
+      setDrafts((prev) =>
+        prev.map((centro, i) =>
+          i === ci
+            ? {
+                ...centro,
+                promos: centro.promos.map((p, j) => {
+                  if (j !== pi) return p;
+                  const otherIds = centro.promos
+                    .filter((q, k) => k !== pi)
+                    .map((q) => q.id)
+                    .filter(Boolean);
+                  const finalId = p.id || uniquePromoId(p.nombrePromocion.es, otherIds);
+                  return { ...p, id: finalId, _isNew: false };
+                })
+              }
+            : centro
+        )
+      );
+      setSavedAt((s) => ({ ...s, [key]: Date.now() }));
     } catch (err) {
       console.error('[AdminHotelEditor] save failed:', err);
-      setErrors((e) => ({ ...e, [idx]: 'No se pudo guardar. Intenta de nuevo.' }));
+      setErrors((e) => ({ ...e, [key]: 'No se pudo guardar. Intenta de nuevo.' }));
     } finally {
-      setSavingIdx(null);
+      setSavingKey(null);
+    }
+  };
+
+  // Eliminar persistido: actualiza Firestore quitando la promo del centro.
+  const deletePromo = async (ci, pi) => {
+    const key = keyOf(ci, pi);
+    const draft = drafts[ci]?.promos?.[pi];
+    if (!draft) return;
+
+    // Si la promo es solo local (nunca guardada), basta con quitarla del draft.
+    if (draft._isNew) {
+      removePromoLocal(ci, pi);
+      return;
+    }
+
+    setSavingKey(key);
+    setErrors((e) => ({ ...e, [key]: undefined }));
+    try {
+      const newRestaurantes = hotel.restaurantes.map((rest, idx) => {
+        if (idx !== ci) return rest;
+        return {
+          ...rest,
+          promos: (rest.promos || []).filter((p) => p.id !== draft.id)
+        };
+      });
+      await updateDoc(doc(db, 'hoteles', hotel.id), { restaurantes: newRestaurantes });
+      // Local: useEffect rehidrata desde el snapshot fresco.
+    } catch (err) {
+      console.error('[AdminHotelEditor] delete failed:', err);
+      setErrors((e) => ({ ...e, [key]: 'No se pudo eliminar. Intenta de nuevo.' }));
+    } finally {
+      setSavingKey(null);
+      setConfirmingDelete(null);
     }
   };
 
@@ -151,135 +263,217 @@ export default function AdminHotelEditor() {
 
       <main className="max-w-4xl mx-auto p-4 md:p-8 space-y-6">
         <p className="text-xs text-gray-500">
-          Edita la información de la promoción de cada centro de consumo. Los datos base del
-          restaurante (nombre, tipo de cocina, horarios) no se editan desde aquí.
+          Cada centro de consumo puede tener 0, 1 o varias promociones activas. Solo se
+          editan las promos; los datos base del centro (nombre, tipo de cocina, horarios)
+          se mantienen tal cual.
         </p>
 
-        {hotel.restaurantes.map((rest, idx) => {
-          const draft = drafts[idx];
-          if (!draft) return null;
-          const saved = savedAt[idx];
-          const err = errors[idx];
-          const showSaved = saved && Date.now() - saved < 4000;
-
+        {hotel.restaurantes.map((rest, ci) => {
+          const promos = drafts[ci]?.promos || [];
           return (
             <section
-              key={idx}
+              key={ci}
               className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden"
             >
               <header className="bg-gray-50 border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between gap-3">
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
                     Centro de consumo
                   </p>
                   <h2 className="font-bold text-gray-900 truncate">{rest.nombreCentroConsumo}</h2>
+                  {rest.tipoCocina && (
+                    <p className="text-[11px] text-gray-500 inline-flex items-center gap-1 mt-0.5">
+                      <UtensilsCrossed size={11} />
+                      {rest.tipoCocina.es}
+                    </p>
+                  )}
                 </div>
-                <button
-                  type="button"
-                  onClick={() => updateDraft(idx, { destacada: !draft.destacada })}
-                  className={`flex-shrink-0 inline-flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-lg transition-colors ${
-                    draft.destacada
-                      ? 'bg-amber-100 text-amber-800 hover:bg-amber-200 border border-amber-300'
-                      : 'bg-white text-gray-500 border border-gray-200 hover:border-amber-300 hover:text-amber-700'
-                  }`}
-                  title={draft.destacada ? 'Aparece en el slider de inicio' : 'No aparece en el slider'}
-                >
-                  <Star size={14} className={draft.destacada ? 'fill-amber-500 text-amber-500' : ''} />
-                  {draft.destacada ? 'Destacada en home' : 'Destacar en home'}
-                </button>
+                <span className="flex-shrink-0 text-[10px] bg-blue-50 text-blue-700 border border-blue-100 font-bold px-2.5 py-1 rounded-full">
+                  {promos.length} {promos.length === 1 ? 'promo' : 'promos'}
+                </span>
               </header>
 
-              <div className="p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div className="md:col-span-2">
-                  <BilingualField
-                    label="Nombre de la promoción"
-                    value={draft.nombrePromocion}
-                    onChange={(v) => updateDraft(idx, { nombrePromocion: v })}
-                    placeholder="Ej. Desayuno Campeones en la Bahía"
-                  />
-                </div>
-
-                <BilingualField
-                  label="Descuento (texto visible)"
-                  value={draft.descuento}
-                  onChange={(v) => updateDraft(idx, { descuento: v })}
-                  placeholder="Ej. 15% de descuento en buffet"
-                />
-
-                <div>
-                  <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wide block mb-2">
-                    Porcentaje (pill rojo)
-                  </label>
-                  <div className="relative">
-                    <Flame size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-600" />
-                    <input
-                      type="text"
-                      value={draft.porcentaje}
-                      onChange={(e) => updateDraft(idx, { porcentaje: e.target.value })}
-                      placeholder="Ej. 15%"
-                      className="w-full border border-gray-200 rounded-lg pl-9 pr-3 py-2 text-sm focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
-                </div>
-
-                <div className="md:col-span-2">
-                  <BilingualField
-                    label="Descripción larga de la promo"
-                    value={draft.descripcionPromo}
-                    onChange={(v) => updateDraft(idx, { descripcionPromo: v })}
-                    type="textarea"
-                    rows={4}
-                    placeholder="Describe la promoción con detalle…"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wide block mb-2">
-                    Fecha de publicación
-                  </label>
-                  <div className="relative">
-                    <Calendar size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                    <input
-                      type="datetime-local"
-                      value={toDatetimeLocal(draft.fechaHorarioPublicacion)}
-                      onChange={(e) =>
-                        updateDraft(idx, { fechaHorarioPublicacion: fromDatetimeLocal(e.target.value) })
-                      }
-                      className="w-full border border-gray-200 rounded-lg pl-9 pr-3 py-2 text-sm focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <ImageUploadButton
-                    label="Portada de la promo"
-                    value={draft.portada}
-                    onChange={(url) => updateDraft(idx, { portada: url })}
-                  />
-                </div>
-              </div>
-
-              <footer className="bg-gray-50 border-t border-gray-200 px-4 md:px-6 py-3 flex items-center justify-end gap-3">
-                {err && (
-                  <span className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-2 py-1">
-                    {err}
-                  </span>
+              <div className="p-4 md:p-6 space-y-4">
+                {promos.length === 0 && (
+                  <p className="text-sm text-gray-400 italic text-center py-4">
+                    Este centro no tiene promociones aún.
+                  </p>
                 )}
-                {showSaved && (
-                  <span className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-lg px-2 py-1 inline-flex items-center gap-1">
-                    <Check size={12} /> Guardado
-                  </span>
-                )}
+
+                {promos.map((promo, pi) => {
+                  const key = keyOf(ci, pi);
+                  const isSaving = savingKey === key;
+                  const saved = savedAt[key];
+                  const err = errors[key];
+                  const showSaved = saved && Date.now() - saved < 4000;
+                  const isConfirming = confirmingDelete === key;
+
+                  return (
+                    <article
+                      key={promo.id || `new-${pi}`}
+                      className={`rounded-xl border ${
+                        promo._isNew ? 'border-blue-300 bg-blue-50/30' : 'border-gray-200 bg-white'
+                      }`}
+                    >
+                      <header className="flex items-center justify-between gap-3 px-4 py-3 border-b border-gray-100">
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                            Promoción {promo._isNew ? '(nueva — sin guardar)' : ''}
+                          </p>
+                          <p className="font-bold text-gray-900 text-sm truncate">
+                            {promo.nombrePromocion?.es || 'Sin nombre'}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => updatePromo(ci, pi, { destacada: !promo.destacada })}
+                          className={`flex-shrink-0 inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-1.5 rounded-lg transition-colors ${
+                            promo.destacada
+                              ? 'bg-amber-100 text-amber-800 hover:bg-amber-200 border border-amber-300'
+                              : 'bg-white text-gray-500 border border-gray-200 hover:border-amber-300 hover:text-amber-700'
+                          }`}
+                          title={promo.destacada ? 'Sale en el slider' : 'No sale en el slider'}
+                        >
+                          <Star size={13} className={promo.destacada ? 'fill-amber-500 text-amber-500' : ''} />
+                          <span className="hidden sm:inline">
+                            {promo.destacada ? 'Destacada' : 'Destacar'}
+                          </span>
+                        </button>
+                        {isConfirming ? (
+                          <div className="flex items-center gap-1 flex-shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => deletePromo(ci, pi)}
+                              disabled={isSaving}
+                              className="inline-flex items-center gap-1 text-xs bg-red-600 hover:bg-red-700 text-white font-bold px-2.5 py-1.5 rounded-lg"
+                            >
+                              <Trash2 size={13} />
+                              {isSaving ? 'Borrando…' : 'Sí, borrar'}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setConfirmingDelete(null)}
+                              className="text-xs text-gray-500 hover:text-gray-700 font-bold px-2 py-1.5"
+                            >
+                              Cancelar
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => setConfirmingDelete(key)}
+                            className="flex-shrink-0 text-gray-400 hover:text-red-600 hover:bg-red-50 p-1.5 rounded-lg"
+                            aria-label="Eliminar promoción"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        )}
+                      </header>
+
+                      <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div className="md:col-span-2">
+                          <BilingualField
+                            label="Nombre de la promoción"
+                            value={promo.nombrePromocion}
+                            onChange={(v) => updatePromo(ci, pi, { nombrePromocion: v })}
+                            placeholder="Ej. Desayuno Campeones en la Bahía"
+                          />
+                        </div>
+
+                        <BilingualField
+                          label="Descuento (texto visible)"
+                          value={promo.descuento}
+                          onChange={(v) => updatePromo(ci, pi, { descuento: v })}
+                          placeholder="Ej. 15% de descuento en buffet"
+                        />
+
+                        <div>
+                          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wide block mb-2">
+                            Porcentaje (pill rojo)
+                          </label>
+                          <div className="relative">
+                            <Flame size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-amber-600" />
+                            <input
+                              type="text"
+                              value={promo.porcentaje}
+                              onChange={(e) => updatePromo(ci, pi, { porcentaje: e.target.value })}
+                              placeholder="Ej. 15%"
+                              className="w-full border border-gray-200 rounded-lg pl-9 pr-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="md:col-span-2">
+                          <BilingualField
+                            label="Descripción larga de la promo"
+                            value={promo.descripcionPromo}
+                            onChange={(v) => updatePromo(ci, pi, { descripcionPromo: v })}
+                            type="textarea"
+                            rows={4}
+                            placeholder="Describe la promoción con detalle…"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-bold text-gray-500 uppercase tracking-wide block mb-2">
+                            Fecha de publicación
+                          </label>
+                          <div className="relative">
+                            <Calendar size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                            <input
+                              type="datetime-local"
+                              value={toDatetimeLocal(promo.fechaHorarioPublicacion)}
+                              onChange={(e) =>
+                                updatePromo(ci, pi, { fechaHorarioPublicacion: fromDatetimeLocal(e.target.value) })
+                              }
+                              className="w-full border border-gray-200 rounded-lg pl-9 pr-3 py-2 text-sm focus:outline-none focus:border-blue-500"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <ImageUploadButton
+                            label="Portada de la promo (vertical)"
+                            value={promo.portada}
+                            onChange={(url) => updatePromo(ci, pi, { portada: url })}
+                          />
+                        </div>
+                      </div>
+
+                      <footer className="bg-gray-50 border-t border-gray-200 px-4 py-3 flex items-center justify-end gap-3">
+                        {err && (
+                          <span className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-2 py-1">
+                            {err}
+                          </span>
+                        )}
+                        {showSaved && (
+                          <span className="text-xs text-emerald-700 bg-emerald-50 border border-emerald-100 rounded-lg px-2 py-1 inline-flex items-center gap-1">
+                            <Check size={12} /> Guardado
+                          </span>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => savePromo(ci, pi)}
+                          disabled={isSaving}
+                          className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white text-sm font-bold py-2 px-4 rounded-lg transition-colors"
+                        >
+                          <Save size={14} />
+                          {isSaving ? 'Guardando…' : 'Guardar'}
+                        </button>
+                      </footer>
+                    </article>
+                  );
+                })}
+
                 <button
                   type="button"
-                  onClick={() => handleSave(idx)}
-                  disabled={savingIdx === idx}
-                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed text-white text-sm font-bold py-2 px-4 rounded-lg transition-colors"
+                  onClick={() => addPromo(ci)}
+                  className="w-full inline-flex items-center justify-center gap-2 border-2 border-dashed border-gray-300 hover:border-blue-400 hover:text-blue-600 text-gray-500 font-bold text-sm py-3 rounded-xl transition-colors"
                 >
-                  <Save size={14} />
-                  {savingIdx === idx ? 'Guardando…' : 'Guardar'}
+                  <Plus size={16} />
+                  Agregar promoción a {rest.nombreCentroConsumo}
                 </button>
-              </footer>
+              </div>
             </section>
           );
         })}

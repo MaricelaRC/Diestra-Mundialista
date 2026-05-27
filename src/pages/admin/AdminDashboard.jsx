@@ -50,7 +50,10 @@ export default function AdminDashboard() {
         ) : (
           <ul className="space-y-2">
             {editableHotels.map((h) => {
-              const promosCount = (h.restaurantes || []).filter((r) => r.porcentaje).length;
+              const promosCount = (h.restaurantes || []).reduce(
+                (acc, r) => acc + (r.promos?.length || 0),
+                0
+              );
               const totalCentros = (h.restaurantes || []).length;
               return (
                 <li key={h.id}>
@@ -68,7 +71,7 @@ export default function AdminDashboard() {
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
                         <span className="text-[10px] font-bold bg-blue-50 text-blue-600 px-2 py-1 rounded-full whitespace-nowrap">
-                          {promosCount} / {totalCentros} con promo
+                          {promosCount} {promosCount === 1 ? 'promo' : 'promos'} · {totalCentros} {totalCentros === 1 ? 'centro' : 'centros'}
                         </span>
                         <span className="inline-flex items-center gap-1 text-xs text-blue-600 group-hover:translate-x-0.5 transition-transform">
                           <Pencil size={14} />

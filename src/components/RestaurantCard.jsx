@@ -1,4 +1,9 @@
-import { Clock, Flame, Phone, UtensilsCrossed } from 'lucide-react';
+// Card de centro de consumo (info base solamente). Si el centro tiene
+// 1+ promos, muestra un pill rojo "Promos disponibles" sobre la portada;
+// los detalles de cada promo viven en su propia card en la sección
+// "Promociones" del hotel, no aquí.
+
+import { Clock, Phone, Sparkles, UtensilsCrossed } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import OpenStatusBadge from './OpenStatusBadge.jsx';
 import { formatPhone, buildTelHref } from '../lib/phone.js';
@@ -6,10 +11,9 @@ import { useTr } from '../lib/i18nData.js';
 import PromoImage from './PromoImage.jsx';
 
 export default function RestaurantCard({ restaurante }) {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { tr } = useTr();
-  const locale = i18n.language?.startsWith('en') ? 'en-US' : 'es-MX';
-  const tienePromo = Boolean(restaurante.porcentaje);
+  const tienePromos = (restaurante.promos || []).length > 0;
 
   return (
     <div className="border border-gray-100 rounded-xl overflow-hidden bg-gray-50/30 p-3 space-y-3 shadow-sm">
@@ -19,53 +23,29 @@ export default function RestaurantCard({ restaurante }) {
           alt={restaurante.nombreCentroConsumo}
           className="w-full h-32 md:h-40 rounded-lg border border-gray-100 shadow-sm"
         >
-          {tienePromo && (
-            <span className="absolute top-2 right-2 bg-red-600 text-white font-black text-xs px-2.5 py-1 rounded-full shadow-md z-20">
-              {restaurante.porcentaje} {t('alimentos.off')}
+          {tienePromos && (
+            <span className="absolute top-2 right-2 bg-red-600 text-white font-black text-[10px] md:text-xs px-2.5 py-1 rounded-full shadow-md z-20 inline-flex items-center gap-1 uppercase tracking-wide">
+              <Sparkles size={11} /> {t('alimentos.promosDisponibles')}
             </span>
           )}
         </PromoImage>
       )}
 
       <div className="space-y-1.5">
-        <div className="flex justify-between items-start gap-2">
-          <h5 className="font-extrabold text-blue-950 text-sm leading-tight">
-            {restaurante.nombreCentroConsumo}
-          </h5>
-          {tienePromo && restaurante.fechaHorarioPublicacion && (
-            <span className="text-[9px] text-gray-400 font-mono flex items-center gap-1 bg-white px-2 py-0.5 rounded-full border border-gray-200 whitespace-nowrap">
-              <Clock size={10} /> {t('alimentos.publicacion')}:{' '}
-              {new Date(restaurante.fechaHorarioPublicacion).toLocaleDateString(locale)}
-            </span>
-          )}
-        </div>
+        <h5 className="font-extrabold text-blue-950 text-sm leading-tight">
+          {restaurante.nombreCentroConsumo}
+        </h5>
         {restaurante.tipoCocina && (
           <p className="inline-flex items-center gap-1 text-[10px] text-gray-500 font-semibold bg-gray-100 px-2 py-0.5 rounded-full">
             <UtensilsCrossed size={10} /> {tr(restaurante.tipoCocina)}
           </p>
         )}
-        {tienePromo && (
-          <p className="text-xs font-black text-blue-600 leading-snug">
-            {tr(restaurante.nombrePromocion)}
-          </p>
-        )}
       </div>
 
-      {tienePromo ? (
-        <div className="bg-amber-50/50 border border-amber-200/60 p-2.5 rounded-lg space-y-1">
-          <p className="text-[9px] font-black text-amber-800 uppercase tracking-tight flex items-center gap-1">
-            <Flame size={12} className="text-amber-600" /> {tr(restaurante.descuento)}
-          </p>
-          <p className="text-[11px] text-gray-600 font-medium leading-normal">
-            {tr(restaurante.descripcionPromo)}
-          </p>
-        </div>
-      ) : (
-        restaurante.descripcionRestaurante && (
-          <p className="text-[11px] text-gray-600 font-medium leading-normal">
-            {tr(restaurante.descripcionRestaurante)}
-          </p>
-        )
+      {restaurante.descripcionRestaurante && (
+        <p className="text-[11px] text-gray-600 font-medium leading-normal">
+          {tr(restaurante.descripcionRestaurante)}
+        </p>
       )}
 
       {restaurante.horarios?.length > 0 && (

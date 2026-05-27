@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, Search, MapPin, Flame, Calendar, Newspaper } from 'lucide-react';
+import { ArrowLeft, Search, MapPin, Flame, Calendar, Newspaper, UtensilsCrossed } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useHotels } from '../hooks/useHotels.js';
 import { useWorldCupData } from '../hooks/useWorldCupData.js';
@@ -19,8 +19,10 @@ function norm(s) {
     .replace(/[̀-ͯ]/g, '');
 }
 
+// Devuelve dos listas: centros que matchean la búsqueda y promos que la
+// matchean. Separadas porque enlazan a destinos distintos (/hotel vs /promo).
 function buildResults(query, hotelList) {
-  if (!query) return { hoteles: [], promos: [], partidos: [], noticias: [] };
+  if (!query) return { hoteles: [], centros: [], promos: [] };
   const q = norm(query);
 
   const hoteles = hotelList.filter(
@@ -31,23 +33,33 @@ function buildResults(query, hotelList) {
       (h.zona && norm(h.zona).includes(q))
   );
 
+  const centros = [];
   const promos = [];
   hotelList.forEach((h) => {
-    h.restaurantes.forEach((r, idx) => {
-      if (
-        norm(r.nombreCentroConsumo).includes(q) ||
-        norm(r.nombrePromocion).includes(q) ||
-        norm(r.descuento).includes(q) ||
-        norm(r.descripcionPromo).includes(q) ||
-        norm(r.descripcionRestaurante).includes(q) ||
-        norm(r.tipoCocina).includes(q)
-      ) {
-        promos.push({ hotel: h, rest: r, idx });
+    (h.restaurantes || []).forEach((rest) => {
+      const matchCentro =
+        norm(rest.nombreCentroConsumo).includes(q) ||
+        norm(rest.descripcionRestaurante).includes(q) ||
+        norm(rest.tipoCocina).includes(q) ||
+        norm(rest.especialidades).includes(q);
+      if (matchCentro) {
+        centros.push({ hotel: h, rest });
       }
+      (rest.promos || []).forEach((promo) => {
+        const matchPromo =
+          norm(promo.nombrePromocion).includes(q) ||
+          norm(promo.descuento).includes(q) ||
+          norm(promo.descripcionPromo).includes(q);
+        // Si el query también coincide con el centro, igual mostramos las
+        // promos de ese centro como resultados de promos (mejor UX).
+        if (matchPromo || matchCentro) {
+          promos.push({ hotel: h, rest, promo });
+        }
+      });
     });
   });
 
-  return { hoteles, promos, q };
+  return { hoteles, centros, promos };
 }
 
 export default function Buscar() {
@@ -90,6 +102,7 @@ export default function Buscar() {
   const hasQuery = query.trim().length > 0;
   const totalResults =
     results.hoteles.length +
+    results.centros.length +
     results.promos.length +
     results.partidos.length +
     results.noticias.length;
@@ -155,16 +168,16 @@ export default function Buscar() {
             </section>
           )}
 
-          {results.promos.length > 0 && (
+          {results.centros.length > 0 && (
             <section>
               <h2 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
-                {t('buscar.secciones.promos')} · {results.promos.length}
+                {t('buscar.secciones.centros')} · {results.centros.length}
               </h2>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {results.promos.map(({ hotel, rest, idx }) => (
-                  <li key={`${hotel.id}-${idx}`}>
+                {results.centros.map(({ hotel, rest }) => (
+                  <li key={`${hotel.id}-${rest.nombreCentroConsumo}`}>
                     <Link
-                      to={`/promo/${hotel.id}/${idx}`}
+                      to={`/hotel/${hotel.id}`}
                       className="flex items-start gap-3 bg-white border border-gray-200 hover:border-blue-300 rounded-xl p-3 transition-colors"
                     >
                       {rest.portada && (
@@ -182,21 +195,58 @@ export default function Buscar() {
                         <p className="font-bold text-gray-900 text-sm truncate">
                           {rest.nombreCentroConsumo}
                         </p>
-                        {rest.porcentaje ? (
-                          <p className="text-[11px] text-amber-700 flex items-center gap-1 mt-0.5">
-                            <Flame size={11} /> {rest.porcentaje} OFF · {tr(rest.descuento)}
+                        {rest.tipoCocina && (
+                          <p className="text-[11px] text-gray-500 truncate mt-0.5 inline-flex items-center gap-1">
+                            <UtensilsCrossed size={11} /> {tr(rest.tipoCocina)}
                           </p>
-                        ) : (
-                          rest.tipoCocina && (
-                            <p className="text-[11px] text-gray-500 truncate mt-0.5">
-                              {tr(rest.tipoCocina)}
-                            </p>
-                          )
                         )}
                       </div>
                     </Link>
                   </li>
                 ))}
+              </ul>
+            </section>
+          )}
+
+          {results.promos.length > 0 && (
+            <section>
+              <h2 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">
+                {t('buscar.secciones.promos')} · {results.promos.length}
+              </h2>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {results.promos.map(({ hotel, rest, promo }) => {
+                  const thumb = promo.portada || rest.portada;
+                  return (
+                    <li key={`${hotel.id}-${promo.id}`}>
+                      <Link
+                        to={`/promo/${hotel.id}/${promo.id}`}
+                        className="flex items-start gap-3 bg-white border border-gray-200 hover:border-blue-300 rounded-xl p-3 transition-colors"
+                      >
+                        {thumb && (
+                          <img
+                            src={thumb}
+                            alt=""
+                            className="w-16 h-16 rounded-lg object-cover flex-shrink-0"
+                            loading="lazy"
+                          />
+                        )}
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[10px] text-gray-400 uppercase tracking-wide truncate">
+                            {hotel.name} · {rest.nombreCentroConsumo}
+                          </p>
+                          <p className="font-bold text-gray-900 text-sm truncate">
+                            {tr(promo.nombrePromocion)}
+                          </p>
+                          {promo.porcentaje && (
+                            <p className="text-[11px] text-amber-700 flex items-center gap-1 mt-0.5">
+                              <Flame size={11} /> {promo.porcentaje} OFF · {tr(promo.descuento)}
+                            </p>
+                          )}
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
             </section>
           )}

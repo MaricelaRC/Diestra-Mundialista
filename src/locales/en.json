@@ -57,7 +57,10 @@
     "llamar": "Call",
     "ext": "ext.",
     "horarios": "Hours",
-    "off": "OFF"
+    "off": "OFF",
+    "promosDisponibles": "Promos available",
+    "sinPromos": "No active promotions",
+    "verPromos": "View promotions"
   },
   "horarios": {
     "abierto": "Open now",
@@ -152,7 +155,8 @@
     "sinResultados": "No results for \"{{q}}\".",
     "secciones": {
       "hoteles": "Hotels",
-      "promos": "Venues",
+      "centros": "Venues",
+      "promos": "Promotions",
       "partidos": "Matches",
       "noticias": "News"
     }

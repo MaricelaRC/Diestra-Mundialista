@@ -1,3 +1,7 @@
+// Detalle de una promoción específica. Se ubica vía /promo/:hotelId/:promoId
+// — buscamos la promo dentro de hoteles[].restaurantes[].promos[] por id.
+// La promo conoce su centro (parent), por eso mostramos info de centro debajo.
+
 import { Link, useParams } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -19,17 +23,25 @@ import Loader from '../components/Loader.jsx';
 import NotFound from './NotFound.jsx';
 import { useTr } from '../lib/i18nData.js';
 
+// Busca la promo dentro del hotel y devuelve también el centro al que pertenece.
+function findPromo(hotel, promoId) {
+  if (!hotel) return null;
+  for (const rest of hotel.restaurantes || []) {
+    for (const promo of rest.promos || []) {
+      if (promo.id === promoId) return { rest, promo };
+    }
+  }
+  return null;
+}
+
 export default function PromoDetail() {
   const { t, i18n } = useTranslation();
   const { tr, trArray } = useTr();
-  const { hotelId, idx } = useParams();
+  const { hotelId, promoId } = useParams();
   const { hoteles, loading } = useHotels();
   const hotel = hoteles.find((h) => h.id === hotelId);
-  const restIdx = Number(idx);
-  const rest = hotel?.restaurantes?.[restIdx];
+  const found = findPromo(hotel, promoId);
 
-  // Espera el primer snapshot de Firestore antes de pintar — si no, mostraríamos
-  // los valores del fallback estático y luego saltarían a los reales.
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -37,10 +49,14 @@ export default function PromoDetail() {
       </div>
     );
   }
-  if (!hotel || !rest) return <NotFound />;
+  if (!hotel || !found) return <NotFound />;
 
+  const { rest, promo } = found;
   const locale = i18n.language?.startsWith('en') ? 'en-US' : 'es-MX';
-  const hasPromo = Boolean(rest.porcentaje);
+  const hasPromo = Boolean(promo.porcentaje);
+  // Si la promo no tiene su portada vertical aún, mostramos la del centro
+  // (definida por Diestra) para no dejar el hero vacío.
+  const portada = promo.portada || rest.portada;
   const hasRestaurantInfo =
     rest.descripcionRestaurante ||
     rest.tipoCocina ||
@@ -50,8 +66,8 @@ export default function PromoDetail() {
 
   const handleShare = async () => {
     const shareData = {
-      title: `${tr(rest.nombrePromocion) || rest.nombreCentroConsumo} · ${hotel.name}`,
-      text: tr(rest.descripcionPromo) || tr(rest.descripcionRestaurante) || '',
+      title: `${tr(promo.nombrePromocion) || rest.nombreCentroConsumo} · ${hotel.name}`,
+      text: tr(promo.descripcionPromo) || tr(rest.descripcionRestaurante) || '',
       url: window.location.href
     };
     try {
@@ -66,9 +82,9 @@ export default function PromoDetail() {
     <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
       <div className="max-w-md md:max-w-3xl lg:max-w-4xl mx-auto bg-white md:bg-transparent shadow-2xl md:shadow-none border-x md:border-x-0 border-gray-200 min-h-screen">
         <div className="relative">
-          {rest.portada && (
+          {portada && (
             <PromoImage
-              src={rest.portada}
+              src={portada}
               alt={rest.nombreCentroConsumo}
               className="w-full h-56 md:h-80 lg:h-96"
             >
@@ -96,7 +112,7 @@ export default function PromoDetail() {
 
           {hasPromo && (
             <span className="absolute top-16 md:top-20 right-4 md:right-6 bg-red-600 text-white font-black text-base md:text-xl px-3 py-1 rounded-full shadow-lg z-30">
-              {rest.porcentaje} {t('alimentos.off')}
+              {promo.porcentaje} {t('alimentos.off')}
             </span>
           )}
 
@@ -105,7 +121,7 @@ export default function PromoDetail() {
               {hotel.name}
             </p>
             <h1 className="font-black text-2xl md:text-4xl tracking-tight drop-shadow leading-tight">
-              {tr(rest.nombrePromocion) || rest.nombreCentroConsumo}
+              {tr(promo.nombrePromocion) || rest.nombreCentroConsumo}
             </h1>
             <p className="text-sm md:text-base flex items-center gap-1 mt-1 drop-shadow">
               <MapPin size={14} /> {rest.nombreCentroConsumo} · {hotel.ciudad}{hotel.zona ? ` · ${hotel.zona}` : ''}, {hotel.estado}
@@ -117,24 +133,24 @@ export default function PromoDetail() {
           {hasPromo && (
             <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 md:p-5 space-y-2">
               <p className="text-xs md:text-sm font-black text-amber-800 uppercase tracking-tight flex items-center gap-2">
-                <Flame size={16} className="text-amber-600" /> {tr(rest.descuento)}
+                <Flame size={16} className="text-amber-600" /> {tr(promo.descuento)}
               </p>
               <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                {tr(rest.descripcionPromo)}
+                {tr(promo.descripcionPromo)}
               </p>
             </div>
           )}
 
-          {(rest.horarios?.length > 0 || (hasPromo && rest.fechaHorarioPublicacion)) && (
+          {(rest.horarios?.length > 0 || (hasPromo && promo.fechaHorarioPublicacion)) && (
             <div className="flex items-center flex-wrap gap-3">
               {rest.horarios?.length > 0 && (
                 <OpenStatusBadge horarios={rest.horarios} size="lg" />
               )}
-              {hasPromo && rest.fechaHorarioPublicacion && (
+              {hasPromo && promo.fechaHorarioPublicacion && (
                 <span className="text-xs md:text-sm text-gray-500 flex items-center gap-1.5">
                   <Clock size={14} />
                   {t('alimentos.publicacion')}:{' '}
-                  {new Date(rest.fechaHorarioPublicacion).toLocaleDateString(locale)}
+                  {new Date(promo.fechaHorarioPublicacion).toLocaleDateString(locale)}
                 </span>
               )}
             </div>

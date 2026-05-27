@@ -57,7 +57,10 @@
     "llamar": "Llamar al",
     "ext": "ext.",
     "horarios": "Horarios",
-    "off": "OFF"
+    "off": "OFF",
+    "promosDisponibles": "Promos disponibles",
+    "sinPromos": "Sin promociones activas",
+    "verPromos": "Ver promociones"
   },
   "horarios": {
     "abierto": "Abierto ahora",
@@ -152,7 +155,8 @@
     "sinResultados": "Sin resultados para \"{{q}}\".",
     "secciones": {
       "hoteles": "Hoteles",
-      "promos": "Centros de consumo",
+      "centros": "Centros de consumo",
+      "promos": "Promociones",
       "partidos": "Partidos",
       "noticias": "Noticias"
     }

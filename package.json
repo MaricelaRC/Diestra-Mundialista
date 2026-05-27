@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "optimize:stories": "node scripts/optimize-stories.mjs",
     "generate:og": "node scripts/generate-og.mjs",
-    "seed:firestore": "node --env-file=.env.local scripts/seed-firestore.mjs"
+    "seed:firestore": "node --env-file=.env.local scripts/seed-firestore.mjs",
+    "migrate:promos": "node --env-file=.env.local scripts/migrate-promos-to-array.mjs"
   },
   "dependencies": {
     "firebase": "^12.13.0",
