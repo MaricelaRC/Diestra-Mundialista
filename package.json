@@ -8,9 +8,11 @@
     "build": "vite build",
     "preview": "vite preview",
     "optimize:stories": "node scripts/optimize-stories.mjs",
-    "generate:og": "node scripts/generate-og.mjs"
+    "generate:og": "node scripts/generate-og.mjs",
+    "seed:firestore": "node --env-file=.env.local scripts/seed-firestore.mjs"
   },
   "dependencies": {
+    "firebase": "^12.13.0",
     "i18next": "^23.10.1",
     "i18next-browser-languagedetector": "^7.2.0",
     "lucide-react": "^0.344.0",
