@@ -39,7 +39,7 @@ export default function Home() {
           ) : (
             <div className="animate-in fade-in duration-500 space-y-8">
               {activeTab === 'alimentos' && (
-                <section className="space-y-5">
+                <section className="space-y-8">
                   <PromoBanner />
 
                   <div className="space-y-3 md:hidden">
