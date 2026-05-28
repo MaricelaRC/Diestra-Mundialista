@@ -109,7 +109,7 @@ export default function Buscar() {
 
   return (
     <div className="min-h-screen text-gray-900 font-sans">
-      <div className="max-w-md md:max-w-3xl lg:max-w-5xl mx-auto bg-white md:bg-transparent shadow-2xl md:shadow-none border-x md:border-x-0 border-gray-200 min-h-screen flex flex-col">
+      <div className="max-w-md md:max-w-3xl lg:max-w-5xl mx-auto bg-white shadow-2xl border-x border-gray-200 min-h-screen flex flex-col">
         <header className="sticky top-0 z-30 bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center gap-3">
           <Link
             to="/"

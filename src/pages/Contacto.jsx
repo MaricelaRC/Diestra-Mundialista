@@ -7,7 +7,7 @@ export default function Contacto() {
   const { t } = useTranslation();
   return (
     <div className="min-h-screen text-gray-900 font-sans">
-      <div className="max-w-md md:max-w-3xl mx-auto bg-white md:bg-transparent shadow-2xl md:shadow-none border-x md:border-x-0 border-gray-200 min-h-screen p-4 md:p-8 space-y-5">
+      <div className="max-w-md md:max-w-3xl mx-auto bg-white shadow-2xl border-x border-gray-200 min-h-screen p-4 md:p-8 space-y-5">
         <Link
           to="/"
           className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600"

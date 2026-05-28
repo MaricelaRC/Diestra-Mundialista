@@ -34,7 +34,7 @@ export default function CentroDetail() {
 
   return (
     <div className="min-h-screen text-gray-900 font-sans">
-      <div className="max-w-md md:max-w-2xl lg:max-w-3xl mx-auto bg-white md:bg-transparent shadow-2xl md:shadow-none border-x md:border-x-0 border-gray-200 min-h-screen">
+      <div className="max-w-md md:max-w-2xl lg:max-w-3xl mx-auto bg-white shadow-2xl border-x border-gray-200 min-h-screen">
         <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-gray-100 p-3 md:p-4 flex items-center gap-3">
           <Link
             to={`/hotel/${hotel.id}`}

@@ -79,7 +79,7 @@ export default function PromoDetail() {
 
   return (
     <div className="min-h-screen text-gray-900 font-sans">
-      <div className="max-w-md md:max-w-2xl lg:max-w-3xl mx-auto bg-white md:bg-transparent shadow-2xl md:shadow-none border-x md:border-x-0 border-gray-200 min-h-screen">
+      <div className="max-w-md md:max-w-2xl lg:max-w-3xl mx-auto bg-white shadow-2xl border-x border-gray-200 min-h-screen">
         {/* Botones flotantes sobre la imagen — no la cubren porque van fixed/absolute en la esquina. */}
         <div className="sticky top-0 z-30 flex items-center justify-between p-3 md:p-4 pointer-events-none">
           <Link
