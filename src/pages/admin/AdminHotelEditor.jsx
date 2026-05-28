@@ -76,8 +76,14 @@ export default function AdminHotelEditor() {
     setDrafts((prev) => {
       return hotel.restaurantes.map((rest, ci) => {
         const localPromos = prev[ci]?.promos || [];
-        const localOnly = localPromos.filter((p) => p._isNew);
         const firestoreCopy = (rest.promos || []).map((p) => ({ ...p }));
+        const firestoreIds = new Set(firestoreCopy.map((p) => p.id));
+        // Una promo _isNew local sigue siendo "solo local" mientras Firestore
+        // no la tenga todavía. Si ya tiene id y ese id ya viene en el snapshot,
+        // significa que su save ya aterrizó — se descarta para no duplicar.
+        const localOnly = localPromos.filter(
+          (p) => p._isNew && (!p.id || !firestoreIds.has(p.id))
+        );
         return { promos: [...firestoreCopy, ...localOnly] };
       });
     });
@@ -150,20 +156,41 @@ export default function AdminHotelEditor() {
       return;
     }
 
+    // Calcular id final ANTES del await: el snapshot puede llegar mientras
+    // updateDoc viaja, y el useEffect lo usa para deduplicar el draft local
+    // contra la promo que aparece en Firestore.
+    const restNow = hotel.restaurantes[ci];
+    const existingFromFirestore = (restNow?.promos || []).map((p) => ({ ...p }));
+    const otherIds = existingFromFirestore
+      .filter((p) => p.id !== draft.id)
+      .map((p) => p.id);
+    const newId = draft.id || uniquePromoId(draft.nombrePromocion.es, otherIds);
+
+    // Asigna el id al draft local (sigue _isNew=true hasta que confirmemos save).
+    // Con el id puesto, cuando el snapshot llegue con esa promo, el filtro
+    // del useEffect descartará este draft local y solo quedará la copia
+    // proveniente de Firestore.
+    setDrafts((prev) =>
+      prev.map((centro, i) =>
+        i === ci
+          ? {
+              ...centro,
+              promos: centro.promos.map((p, j) =>
+                j === pi ? { ...p, id: newId } : p
+              )
+            }
+          : centro
+      )
+    );
+
     setSavingKey(key);
     setErrors((e) => ({ ...e, [key]: undefined }));
     try {
+      const persisted = toPersisted(draft, newId);
       const newRestaurantes = hotel.restaurantes.map((rest, idx) => {
         if (idx !== ci) return rest;
-
         const existingPromos = (rest.promos || []).map((p) => ({ ...p }));
-        const otherIds = existingPromos.filter((p) => p.id !== draft.id).map((p) => p.id);
-
-        const id = draft.id || uniquePromoId(draft.nombrePromocion.es, otherIds);
-        const persisted = toPersisted(draft, id);
-
-        // Reemplaza si ya existe el id, si no la pone al final.
-        const existingIdx = existingPromos.findIndex((p) => p.id === id);
+        const existingIdx = existingPromos.findIndex((p) => p.id === newId);
         if (existingIdx >= 0) {
           existingPromos[existingIdx] = persisted;
         } else {
@@ -173,26 +200,6 @@ export default function AdminHotelEditor() {
       });
 
       await updateDoc(doc(db, 'hoteles', hotel.id), { restaurantes: newRestaurantes });
-
-      // Marca como ya no-nueva localmente y asigna id si era nuevo
-      setDrafts((prev) =>
-        prev.map((centro, i) =>
-          i === ci
-            ? {
-                ...centro,
-                promos: centro.promos.map((p, j) => {
-                  if (j !== pi) return p;
-                  const otherIds = centro.promos
-                    .filter((q, k) => k !== pi)
-                    .map((q) => q.id)
-                    .filter(Boolean);
-                  const finalId = p.id || uniquePromoId(p.nombrePromocion.es, otherIds);
-                  return { ...p, id: finalId, _isNew: false };
-                })
-              }
-            : centro
-        )
-      );
       setSavedAt((s) => ({ ...s, [key]: Date.now() }));
     } catch (err) {
       console.error('[AdminHotelEditor] save failed:', err);
