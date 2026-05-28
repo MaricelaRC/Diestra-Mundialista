@@ -25,4 +25,34 @@ html, body, #root {
 
 body {
   margin: 0;
+  /* Grass texture como fondo de la app. Fixed para que no scrollee con el
+     contenido (sensacion premium). Color de fallback verde profundo por si
+     la imagen no carga. */
+  background-color: #052e1a;
+  background-image: url('/grass-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* Vignette oscura encima del grass: muta los verdes en los bordes y enfoca
+   visualmente el centro donde vive la card de contenido. El pointer-events
+   none deja pasar clicks. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.72) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
 }

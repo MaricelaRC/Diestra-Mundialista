@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 export default function NotFound() {
   const { t } = useTranslation();
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-8">
+    <div className="min-h-screen flex items-center justify-center p-8">
       <div className="text-center space-y-4 max-w-md">
         <p className="text-6xl">⚽</p>
         <h1 className="text-2xl font-bold text-gray-900">{t('notFound.title')}</h1>

@@ -19,7 +19,7 @@ const SECCIONES = [
 export default function Privacidad() {
   const { t } = useTranslation();
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
+    <div className="min-h-screen text-gray-900 font-sans">
       <div className="max-w-md md:max-w-3xl mx-auto bg-white md:bg-transparent shadow-2xl md:shadow-none border-x md:border-x-0 border-gray-200 min-h-screen p-4 md:p-8 space-y-6">
         <Link
           to="/"
