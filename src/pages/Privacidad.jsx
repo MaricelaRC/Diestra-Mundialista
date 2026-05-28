@@ -20,7 +20,7 @@ export default function Privacidad() {
   const { t } = useTranslation();
   return (
     <div className="min-h-screen text-gray-900 font-sans px-2 md:px-0">
-      <div className="max-w-md md:max-w-3xl mx-auto bg-white shadow-2xl border-x border-gray-200 min-h-screen p-4 md:p-8 space-y-6">
+      <div className="max-w-md md:max-w-3xl mx-auto bg-white/85 md:bg-white backdrop-blur-md shadow-2xl border-x border-gray-200 min-h-screen p-4 md:p-8 space-y-6">
         <Link
           to="/"
           className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-blue-600"

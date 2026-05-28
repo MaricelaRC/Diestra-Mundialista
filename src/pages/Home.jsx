@@ -29,7 +29,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen text-gray-900 font-sans px-2 md:px-0">
-      <div className="max-w-md md:max-w-3xl lg:max-w-6xl mx-auto bg-white shadow-2xl border-x border-gray-200 min-h-screen flex flex-col">
+      <div className="max-w-md md:max-w-3xl lg:max-w-6xl mx-auto bg-white/85 md:bg-white backdrop-blur-md shadow-2xl border-x border-gray-200 min-h-screen flex flex-col">
         <Header activeTab={activeTab} onTabChange={setActiveTab} />
 
         <main className="flex-1 p-4 md:p-6 lg:p-8 pb-28 md:pb-12 space-y-8">
