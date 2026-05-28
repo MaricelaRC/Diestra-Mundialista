@@ -28,7 +28,7 @@ export default function Home() {
     setSelectedHotel((prev) => (prev === hotelId ? null : hotelId));
 
   return (
-    <div className="min-h-screen text-gray-900 font-sans">
+    <div className="min-h-screen text-gray-900 font-sans px-2 md:px-0">
       <div className="max-w-md md:max-w-3xl lg:max-w-6xl mx-auto bg-white shadow-2xl border-x border-gray-200 min-h-screen flex flex-col">
         <Header activeTab={activeTab} onTabChange={setActiveTab} />
 

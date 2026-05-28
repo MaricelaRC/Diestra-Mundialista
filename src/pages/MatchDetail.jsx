@@ -18,7 +18,7 @@ export default function MatchDetail() {
   const isLive = match.status === 'live';
 
   return (
-    <div className="min-h-screen text-gray-900 font-sans">
+    <div className="min-h-screen text-gray-900 font-sans px-2 md:px-0">
       <div className="max-w-md md:max-w-3xl lg:max-w-4xl mx-auto bg-white shadow-2xl border-x border-gray-200 min-h-screen">
         <div className="bg-gradient-to-br from-blue-700 to-indigo-800 text-white p-4 md:p-8 relative">
           <Link

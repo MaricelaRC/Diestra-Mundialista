@@ -44,7 +44,7 @@ export default function HotelDetail() {
   };
 
   return (
-    <div className="min-h-screen text-gray-900 font-sans">
+    <div className="min-h-screen text-gray-900 font-sans px-2 md:px-0">
       <div className="max-w-md md:max-w-3xl lg:max-w-5xl mx-auto bg-white shadow-2xl border-x border-gray-200 min-h-screen">
         {/* Hero: imagen del centro destacado, o gradiente si el hotel no tiene foto */}
         <div className="relative">
