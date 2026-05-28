@@ -239,7 +239,8 @@ export default function Buscar() {
                           </p>
                           {promo.porcentaje && (
                             <p className="text-[11px] text-amber-700 flex items-center gap-1 mt-0.5">
-                              <Flame size={11} /> {promo.porcentaje} OFF · {tr(promo.descuento)}
+                              <Flame size={11} /> {promo.porcentaje}
+                              {tr(promo.descuento) ? ` · ${tr(promo.descuento)}` : ''}
                             </p>
                           )}
                         </div>
