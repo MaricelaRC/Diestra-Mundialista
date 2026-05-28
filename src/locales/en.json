@@ -60,7 +60,8 @@
     "off": "OFF",
     "promosDisponibles": "Promos available",
     "sinPromos": "No active promotions",
-    "verPromos": "View promotions"
+    "verPromos": "View promotions",
+    "verDetalle": "View details"
   },
   "horarios": {
     "abierto": "Open now",
@@ -109,6 +110,12 @@
     "detail": {
       "centros": "Venues"
     }
+  },
+  "centro": {
+    "promociones": "Promotions",
+    "promosCount_one": "{{count}} active promotion",
+    "promosCount_other": "{{count}} active promotions",
+    "sinPromos": "This venue has no active promotions."
   },
   "contacto": {
     "title": "Get the best World Cup promos",

@@ -1,6 +1,7 @@
 import { ChevronDown, ChevronUp, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import RestaurantCard from './RestaurantCard.jsx';
+import { centroSlug } from '../lib/slug.js';
 
 export default function HotelCard({ hotel, expanded, onToggle }) {
   const { t } = useTranslation();
@@ -48,7 +49,12 @@ export default function HotelCard({ hotel, expanded, onToggle }) {
           className="border-t border-gray-100 bg-white p-3 space-y-4 animate-in slide-in-from-top duration-200"
         >
           {hotel.restaurantes.map((rest, idx) => (
-            <RestaurantCard key={idx} restaurante={rest} />
+            <RestaurantCard
+              key={idx}
+              restaurante={rest}
+              hotelId={hotel.id}
+              centroSlug={centroSlug(hotel.restaurantes, idx)}
+            />
           ))}
         </div>
       )}

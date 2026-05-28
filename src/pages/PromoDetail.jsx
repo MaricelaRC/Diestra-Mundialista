@@ -18,7 +18,6 @@ import { useTranslation } from 'react-i18next';
 import { useHotels } from '../hooks/useHotels.js';
 import { formatPhone, buildTelHref } from '../lib/phone.js';
 import OpenStatusBadge from '../components/OpenStatusBadge.jsx';
-import PromoImage from '../components/PromoImage.jsx';
 import Loader from '../components/Loader.jsx';
 import NotFound from './NotFound.jsx';
 import { useTr } from '../lib/i18nData.js';
@@ -80,67 +79,80 @@ export default function PromoDetail() {
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900 font-sans">
-      <div className="max-w-md md:max-w-3xl lg:max-w-4xl mx-auto bg-white md:bg-transparent shadow-2xl md:shadow-none border-x md:border-x-0 border-gray-200 min-h-screen">
-        <div className="relative">
-          {portada && (
-            <PromoImage
-              src={portada}
-              alt={rest.nombreCentroConsumo}
-              className="w-full h-56 md:h-80 lg:h-96"
-            >
-              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 z-20" />
-            </PromoImage>
-          )}
-
-          <div className="absolute top-0 inset-x-0 p-4 md:p-6 flex items-center justify-between z-30">
-            <Link
-              to={`/hotel/${hotel.id}`}
-              className="bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-md backdrop-blur-sm transition-colors"
-              aria-label={t('a11y.back')}
-            >
-              <ArrowLeft size={18} />
-            </Link>
-            <button
-              type="button"
-              onClick={handleShare}
-              className="bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-md backdrop-blur-sm transition-colors"
-              aria-label={t('a11y.share')}
-            >
-              <Share2 size={18} />
-            </button>
-          </div>
-
-          {hasPromo && (
-            <span className="absolute top-16 md:top-20 right-4 md:right-6 bg-red-600 text-white font-black text-base md:text-xl px-3 py-1 rounded-full shadow-lg z-30">
-              {promo.porcentaje} {t('alimentos.off')}
-            </span>
-          )}
-
-          <div className="absolute bottom-0 inset-x-0 p-4 md:p-6 text-white z-30">
-            <p className="text-[11px] md:text-sm uppercase tracking-widest opacity-90">
-              {hotel.name}
-            </p>
-            <h1 className="font-black text-2xl md:text-4xl tracking-tight drop-shadow leading-tight">
-              {tr(promo.nombrePromocion) || rest.nombreCentroConsumo}
-            </h1>
-            <p className="text-sm md:text-base flex items-center gap-1 mt-1 drop-shadow">
-              <MapPin size={14} /> {rest.nombreCentroConsumo} · {hotel.ciudad}{hotel.zona ? ` · ${hotel.zona}` : ''}, {hotel.estado}
-            </p>
-          </div>
+      <div className="max-w-md md:max-w-2xl lg:max-w-3xl mx-auto bg-white md:bg-transparent shadow-2xl md:shadow-none border-x md:border-x-0 border-gray-200 min-h-screen">
+        {/* Botones flotantes sobre la imagen — no la cubren porque van fixed/absolute en la esquina. */}
+        <div className="sticky top-0 z-30 flex items-center justify-between p-3 md:p-4 pointer-events-none">
+          <Link
+            to={`/hotel/${hotel.id}`}
+            className="pointer-events-auto bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-md backdrop-blur-sm transition-colors"
+            aria-label={t('a11y.back')}
+          >
+            <ArrowLeft size={18} />
+          </Link>
+          <button
+            type="button"
+            onClick={handleShare}
+            className="pointer-events-auto bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 shadow-md backdrop-blur-sm transition-colors"
+            aria-label={t('a11y.share')}
+          >
+            <Share2 size={18} />
+          </button>
         </div>
 
+        {/* Imagen en su aspect ratio natural — sin recortes, sin overlays. Es la
+            hero principal y el flyer suele traer su propia info gráfica. */}
+        {portada && (
+          <div className="-mt-12 md:-mt-14 bg-gray-100">
+            <img
+              src={portada}
+              alt={tr(promo.nombrePromocion) || rest.nombreCentroConsumo}
+              className="w-full h-auto block"
+            />
+          </div>
+        )}
+
         <section className="p-4 md:p-6 lg:p-8 space-y-5">
+          {/* 1. Título (con hotel como kicker pequeño arriba) */}
+          <header className="space-y-1">
+            <p className="text-[11px] md:text-sm uppercase tracking-widest text-gray-500 font-semibold">
+              {hotel.name}
+            </p>
+            <h1 className="font-black text-2xl md:text-4xl tracking-tight text-gray-900 leading-tight">
+              {tr(promo.nombrePromocion) || rest.nombreCentroConsumo}
+            </h1>
+          </header>
+
+          {/* 2. Píldora roja */}
           {hasPromo && (
-            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 md:p-5 space-y-2">
-              <p className="text-xs md:text-sm font-black text-amber-800 uppercase tracking-tight flex items-center gap-2">
-                <Flame size={16} className="text-amber-600" /> {tr(promo.descuento)}
-              </p>
-              <p className="text-sm md:text-base text-gray-700 leading-relaxed">
-                {tr(promo.descripcionPromo)}
-              </p>
+            <div>
+              <span className="inline-flex items-center bg-red-600 text-white font-black text-sm md:text-base px-3 py-1 rounded-full shadow-md">
+                {promo.porcentaje}
+              </span>
             </div>
           )}
 
+          {/* 3. Descripción de la promo */}
+          {hasPromo && (tr(promo.descuento) || tr(promo.descripcionPromo)) && (
+            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 md:p-5 space-y-2">
+              {tr(promo.descuento) && (
+                <p className="text-xs md:text-sm font-black text-amber-800 uppercase tracking-tight flex items-center gap-2">
+                  <Flame size={16} className="text-amber-600" /> {tr(promo.descuento)}
+                </p>
+              )}
+              {tr(promo.descripcionPromo) && (
+                <p className="text-sm md:text-base text-gray-700 leading-relaxed">
+                  {tr(promo.descripcionPromo)}
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* 4. Lugar */}
+          <p className="text-sm md:text-base text-gray-600 flex items-center gap-1.5">
+            <MapPin size={14} /> {rest.nombreCentroConsumo} · {hotel.ciudad}{hotel.zona ? ` · ${hotel.zona}` : ''}, {hotel.estado}
+          </p>
+
+          {/* 5. Horarios (estado de apertura + fecha de publicación) */}
           {(rest.horarios?.length > 0 || (hasPromo && promo.fechaHorarioPublicacion)) && (
             <div className="flex items-center flex-wrap gap-3">
               {rest.horarios?.length > 0 && (

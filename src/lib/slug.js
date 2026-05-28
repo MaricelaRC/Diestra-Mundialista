@@ -22,3 +22,26 @@ export function uniquePromoId(base, existingIds = []) {
   while (existingIds.includes(`${slug}-${i}`)) i++;
   return `${slug}-${i}`;
 }
+
+// Slug de un centro de consumo dentro de un hotel — usado en URLs
+// /hotel/:hotelId/centro/:centroSlug. Si hay nombres colisionando, se
+// agrega -2, -3 según la posición del centro en hotel.restaurantes[].
+export function centroSlug(restaurantes, idx) {
+  const target = restaurantes?.[idx];
+  if (!target) return '';
+  const base = slugify(target.nombreCentroConsumo) || 'centro';
+  let position = 0;
+  for (let i = 0; i < idx; i++) {
+    if (slugify(restaurantes[i]?.nombreCentroConsumo) === base) position++;
+  }
+  return position === 0 ? base : `${base}-${position + 1}`;
+}
+
+// Inverso: dado un slug, devuelve el índice del centro en restaurantes[] o -1.
+export function findCentroIdxBySlug(restaurantes, slug) {
+  if (!restaurantes || !slug) return -1;
+  for (let i = 0; i < restaurantes.length; i++) {
+    if (centroSlug(restaurantes, i) === slug) return i;
+  }
+  return -1;
+}

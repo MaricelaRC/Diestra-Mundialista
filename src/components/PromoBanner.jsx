@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, MapPin, Pause, Play } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, MapPin, Pause, Play } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useHotels } from '../hooks/useHotels.js';
 import { useTr } from '../lib/i18nData.js';
@@ -68,7 +68,7 @@ export default function PromoBanner() {
   return (
     <div className="relative rounded-2xl overflow-hidden shadow-md" aria-roledescription="carousel">
       <div
-        className="relative h-48 md:h-72 lg:h-80 bg-gray-200"
+        className="relative aspect-[4/5] md:aspect-[16/10] bg-gray-200"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
@@ -91,10 +91,13 @@ export default function PromoBanner() {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent z-20" />
               </PromoImage>
               <div className="absolute inset-x-0 bottom-0 p-4 pb-12 md:p-6 md:pb-14 text-white z-30">
-                <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mb-2">
+                <h3 className="font-black text-base md:text-2xl tracking-tight drop-shadow-lg leading-tight">
+                  {tr(promo.nombrePromocion) || rest.nombreCentroConsumo}
+                </h3>
+                <div className="flex flex-wrap items-center gap-1.5 md:gap-2 mt-2">
                   {promo.porcentaje && (
                     <span className="inline-flex items-center bg-red-600 text-white text-[10px] md:text-xs font-black px-2.5 py-1 rounded-full shadow-md tracking-wide">
-                      {promo.porcentaje} {t('alimentos.off')}
+                      {promo.porcentaje}
                     </span>
                   )}
                   <span className="inline-flex items-center gap-1 bg-white/20 backdrop-blur-md text-white text-[10px] md:text-xs font-bold px-2.5 py-1 rounded-full border border-white/30 shadow-md tracking-wide">
@@ -102,14 +105,15 @@ export default function PromoBanner() {
                     {hotel.name}
                   </span>
                 </div>
-                <h3 className="font-black text-base md:text-2xl tracking-tight drop-shadow-lg leading-tight">
-                  {tr(promo.nombrePromocion) || rest.nombreCentroConsumo}
-                </h3>
                 {tr(promo.descuento) && (
                   <p className="text-xs md:text-sm opacity-95 mt-1 line-clamp-1 md:line-clamp-2 drop-shadow">
                     {tr(promo.descuento)}
                   </p>
                 )}
+                <span className="inline-flex items-center gap-1.5 mt-3 bg-white text-gray-900 text-xs md:text-sm font-bold px-3.5 py-1.5 rounded-full shadow-md hover:bg-blue-50 transition-colors">
+                  {t('alimentos.verDetalle')}
+                  <ArrowRight size={14} />
+                </span>
               </div>
             </Link>
           ))}

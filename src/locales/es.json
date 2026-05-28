@@ -60,7 +60,8 @@
     "off": "OFF",
     "promosDisponibles": "Promos disponibles",
     "sinPromos": "Sin promociones activas",
-    "verPromos": "Ver promociones"
+    "verPromos": "Ver promociones",
+    "verDetalle": "Ver detalle"
   },
   "horarios": {
     "abierto": "Abierto ahora",
@@ -109,6 +110,12 @@
     "detail": {
       "centros": "Centros de Consumo"
     }
+  },
+  "centro": {
+    "promociones": "Promociones",
+    "promosCount_one": "{{count}} promoción activa",
+    "promosCount_other": "{{count}} promociones activas",
+    "sinPromos": "Este centro no tiene promociones activas."
   },
   "contacto": {
     "title": "Recibe las mejores promos del Mundial",

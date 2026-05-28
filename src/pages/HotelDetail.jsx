@@ -5,6 +5,7 @@ import { useHotels } from '../hooks/useHotels.js';
 import RestaurantCard from '../components/RestaurantCard.jsx';
 import Loader from '../components/Loader.jsx';
 import NotFound from './NotFound.jsx';
+import { centroSlug } from '../lib/slug.js';
 
 export default function HotelDetail() {
   const { t } = useTranslation();
@@ -95,7 +96,12 @@ export default function HotelDetail() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {hotel.restaurantes.map((rest, idx) => (
-              <RestaurantCard key={idx} restaurante={rest} />
+              <RestaurantCard
+                key={idx}
+                restaurante={rest}
+                hotelId={hotel.id}
+                centroSlug={centroSlug(hotel.restaurantes, idx)}
+              />
             ))}
           </div>
         </section>

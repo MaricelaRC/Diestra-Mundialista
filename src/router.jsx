@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import Home from './pages/Home.jsx';
 import HotelDetail from './pages/HotelDetail.jsx';
+import CentroDetail from './pages/CentroDetail.jsx';
 import PromoDetail from './pages/PromoDetail.jsx';
 import MatchDetail from './pages/MatchDetail.jsx';
 import Contacto from './pages/Contacto.jsx';
@@ -30,6 +31,7 @@ export const router = createBrowserRouter([
   { path: '/', element: <Home /> },
   { path: '/buscar', element: <Buscar /> },
   { path: '/hotel/:id', element: <HotelDetail /> },
+  { path: '/hotel/:hotelId/centro/:centroSlug', element: <CentroDetail /> },
   { path: '/promo/:hotelId/:promoId', element: <PromoDetail /> },
   { path: '/partido/:id', element: <MatchDetail /> },
   { path: '/contacto', element: <Contacto /> },

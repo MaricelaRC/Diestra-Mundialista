@@ -4,16 +4,18 @@
 // "Promociones" del hotel, no aquí.
 
 import { Clock, Phone, Sparkles, UtensilsCrossed } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import OpenStatusBadge from './OpenStatusBadge.jsx';
 import { formatPhone, buildTelHref } from '../lib/phone.js';
 import { useTr } from '../lib/i18nData.js';
 import PromoImage from './PromoImage.jsx';
 
-export default function RestaurantCard({ restaurante }) {
+export default function RestaurantCard({ restaurante, hotelId, centroSlug }) {
   const { t } = useTranslation();
   const { tr } = useTr();
   const tienePromos = (restaurante.promos || []).length > 0;
+  const promosHref = hotelId && centroSlug ? `/hotel/${hotelId}/centro/${centroSlug}` : null;
 
   return (
     <div className="border border-gray-100 rounded-xl overflow-hidden bg-gray-50/30 p-3 space-y-3 shadow-sm">
@@ -24,9 +26,18 @@ export default function RestaurantCard({ restaurante }) {
           className="w-full h-32 md:h-40 rounded-lg border border-gray-100 shadow-sm"
         >
           {tienePromos && (
-            <span className="absolute top-2 right-2 bg-red-600 text-white font-black text-[10px] md:text-xs px-2.5 py-1 rounded-full shadow-md z-20 inline-flex items-center gap-1 uppercase tracking-wide">
-              <Sparkles size={11} /> {t('alimentos.promosDisponibles')}
-            </span>
+            promosHref ? (
+              <Link
+                to={promosHref}
+                className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white font-black text-[10px] md:text-xs px-2.5 py-1 rounded-full shadow-md z-20 inline-flex items-center gap-1 uppercase tracking-wide transition-colors"
+              >
+                <Sparkles size={11} /> {t('alimentos.promosDisponibles')}
+              </Link>
+            ) : (
+              <span className="absolute top-2 right-2 bg-red-600 text-white font-black text-[10px] md:text-xs px-2.5 py-1 rounded-full shadow-md z-20 inline-flex items-center gap-1 uppercase tracking-wide">
+                <Sparkles size={11} /> {t('alimentos.promosDisponibles')}
+              </span>
+            )
           )}
         </PromoImage>
       )}
