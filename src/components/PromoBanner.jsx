@@ -67,7 +67,7 @@ export default function PromoBanner() {
   return (
     <div className="relative rounded-2xl overflow-hidden shadow-md" aria-roledescription="carousel">
       <div
-        className="relative aspect-[5/3] md:aspect-[16/9] bg-gray-200"
+        className="relative aspect-[3/2] md:aspect-[16/9] bg-gray-200"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
