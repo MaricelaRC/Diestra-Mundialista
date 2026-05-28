@@ -8,6 +8,7 @@ import PromoDetail from './pages/PromoDetail.jsx';
 import MatchDetail from './pages/MatchDetail.jsx';
 import Contacto from './pages/Contacto.jsx';
 import Buscar from './pages/Buscar.jsx';
+import Privacidad from './pages/Privacidad.jsx';
 import NotFound from './pages/NotFound.jsx';
 
 // Rutas admin: lazy-loaded para que el JS no impacte la app pública.
@@ -35,6 +36,7 @@ export const router = createBrowserRouter([
   { path: '/promo/:hotelId/:promoId', element: <PromoDetail /> },
   { path: '/partido/:id', element: <MatchDetail /> },
   { path: '/contacto', element: <Contacto /> },
+  { path: '/privacidad', element: <Privacidad /> },
 
   // Admin
   { path: '/admin/login', element: wrapAdmin(<AdminLogin />) },

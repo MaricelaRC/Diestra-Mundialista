@@ -131,7 +131,8 @@
       "ciudad": "Preferred city",
       "ciudadAny": "All cities"
     },
-    "consentimiento": "I agree to receive communications from Grupo Diestra and understand my data will be handled under the privacy policy.",
+    "consentimiento": "I agree to receive communications from Grupo Diestra and understand my data will be handled under the",
+    "avisoLink": "privacy policy",
     "submit": "Send me the promos",
     "sending": "Sending...",
     "success": {
@@ -172,5 +173,36 @@
     "title": "Page not found",
     "body": "The content you're looking for doesn't exist or has been moved.",
     "cta": "← Back to home"
+  },
+  "privacidad": {
+    "title": "Privacy Policy",
+    "updated": "Last updated: May 2026",
+    "volver": "Back to home",
+    "secciones": {
+      "responsable": {
+        "title": "Data controller",
+        "body": "Grupo Diestra (the \"Controller\"), reachable at corporativogpodiestra@gmail.com, is responsible for the use and protection of your personal data."
+      },
+      "datos": {
+        "title": "Personal data collected",
+        "body": "Through the newsletter signup form we collect: name, email and, optionally, your preferred city. We do not request sensitive data."
+      },
+      "finalidades": {
+        "title": "Purposes of processing",
+        "body": "Your data is used solely to send you information about dining promotions at Grupo Diestra hotels during the 2026 tournament, and occasionally before and after it. We do not perform profiling, scoring, or share your data with third parties for commercial purposes."
+      },
+      "transferencias": {
+        "title": "Transfers",
+        "body": "Your data is not transferred to third parties, except to providers strictly necessary to operate the service (for example, the email delivery service). These providers act as data processors under our instructions."
+      },
+      "derechos": {
+        "title": "ARCO rights and consent withdrawal",
+        "body": "You may exercise your rights of Access, Rectification, Cancellation or Opposition (ARCO), and withdraw the consent you granted us, at any time by emailing corporativogpodiestra@gmail.com with the subject \"ARCO Rights\". We'll address your request within the deadlines established by Mexican data protection law (LFPDPPP)."
+      },
+      "cambios": {
+        "title": "Changes to this notice",
+        "body": "Any changes to this notice will be published on this same page. We recommend reviewing it periodically."
+      }
+    }
   }
 }

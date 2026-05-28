@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { CheckCircle2, Mail } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useHotels } from '../hooks/useHotels.js';
 
@@ -164,7 +165,13 @@ export default function NewsletterForm({ compact = false }) {
           onChange={update('acepta')}
           className="mt-0.5 accent-blue-600"
         />
-        <span>{t('newsletter.consentimiento')}</span>
+        <span>
+          {t('newsletter.consentimiento')}{' '}
+          <Link to="/privacidad" className="text-blue-600 hover:text-blue-700 underline">
+            {t('newsletter.avisoLink')}
+          </Link>
+          .
+        </span>
       </label>
 
       {error && (

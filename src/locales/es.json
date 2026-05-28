@@ -131,7 +131,8 @@
       "ciudad": "Ciudad de interés",
       "ciudadAny": "Todas las ciudades"
     },
-    "consentimiento": "Acepto recibir comunicaciones de Grupo Diestra y conozco que mis datos serán tratados conforme al aviso de privacidad.",
+    "consentimiento": "Acepto recibir comunicaciones de Grupo Diestra y conozco que mis datos serán tratados conforme al",
+    "avisoLink": "aviso de privacidad",
     "submit": "Quiero recibir las promos",
     "sending": "Enviando...",
     "success": {
@@ -172,5 +173,36 @@
     "title": "Página no encontrada",
     "body": "El contenido que buscas no existe o fue movido.",
     "cta": "← Volver al inicio"
+  },
+  "privacidad": {
+    "title": "Aviso de Privacidad",
+    "updated": "Última actualización: mayo 2026",
+    "volver": "Volver al inicio",
+    "secciones": {
+      "responsable": {
+        "title": "Responsable del tratamiento",
+        "body": "Grupo Diestra (en adelante \"el Responsable\"), con correo de contacto corporativogpodiestra@gmail.com, es responsable del uso y protección de tus datos personales."
+      },
+      "datos": {
+        "title": "Datos personales recabados",
+        "body": "A través del formulario de suscripción al boletín recabamos: nombre, correo electrónico y, opcionalmente, la ciudad de tu preferencia. No solicitamos datos sensibles."
+      },
+      "finalidades": {
+        "title": "Finalidades del tratamiento",
+        "body": "Tus datos se usan exclusivamente para enviarte información sobre promociones gastronómicas en los hoteles del Grupo Diestra durante la Copa del Mundo 2026 y, ocasionalmente, antes y después del torneo. No realizamos perfilamiento, scoring ni cesión a terceros para fines comerciales."
+      },
+      "transferencias": {
+        "title": "Transferencias",
+        "body": "Tus datos no se transfieren a terceros, salvo a los proveedores estrictamente necesarios para operar el servicio (por ejemplo, el servicio de entrega de correo). Estos proveedores actúan como encargados del tratamiento bajo nuestras instrucciones."
+      },
+      "derechos": {
+        "title": "Derechos ARCO y revocación del consentimiento",
+        "body": "En cualquier momento puedes ejercer tus derechos de Acceso, Rectificación, Cancelación u Oposición (ARCO), así como revocar el consentimiento que nos otorgaste, enviando un correo a corporativogpodiestra@gmail.com con el asunto \"Derechos ARCO\". Atenderemos tu solicitud dentro de los plazos que marca la LFPDPPP."
+      },
+      "cambios": {
+        "title": "Cambios al aviso",
+        "body": "Cualquier modificación a este aviso será publicada en esta misma página. Te sugerimos consultarla periódicamente."
+      }
+    }
   }
 }

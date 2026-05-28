@@ -172,12 +172,19 @@ export default function MobileDrawer({ open, onClose, activeTab, onTabChange }) 
               );
             })}
           </div>
-          <p
-            className="text-[10px] text-gray-400 pt-2"
+          <div
+            className="flex items-center justify-between gap-2 text-[10px] text-gray-400 pt-2"
             style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 0px)' }}
           >
-            © 2026 Grupo Diestra
-          </p>
+            <span>© 2026 Grupo Diestra</span>
+            <Link
+              to="/privacidad"
+              onClick={onClose}
+              className="hover:text-blue-600 underline"
+            >
+              {t('newsletter.avisoLink')}
+            </Link>
+          </div>
         </div>
       </aside>
     </>
