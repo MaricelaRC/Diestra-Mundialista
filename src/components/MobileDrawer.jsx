@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   BarChart3,
@@ -23,6 +23,7 @@ const NAV_ITEMS = [
 export default function MobileDrawer({ open, onClose, activeTab, onTabChange }) {
   const { t, i18n } = useTranslation();
   const currentLang = i18n.language?.startsWith('en') ? 'en' : 'es';
+  const [logoOk, setLogoOk] = useState(true);
 
   // Bloquea el scroll del body mientras el drawer está abierto
   useEffect(() => {
@@ -68,17 +69,25 @@ export default function MobileDrawer({ open, onClose, activeTab, onTabChange }) 
           open ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="flex items-start justify-between p-5 border-b border-gray-100">
-          <div>
-            <p className="text-blue-600 font-black text-xl tracking-tight">DIESTRA</p>
-            <p className="text-[10px] text-gray-400 uppercase tracking-widest font-semibold mt-0.5">
-              World Cup 2026
-            </p>
-          </div>
+        <div className="flex items-center justify-between p-5 border-b border-gray-100">
+          <Link to="/" onClick={onClose} className="flex items-center">
+            {logoOk ? (
+              <img
+                src="/logo-diestra.png"
+                alt="Grupo Diestra"
+                className="h-9 w-auto"
+                onError={() => setLogoOk(false)}
+              />
+            ) : (
+              <span className="text-blue-600 font-black text-xl tracking-tight">
+                DIESTRA
+              </span>
+            )}
+          </Link>
           <button
             type="button"
             onClick={onClose}
-            className="p-2 -mr-2 -mt-1 rounded-full text-gray-500 hover:bg-gray-100 active:bg-gray-200"
+            className="p-2 -mr-2 rounded-full text-gray-500 hover:bg-gray-100 active:bg-gray-200"
             aria-label={t('drawer.close')}
           >
             <X size={20} />

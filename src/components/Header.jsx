@@ -43,9 +43,6 @@ export default function Header({ activeTab, onTabChange }) {
                 DIESTRA
               </span>
             )}
-            <span className="hidden md:inline text-[10px] text-gray-400 font-semibold uppercase tracking-widest">
-              World Cup 2026
-            </span>
           </Link>
 
           <Link
