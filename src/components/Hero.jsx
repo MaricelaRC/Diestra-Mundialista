@@ -27,14 +27,23 @@ function Unit({ value, label }) {
   return (
     <div className="flex flex-col items-center">
       <div className="h-10 md:h-14 flex items-center justify-center overflow-hidden">
-        <span
-          key={padded}
-          className="block text-3xl md:text-5xl font-black tabular-nums leading-none animate-in fade-in slide-in-from-top-3 duration-500"
-        >
-          {padded}
-        </span>
+        {/* Stack: ghost "88" atras (segmentos apagados) + digito real al frente. */}
+        <div className="relative leading-none">
+          <span
+            aria-hidden="true"
+            className="block text-3xl md:text-5xl font-scoreboard-ghost tabular-nums leading-none"
+          >
+            88
+          </span>
+          <span
+            key={padded}
+            className="absolute inset-0 text-3xl md:text-5xl font-scoreboard tabular-nums leading-none animate-in fade-in duration-200"
+          >
+            {padded}
+          </span>
+        </div>
       </div>
-      <span className="text-[9px] md:text-[10px] uppercase tracking-widest font-bold opacity-80 mt-1">
+      <span className="text-[9px] md:text-[10px] uppercase tracking-widest font-bold opacity-80 mt-2">
         {label}
       </span>
     </div>
@@ -45,9 +54,9 @@ function Sep() {
   return (
     <div className="flex flex-col items-center">
       <div className="h-10 md:h-14 flex items-center">
-        <span className="text-2xl md:text-4xl font-black opacity-50 leading-none">:</span>
+        <span className="text-3xl md:text-5xl font-scoreboard leading-none -mt-2">:</span>
       </div>
-      <span aria-hidden="true" className="text-[9px] md:text-[10px] opacity-0 mt-1 select-none">
+      <span aria-hidden="true" className="text-[9px] md:text-[10px] opacity-0 mt-2 select-none">
         .
       </span>
     </div>
@@ -97,19 +106,22 @@ export default function Hero() {
       />
 
       <div className="relative p-6 md:p-10 flex flex-col items-center justify-center text-center gap-5 md:gap-6 min-h-[360px] md:min-h-[400px]">
-        <div className="space-y-3 md:space-y-4 max-w-2xl">
-          <h2 className="font-black text-3xl md:text-5xl leading-[1.05] tracking-tight drop-shadow-lg">
+        <div className="space-y-3 md:space-y-4 max-w-2xl md:max-w-4xl">
+          <h2 className="font-bold text-3xl md:text-4xl leading-[1.05] tracking-tight drop-shadow-lg">
             {t('hero.title')}
           </h2>
 
-          <p className="text-sm md:text-lg opacity-90 leading-relaxed">
+          <p className="text-sm md:text-lg opacity-90 leading-relaxed max-w-2xl mx-auto">
             {t('hero.subtitle')}
           </p>
         </div>
 
         <div className="flex flex-col items-center gap-4 md:gap-5">
           {time && (
-            <div className="inline-flex items-start gap-1.5 md:gap-3 bg-black/30 backdrop-blur-md rounded-2xl px-4 py-3 md:px-6 md:py-4 border border-white/10">
+            <div
+              className="inline-flex items-start gap-2 md:gap-4 bg-black/75 rounded-xl px-5 py-4 md:px-7 md:py-5 border-2 border-black/60"
+              style={{ boxShadow: 'inset 0 0 24px rgba(0,0,0,0.6), 0 4px 14px rgba(0,0,0,0.4)' }}
+            >
               <Unit value={time.dias} label={t('countdown.units.dias')} />
               <Sep />
               <Unit value={time.horas} label={t('countdown.units.horas')} />

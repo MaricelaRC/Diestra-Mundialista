@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* DSEG7-Classic: font open-source que emula displays LED de 7 segmentos
+   (tipo marcador de estadio). Cargada via CDN de jsDelivr desde el repo
+   oficial de Keshikan. */
+@font-face {
+  font-family: 'DSEG7Classic';
+  src: url('https://cdn.jsdelivr.net/gh/keshikan/DSEG@v0.46/fonts/DSEG7-Classic/DSEG7Classic-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @layer base {
   body {
     font-family: 'Montserrat', system-ui, sans-serif;
@@ -17,6 +28,24 @@
 @layer utilities {
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* Estilo "marcador de estadio": digitos LED de 7 segmentos rojo con glow.
+     El `.font-scoreboard-ghost` pinta el digito completo (888...) atenuado
+     atras para simular los segmentos apagados de un display real. */
+  .font-scoreboard {
+    font-family: 'DSEG7Classic', ui-monospace, 'Courier New', monospace;
+    color: #ef4444;
+    text-shadow:
+      0 0 6px rgba(239, 68, 68, 0.9),
+      0 0 14px rgba(239, 68, 68, 0.55),
+      0 0 28px rgba(239, 68, 68, 0.35);
+    letter-spacing: 0.02em;
+  }
+  .font-scoreboard-ghost {
+    font-family: 'DSEG7Classic', ui-monospace, 'Courier New', monospace;
+    color: rgba(239, 68, 68, 0.13);
+    letter-spacing: 0.02em;
+  }
 }
 
 html, body, #root {
