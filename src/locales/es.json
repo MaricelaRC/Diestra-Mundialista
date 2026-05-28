@@ -36,12 +36,14 @@
     "instagramOf": "Instagram de {{name}}"
   },
   "countdown": {
-    "faltan": "Faltan",
-    "enCurso": "Mundial en curso",
-    "uno": "1 día {{contexto}}",
-    "muchos": "{{dias}} días {{contexto}}",
-    "contextoInicio": "para la Copa Mundial 2026",
-    "contextoFin": "para la final"
+    "tituloInicio": "Faltan para el Mundial 2026",
+    "tituloFin": "Mundial 2026 · Termina en",
+    "units": {
+      "dias": "Días",
+      "horas": "Horas",
+      "minutos": "Minutos",
+      "segundos": "Segundos"
+    }
   },
   "alimentos": {
     "intro": {
