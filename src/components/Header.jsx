@@ -47,11 +47,11 @@ export default function Header({ activeTab, onTabChange }) {
 
           <Link
             to="/buscar"
-            className="bg-gray-100 hover:bg-gray-200 transition-colors rounded-full px-4 py-2 flex items-center gap-2 flex-1 max-w-xl border border-gray-200/50"
+            className="bg-gray-100 hover:bg-gray-200 transition-colors rounded-full px-4 py-2 flex items-center gap-2 flex-1 min-w-0 max-w-xl border border-gray-200/50"
             aria-label={t('buscar.cta')}
           >
-            <Search size={14} className="text-gray-400" />
-            <span className="text-xs md:text-sm text-gray-500 truncate">
+            <Search size={14} className="text-gray-400 flex-shrink-0" />
+            <span className="text-xs md:text-sm text-gray-500 truncate min-w-0">
               {t('header.searchPlaceholder')}
             </span>
           </Link>
