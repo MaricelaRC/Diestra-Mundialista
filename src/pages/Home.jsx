@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MoreHorizontal, UtensilsCrossed } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Header from '../components/Header.jsx';
 import Loader from '../components/Loader.jsx';
@@ -10,7 +10,7 @@ import NewsItem from '../components/NewsItem.jsx';
 import StandingsTable from '../components/StandingsTable.jsx';
 import Lineup from '../components/Lineup.jsx';
 import PromoBanner from '../components/PromoBanner.jsx';
-import MundialCountdown from '../components/MundialCountdown.jsx';
+import Hero from '../components/Hero.jsx';
 import NewsletterForm from '../components/NewsletterForm.jsx';
 import MobileNavBar from '../components/MobileNavBar.jsx';
 import { useHotels } from '../hooks/useHotels.js';
@@ -33,7 +33,7 @@ export default function Home() {
         <Header activeTab={activeTab} onTabChange={setActiveTab} />
 
         <main className="flex-1 p-4 md:p-6 lg:p-8 pb-28 md:pb-12 space-y-8">
-          <MundialCountdown />
+          <Hero />
           {loading ? (
             <Loader />
           ) : (
@@ -41,16 +41,6 @@ export default function Home() {
               {activeTab === 'alimentos' && (
                 <section className="space-y-5">
                   <PromoBanner />
-
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 md:p-6 rounded-2xl border border-blue-100">
-                    <h3 className="font-extrabold text-blue-900 text-sm md:text-base flex items-center gap-2">
-                      <UtensilsCrossed size={16} className="text-blue-600 animate-pulse" />
-                      {t('alimentos.intro.title')}
-                    </h3>
-                    <p className="text-[11px] md:text-sm text-blue-700 mt-1 leading-relaxed">
-                      {t('alimentos.intro.body')}
-                    </p>
-                  </div>
 
                   <div className="space-y-3 md:hidden">
                     {hoteles.map((hotel) => (
