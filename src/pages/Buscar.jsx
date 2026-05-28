@@ -267,7 +267,7 @@ export default function Buscar() {
                         <Calendar size={11} /> {m.date} · {m.time}
                       </p>
                       <p className="font-bold text-gray-900 text-sm mt-0.5">
-                        {m.home} <span className="text-gray-300 italic mx-1">vs</span> {m.away}
+                        {tr(m.home)} <span className="text-gray-300 italic mx-1">vs</span> {tr(m.away)}
                       </p>
                       <p className="text-xs text-gray-500 mt-0.5">{m.stadium} · {m.city}</p>
                     </Link>
@@ -294,7 +294,7 @@ export default function Buscar() {
                       <p className="text-[10px] text-blue-600 uppercase font-bold flex items-center gap-1">
                         <Newspaper size={11} /> {n.source}
                       </p>
-                      <p className="font-bold text-gray-900 text-sm mt-0.5">{n.title}</p>
+                      <p className="font-bold text-gray-900 text-sm mt-0.5">{tr(n.title)}</p>
                     </a>
                   </li>
                 ))}
