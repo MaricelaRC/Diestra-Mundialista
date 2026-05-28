@@ -4,7 +4,6 @@ import { ArrowRight, ChevronLeft, ChevronRight, MapPin, Pause, Play } from 'luci
 import { useTranslation } from 'react-i18next';
 import { useHotels } from '../hooks/useHotels.js';
 import { useTr } from '../lib/i18nData.js';
-import PromoImage from './PromoImage.jsx';
 
 const AUTO_INTERVAL_MS = 5000;
 const SWIPE_THRESHOLD_PX = 40;
@@ -68,7 +67,7 @@ export default function PromoBanner() {
   return (
     <div className="relative rounded-2xl overflow-hidden shadow-md" aria-roledescription="carousel">
       <div
-        className="relative aspect-[4/5] md:aspect-[16/10] bg-gray-200"
+        className="relative aspect-[16/9] bg-gray-200"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
@@ -80,16 +79,16 @@ export default function PromoBanner() {
             <Link
               key={`${hotel.id}-${promo.id}`}
               to={`/promo/${hotel.id}/${promo.id}`}
-              className="relative w-full h-full flex-shrink-0"
+              className="relative w-full h-full flex-shrink-0 overflow-hidden bg-gray-200"
               aria-label={`${tr(promo.nombrePromocion)} · ${hotel.name}`}
             >
-              <PromoImage
+              <img
                 src={portada}
                 alt={tr(promo.nombrePromocion)}
-                className="w-full h-full"
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent z-20" />
-              </PromoImage>
+                loading="lazy"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent z-20" />
               <div className="absolute inset-x-0 bottom-0 p-4 pb-12 md:p-6 md:pb-14 text-white z-30">
                 <h3 className="font-black text-base md:text-2xl tracking-tight drop-shadow-lg leading-tight">
                   {tr(promo.nombrePromocion) || rest.nombreCentroConsumo}
