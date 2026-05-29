@@ -103,7 +103,7 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative p-6 md:p-10 flex flex-col items-center justify-center text-center gap-5 md:gap-6 min-h-[360px] md:min-h-[400px]">
+      <div className="relative px-6 py-2 md:px-10 md:py-3 flex flex-col items-center justify-center text-center gap-4 md:gap-5 min-h-[240px] md:min-h-[280px]">
         <div className="space-y-3 md:space-y-4 max-w-2xl md:max-w-4xl">
           <h2 className="font-bold text-3xl md:text-4xl leading-[1.05] tracking-tight drop-shadow-lg">
             {t('hero.title')}
