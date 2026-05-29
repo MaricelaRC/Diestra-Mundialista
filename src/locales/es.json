@@ -128,8 +128,8 @@
     "volver": "Volver al inicio"
   },
   "newsletter": {
-    "title": "Suscríbete a las promos",
-    "subtitle": "Recibe las mejores promociones gastronómicas del futbol 2026 en tu correo.",
+    "title": "Las mejores promociones, directo a tu correo",
+    "subtitle": "Sé de los primeros en conocer descuentos, eventos y beneficios exclusivos en nuestros hoteles.",
     "fields": {
       "nombre": "Nombre",
       "email": "Correo",
