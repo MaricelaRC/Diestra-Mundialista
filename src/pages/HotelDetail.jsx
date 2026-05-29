@@ -24,7 +24,7 @@ export default function HotelDetail() {
   }
   if (!hotel) return <NotFound />;
 
-  const cover = hotel.restaurantes[0]?.portada;
+  const cover = hotel.coverImg || hotel.restaurantes[0]?.portada;
 
   const handleShare = async () => {
     const shareData = {

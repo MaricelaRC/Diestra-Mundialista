@@ -6,7 +6,7 @@ export default function HotelCardLink({ hotel }) {
   const { t } = useTranslation();
   const count = hotel.restaurantes.length;
   const label = count === 1 ? t('alimentos.cuentaSingular') : t('alimentos.cuentaPlural');
-  const cover = hotel.restaurantes[0]?.portada;
+  const cover = hotel.coverImg || hotel.restaurantes[0]?.portada;
 
   return (
     <Link

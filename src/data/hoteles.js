@@ -12,6 +12,7 @@ export const hotelesDiestra = [
     estado: 'Guerrero',
     instagram: 'https://www.instagram.com/emporioacapulco/',
     storyImg: '/stories/e-acapulco.jpg',
+    coverImg: '/hoteles/e-acapulco.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -169,6 +170,7 @@ export const hotelesDiestra = [
     zona: 'Zona Hotelera',
     instagram: 'https://www.instagram.com/emporiocancun/',
     storyImg: '/stories/e-cancun.jpg',
+    coverImg: '/hoteles/e-cancun.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Fasano',
@@ -328,6 +330,7 @@ export const hotelesDiestra = [
     zona: 'Paseo de la Reforma',
     instagram: 'https://www.instagram.com/emporio_cdmx/',
     storyImg: '/stories/e-mexico.jpg',
+    coverImg: '/hoteles/e-mexico.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -411,6 +414,7 @@ export const hotelesDiestra = [
     estado: 'Guerrero',
     instagram: 'https://www.instagram.com/emporioixtapa/',
     storyImg: '/stories/e-ixtapa.jpg',
+    coverImg: '/hoteles/e-ixtapa.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Pool Bar',
@@ -528,6 +532,7 @@ export const hotelesDiestra = [
     estado: 'Sinaloa',
     instagram: 'https://www.instagram.com/emporio_mazatlan/',
     storyImg: '/stories/e-mazatlan.jpg',
+    coverImg: '/hoteles/e-mazatlan.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Pool Bar',
@@ -582,6 +587,7 @@ export const hotelesDiestra = [
     estado: 'Veracruz',
     instagram: 'https://www.instagram.com/emporio_veracruz/',
     storyImg: '/stories/e-veracruz.jpg',
+    coverImg: '/hoteles/e-veracruz.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Sky Lounge',
@@ -728,6 +734,7 @@ export const hotelesDiestra = [
     estado: 'Zacatecas',
     instagram: 'https://www.instagram.com/emporio_zacatecas/',
     storyImg: '/stories/e-zacatecas.jpg',
+    coverImg: '/hoteles/e-zacatecas.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Bar Los Canteros',
@@ -782,6 +789,7 @@ export const hotelesDiestra = [
     zona: 'Riviera Nayarit',
     instagram: 'https://www.instagram.com/sambavallarta/',
     storyImg: '/stories/samba-vallarta.jpg',
+    coverImg: '/hoteles/samba-vallarta.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Lobby Bar',
@@ -899,6 +907,7 @@ export const hotelesDiestra = [
     estado: 'Aguascalientes',
     instagram: 'https://www.instagram.com/marriott_aguascalientes/',
     storyImg: '/stories/m-aguascalientes.jpg',
+    coverImg: '/hoteles/m-aguascalientes.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -918,6 +927,7 @@ export const hotelesDiestra = [
     estado: 'Baja California',
     instagram: 'https://www.instagram.com/marriotttijuana/',
     storyImg: '/stories/m-tijuana.jpg',
+    coverImg: '/hoteles/m-tijuana.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -956,6 +966,7 @@ export const hotelesDiestra = [
     zona: 'Paseo de la Reforma',
     instagram: 'https://www.instagram.com/marriottmexicocity/',
     storyImg: '/stories/m-reforma.jpg',
+    coverImg: '/hoteles/m-reforma.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -996,6 +1007,7 @@ export const hotelesDiestra = [
     estado: 'Tabasco',
     instagram: 'https://www.instagram.com/marriott_villahermosa/',
     storyImg: '/stories/m-villahermosa.jpg',
+    coverImg: '/hoteles/m-villahermosa.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -1015,6 +1027,7 @@ export const hotelesDiestra = [
     estado: 'Chiapas',
     instagram: 'https://www.instagram.com/marriott_tuxtla/',
     storyImg: '/stories/m-tuxtla.jpg',
+    coverImg: '/hoteles/m-tuxtla.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Restaurante Condimento',
@@ -1053,6 +1066,7 @@ export const hotelesDiestra = [
     zona: 'Puerto Cancún',
     instagram: 'https://www.instagram.com/rencancun/',
     storyImg: '/stories/renaissance-cancun.jpg',
+    coverImg: '/hoteles/renaissance-cancun.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Kaajal',
@@ -1091,6 +1105,7 @@ export const hotelesDiestra = [
     zona: 'Santa Fe',
     instagram: 'https://www.instagram.com/jwmarriottsantafemx/',
     storyImg: '/stories/jw-santa-fe.jpg',
+    coverImg: '/hoteles/jw-santa-fe.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Quattro Gastronomia Italiana',
@@ -1119,6 +1134,7 @@ export const hotelesDiestra = [
     estado: 'Baja California Sur',
     instagram: 'https://www.instagram.com/jwloscabos/',
     storyImg: '/stories/jw-los-cabos.jpg',
+    coverImg: '/hoteles/jw-los-cabos.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'Café des Artistes',
@@ -1194,6 +1210,7 @@ export const hotelesDiestra = [
     estado: 'Baja California Sur',
     instagram: 'https://www.instagram.com/casamaat/',
     storyImg: '/stories/casa-maat.jpg',
+    coverImg: '/hoteles/casa-maat.jpg',
     restaurantes: [
       {
         nombreCentroConsumo: 'El Santo José',

@@ -16,6 +16,11 @@ import { hotelesDiestra as initialHoteles } from '../data/hoteles.js';
 // (Firestore devuelve docs en orden alfabético arbitrario).
 const orderById = new Map(initialHoteles.map((h, i) => [h.id, i]));
 
+// Mapa id → hotel local. Usado para inyectar assets de presentación
+// (coverImg) que viven en el repo y no en Firestore: el admin editor
+// no los expone y no queremos que sean editables.
+const localById = new Map(initialHoteles.map((h) => [h.id, h]));
+
 export function useHotels() {
   const [hoteles, setHoteles] = useState(initialHoteles);
   const [loading, setLoading] = useState(true);
@@ -25,7 +30,11 @@ export function useHotels() {
     const unsub = onSnapshot(
       collection(db, 'hoteles'),
       (snap) => {
-        const list = snap.docs.map((d) => d.data());
+        const list = snap.docs.map((d) => {
+          const remote = d.data();
+          const local = localById.get(remote.id);
+          return { ...remote, coverImg: remote.coverImg || local?.coverImg };
+        });
         const ordered = [...list].sort((a, b) => {
           const ai = orderById.get(a.id) ?? 999;
           const bi = orderById.get(b.id) ?? 999;
