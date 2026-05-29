@@ -36,8 +36,8 @@
     "instagramOf": "Instagram de {{name}}"
   },
   "countdown": {
-    "tituloInicio": "Faltan para el Mundial 2026",
-    "tituloFin": "Mundial 2026 · Termina en",
+    "tituloInicio": "Faltan para el futbol 2026",
+    "tituloFin": "Futbol 2026 · Termina en",
     "units": {
       "dias": "Días",
       "horas": "Horas",
@@ -46,13 +46,13 @@
     }
   },
   "hero": {
-    "title": "El mejor lugar para vivir el Mundial",
+    "title": "El mejor lugar para vivir el futbol",
     "subtitle": "Promociones exclusivas, experiencias gastronómicas y el ambiente perfecto para disfrutar cada partido en Hoteles Diestra."
   },
   "alimentos": {
     "intro": {
       "title": "Gastronomía de Grupo Diestra",
-      "body": "Sigue toda la acción de la Copa Mundial desde los mejores spots culinarios de nuestras propiedades. Explora platillos y promociones oficiales:"
+      "body": "Sigue toda la acción del torneo desde los mejores spots culinarios de nuestras propiedades. Explora platillos y promociones oficiales:"
     },
     "centroSingular": "Centro de Consumo",
     "centroPlural": "Centros de Consumo",
@@ -75,7 +75,7 @@
     "abre": "abre {{time}}"
   },
   "partidos": {
-    "title": "Partidos del Mundial",
+    "title": "Partidos del torneo",
     "vs": "vs",
     "sugerencia": "Sugerencia en {{name}}",
     "status": {
@@ -87,7 +87,7 @@
   "partido": {
     "detalle": {
       "dondeVerlo": "¿Dónde verlo?",
-      "disclaimer": "Horarios sujetos a confirmación de FIFA. La sugerencia de hotel se basa en la sede del partido."
+      "disclaimer": "Horarios sujetos a confirmación oficial. La sugerencia de hotel se basa en la sede del partido."
     }
   },
   "promo": {
@@ -123,13 +123,13 @@
     "sinPromos": "Este centro no tiene promociones activas."
   },
   "contacto": {
-    "title": "Recibe las mejores promos del Mundial",
-    "subtitle": "Déjanos tus datos y te avisaremos por correo cuando haya nuevas promociones en los hoteles Diestra durante la Copa del Mundo 2026.",
+    "title": "Recibe las mejores promos del futbol",
+    "subtitle": "Déjanos tus datos y te avisaremos por correo cuando haya nuevas promociones en los hoteles Diestra durante el verano del futbol 2026.",
     "volver": "Volver al inicio"
   },
   "newsletter": {
     "title": "Suscríbete a las promos",
-    "subtitle": "Recibe las mejores promociones gastronómicas del Mundial 2026 en tu correo.",
+    "subtitle": "Recibe las mejores promociones gastronómicas del futbol 2026 en tu correo.",
     "fields": {
       "nombre": "Nombre",
       "email": "Correo",
@@ -194,7 +194,7 @@
       },
       "finalidades": {
         "title": "Finalidades del tratamiento",
-        "body": "Tus datos se usan exclusivamente para enviarte información sobre promociones gastronómicas en los hoteles del Grupo Diestra durante la Copa del Mundo 2026 y, ocasionalmente, antes y después del torneo. No realizamos perfilamiento, scoring ni cesión a terceros para fines comerciales."
+        "body": "Tus datos se usan exclusivamente para enviarte información sobre promociones gastronómicas en los hoteles del Grupo Diestra durante el verano del futbol 2026 y, ocasionalmente, antes y después del torneo. No realizamos perfilamiento, scoring ni cesión a terceros para fines comerciales."
       },
       "transferencias": {
         "title": "Transferencias",

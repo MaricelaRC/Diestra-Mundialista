@@ -6,5 +6,5 @@ export const destacados = [
   { hotelId: 'e-veracruz', idx: 0 }, // Sky Lounge · Viewing Party en la Terraza
   { hotelId: 'e-veracruz', idx: 1 }, // Great Lounge · Match Day
   { hotelId: 'e-acapulco', idx: 1 }, // Sunset Lounge · Sunset & Soccer
-  { hotelId: 'e-acapulco', idx: 3 }  // Arka Bar · Sports Bar Oficial del Mundial
+  { hotelId: 'e-acapulco', idx: 3 }  // Arka Bar · Sports Bar Futbolero
 ];

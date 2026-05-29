@@ -54,48 +54,48 @@ const mockMatches = [
 const mockNews = [
   {
     title: {
-      es: 'México alista alineación para el debut mundialista',
-      en: 'Mexico finalizes lineup for its World Cup opener'
+      es: 'México alista alineación para el debut futbolero',
+      en: 'Mexico finalizes lineup for its tournament opener'
     },
     source: 'ESPN',
     url: 'https://www.espn.com.mx/futbol/'
   },
   {
     title: {
-      es: 'FIFA confirma horarios completos de los 13 partidos en sedes mexicanas',
-      en: 'FIFA confirms full schedule for the 13 matches at Mexican venues'
+      es: 'Confirman horarios completos de los 13 partidos en sedes mexicanas',
+      en: 'Organizers confirm full schedule for the 13 matches at Mexican venues'
     },
-    source: 'FIFA.com',
-    url: 'https://www.fifa.com/es/tournaments/mens/worldcup/canadamexicousa2026'
+    source: 'Récord',
+    url: 'https://www.record.com.mx/'
   },
   {
     title: {
-      es: 'Estadio Azteca: así será la ceremonia de inauguración del Mundial 2026',
-      en: 'Estadio Azteca: what to expect from the 2026 World Cup opening ceremony'
+      es: 'Estadio Azteca: así será la ceremonia de inauguración del torneo 2026',
+      en: 'Estadio Azteca: what to expect from the 2026 tournament opening ceremony'
     },
     source: 'Marca',
-    url: 'https://www.marca.com/futbol/mundial.html'
+    url: 'https://www.marca.com/'
   },
   {
     title: {
-      es: 'Las sedes mexicanas confirmadas para la Copa del Mundo 2026',
-      en: 'Confirmed Mexican host cities for the 2026 World Cup'
+      es: 'Las sedes mexicanas confirmadas para el torneo 2026',
+      en: 'Confirmed Mexican host cities for the 2026 tournament'
     },
     source: 'Mediotiempo',
     url: 'https://www.mediotiempo.com/'
   },
   {
     title: {
-      es: 'Guía gastronómica del Mundial: qué probar en cada sede mexicana',
-      en: 'World Cup food guide: what to try in each Mexican host city'
+      es: 'Guía gastronómica del torneo: qué probar en cada sede mexicana',
+      en: 'Tournament food guide: what to try in each Mexican host city'
     },
     source: 'El Universal',
     url: 'https://www.eluniversal.com.mx/'
   },
   {
     title: {
-      es: 'Grupo Diestra lanza experiencias gastronómicas para el Mundial',
-      en: 'Grupo Diestra unveils dining experiences for the World Cup'
+      es: 'Grupo Diestra lanza experiencias gastronómicas para el torneo',
+      en: 'Grupo Diestra unveils dining experiences for the tournament'
     },
     source: 'Diestra Press',
     url: 'https://www.hotelesemporio.com/'

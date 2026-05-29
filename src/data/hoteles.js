@@ -44,8 +44,8 @@ export const hotelesDiestra = [
         },
         porcentaje: '15%',
         descripcionPromo: {
-          es: 'Empieza tu día mundialista frente a la bahía de Acapulco con nuestro buffet de especialidades del chef: pan horneado en casa, fruta fresca y platillos mexicanos e internacionales mientras siguen las transmisiones matutinas.',
-          en: 'Start your World Cup day overlooking Acapulco Bay with our chef’s specialty buffet: freshly baked bread, seasonal fruit and Mexican & international dishes while you watch the morning matches.'
+          es: 'Empieza tu día futbolero frente a la bahía de Acapulco con nuestro buffet de especialidades del chef: pan horneado en casa, fruta fresca y platillos mexicanos e internacionales mientras siguen las transmisiones matutinas.',
+          en: 'Start your soccer day overlooking Acapulco Bay with our chef’s specialty buffet: freshly baked bread, seasonal fruit and Mexican & international dishes while you watch the morning matches.'
         },
         contacto: '+527444690505',
         extension: '5036',
@@ -107,8 +107,8 @@ export const hotelesDiestra = [
         ],
         web: 'https://hotelesemporio.com/restaurantes/acapulco-la-isla-bar-grill/',
         nombrePromocion: {
-          es: 'Albercada Mundialista',
-          en: 'World Cup Pool Party'
+          es: 'Albercada Futbolera',
+          en: 'Soccer Pool Party'
         },
         descuento: {
           es: '20% en alitas y bebidas tropicales',
@@ -116,8 +116,8 @@ export const hotelesDiestra = [
         },
         porcentaje: '20%',
         descripcionPromo: {
-          es: 'Sigue los partidos del Mundial sin salir de la alberca. Snacks al grill, alitas adobadas, hamburguesas de camarón y bebidas tropicales a precio especial mientras te refrescas en el agua.',
-          en: 'Watch the World Cup matches without leaving the pool. Grilled snacks, marinated wings, shrimp burgers and tropical drinks at special prices while you cool off in the water.'
+          es: 'Sigue los partidos del torneo sin salir de la alberca. Snacks al grill, alitas adobadas, hamburguesas de camarón y bebidas tropicales a precio especial mientras te refrescas en el agua.',
+          en: 'Watch the tournament matches without leaving the pool. Grilled snacks, marinated wings, shrimp burgers and tropical drinks at special prices while you cool off in the water.'
         },
         contacto: '+527444690505',
         extension: '5075',
@@ -143,8 +143,8 @@ export const hotelesDiestra = [
         ],
         web: 'https://hotelesemporio.com/restaurantes/acapulco-arka-bar/',
         nombrePromocion: {
-          es: 'Sports Bar Oficial del Mundial',
-          en: 'Official World Cup Sports Bar'
+          es: 'Sports Bar Futbolero',
+          en: 'Sports Bar for Soccer Fans'
         },
         descuento: {
           es: 'Cubeta de cerveza + alitas a precio especial',
@@ -152,8 +152,8 @@ export const hotelesDiestra = [
         },
         porcentaje: '25%',
         descripcionPromo: {
-          es: 'El sports bar oficial del Mundial en Acapulco: pantallas dedicadas a todos los partidos, coctelería de autor, cubetas de cerveza con descuento y la mejor atmósfera para vivir cada gol.',
-          en: 'The official World Cup sports bar in Acapulco: screens dedicated to every match, signature cocktails, discounted beer buckets and the best atmosphere to celebrate every goal.'
+          es: 'El sports bar futbolero de Acapulco: pantallas dedicadas a todos los partidos, coctelería de autor, cubetas de cerveza con descuento y la mejor atmósfera para vivir cada gol.',
+          en: 'The go-to soccer sports bar in Acapulco: screens dedicated to every match, signature cocktails, discounted beer buckets and the best atmosphere to celebrate every goal.'
         },
         contacto: '+527444690505',
         extension: '5057',
@@ -353,8 +353,8 @@ export const hotelesDiestra = [
         ],
         web: 'https://hotelesemporio.com/restaurantes/ciudad-de-mexico-restaurante-condimento/',
         nombrePromocion: {
-          es: 'Buffet Ejecutivo Mundialista',
-          en: 'World Cup Executive Buffet'
+          es: 'Buffet Ejecutivo Futbolero',
+          en: 'Soccer Executive Buffet'
         },
         descuento: {
           es: '2x1 en buffet de desayuno',
@@ -362,8 +362,8 @@ export const hotelesDiestra = [
         },
         porcentaje: '50%',
         descripcionPromo: {
-          es: 'Vive el debut mundialista desde el corazón de Paseo de la Reforma. Nuestro buffet de desayuno al 2x1 durante los partidos matutinos: pan recién horneado, fruta fresca, sushi, paella valenciana los viernes y mixología de autor.',
-          en: 'Experience the World Cup opener from the heart of Paseo de la Reforma. Our breakfast buffet 2-for-1 during morning matches: freshly baked bread, fresh fruit, sushi, Valencian paella on Fridays and signature mixology.'
+          es: 'Vive el debut del torneo desde el corazón de Paseo de la Reforma. Nuestro buffet de desayuno al 2x1 durante los partidos matutinos: pan recién horneado, fruta fresca, sushi, paella valenciana los viernes y mixología de autor.',
+          en: 'Experience the tournament opener from the heart of Paseo de la Reforma. Our breakfast buffet 2-for-1 during morning matches: freshly baked bread, fresh fruit, sushi, Valencian paella on Fridays and signature mixology.'
         },
         contacto: '+525519265091',
         fechaHorarioPublicacion: '2026-06-12T07:00:00Z',
@@ -389,8 +389,8 @@ export const hotelesDiestra = [
         ],
         web: 'https://hotelesemporio.com/restaurantes/ciudad-de-mexico-galeria-del-cafe/',
         nombrePromocion: {
-          es: 'Café Mundialista en Reforma',
-          en: 'World Cup Coffee on Reforma'
+          es: 'Café Futbolero en Reforma',
+          en: 'Soccer Coffee on Reforma'
         },
         descuento: {
           es: 'Café americano de cortesía con cualquier postre',
@@ -618,8 +618,8 @@ export const hotelesDiestra = [
         },
         porcentaje: '50%',
         descripcionPromo: {
-          es: 'Vive la Copa del Mundo desde el rooftop más alto de Veracruz. Coctelería de autor al 2x1 y canapés con la mejor vista panorámica del puerto durante los partidos.',
-          en: 'Live the World Cup from the highest rooftop in Veracruz. Signature cocktails 2-for-1 and canapés with the best panoramic view of the port during the matches.'
+          es: 'Vive el torneo desde el rooftop más alto de Veracruz. Coctelería de autor al 2x1 y canapés con la mejor vista panorámica del puerto durante los partidos.',
+          en: 'Live the tournament from the highest rooftop in Veracruz. Signature cocktails 2-for-1 and canapés with the best panoramic view of the port during the matches.'
         },
         fechaHorarioPublicacion: '2026-06-11T18:00:00Z',
         contacto: '+525585266436',
@@ -653,8 +653,8 @@ export const hotelesDiestra = [
         },
         porcentaje: '25%',
         descripcionPromo: {
-          es: 'El punto de reunión para cada partido del Mundial: pantallas, música en vivo los sábados y una tabla de botanas con cubeta de cerveza nacional a precio especial.',
-          en: 'The meeting point for every World Cup match: screens, live music on Saturdays and a snack board with a domestic beer bucket at a special price.'
+          es: 'El punto de reunión para cada partido del torneo: pantallas, música en vivo los sábados y una tabla de botanas con cubeta de cerveza nacional a precio especial.',
+          en: 'The meeting point for every tournament match: screens, live music on Saturdays and a snack board with a domestic beer bucket at a special price.'
         },
         fechaHorarioPublicacion: '2026-06-11T12:00:00Z',
         contacto: '+525585266436',

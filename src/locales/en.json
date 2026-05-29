@@ -46,13 +46,13 @@
     }
   },
   "hero": {
-    "title": "The best place to live the tournament",
+    "title": "The best place to live soccer",
     "subtitle": "Exclusive promotions, dining experiences and the perfect atmosphere to enjoy every match at Hoteles Diestra."
   },
   "alimentos": {
     "intro": {
       "title": "Diestra Group Gastronomy",
-      "body": "Follow all the World Cup action from the best culinary spots in our properties. Explore dishes and official promotions:"
+      "body": "Follow all the tournament action from the best culinary spots in our properties. Explore dishes and official promotions:"
     },
     "centroSingular": "Venue",
     "centroPlural": "Venues",
@@ -75,7 +75,7 @@
     "abre": "opens {{time}}"
   },
   "partidos": {
-    "title": "World Cup Matches",
+    "title": "Tournament Matches",
     "vs": "vs",
     "sugerencia": "Suggestion at {{name}}",
     "status": {
@@ -87,7 +87,7 @@
   "partido": {
     "detalle": {
       "dondeVerlo": "Where to watch",
-      "disclaimer": "Times subject to FIFA confirmation. Hotel suggestion is based on the match venue."
+      "disclaimer": "Times subject to official confirmation. Hotel suggestion is based on the match venue."
     }
   },
   "promo": {
@@ -123,13 +123,13 @@
     "sinPromos": "This venue has no active promotions."
   },
   "contacto": {
-    "title": "Get the best World Cup promos",
+    "title": "Get the best soccer promos",
     "subtitle": "Leave your details and we'll email you when new promotions launch at Diestra hotels during the tournament.",
     "volver": "Back to home"
   },
   "newsletter": {
     "title": "Subscribe to our promos",
-    "subtitle": "Get the best 2026 World Cup dining promotions delivered to your inbox.",
+    "subtitle": "Get the best 2026 soccer summer dining promotions delivered to your inbox.",
     "fields": {
       "nombre": "Name",
       "email": "Email",

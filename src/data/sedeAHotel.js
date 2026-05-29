@@ -11,7 +11,7 @@ export const sedeAHotel = {
   },
   'Monterrey': {
     name: 'Emporio Zacatecas',
-    promo: 'Menú mundialista en La Mansión',
+    promo: 'Menú futbolero en La Mansión',
     url: 'https://www.hotelesemporio.com/hoteles/emporio-zacatecas/'
   },
   'Veracruz': {
