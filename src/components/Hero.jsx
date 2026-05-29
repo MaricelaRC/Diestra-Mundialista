@@ -5,8 +5,6 @@
 // nocturno bajo luces" sin necesitar foto.
 
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Mail } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const MUNDIAL_START = new Date('2026-06-11T00:00:00');
@@ -116,30 +114,20 @@ export default function Hero() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center gap-4 md:gap-5">
-          {time && (
-            <div
-              className="inline-flex items-start gap-2 md:gap-4 bg-black/75 rounded-xl px-5 py-4 md:px-7 md:py-5 border-2 border-black/60"
-              style={{ boxShadow: 'inset 0 0 24px rgba(0,0,0,0.6), 0 4px 14px rgba(0,0,0,0.4)' }}
-            >
-              <Unit value={time.dias} label={t('countdown.units.dias')} />
-              <Sep />
-              <Unit value={time.horas} label={t('countdown.units.horas')} />
-              <Sep />
-              <Unit value={time.minutos} label={t('countdown.units.minutos')} />
-              <Sep />
-              <Unit value={time.segundos} label={t('countdown.units.segundos')} />
-            </div>
-          )}
-
-          <Link
-            to="/contacto"
-            className="inline-flex items-center gap-2 bg-white text-emerald-900 font-bold px-5 py-3 rounded-full shadow-lg hover:bg-amber-50 active:scale-95 transition-all text-sm md:text-base"
+        {time && (
+          <div
+            className="inline-flex items-start gap-2 md:gap-4 bg-black/75 rounded-xl px-5 py-4 md:px-7 md:py-5 border-2 border-black/60"
+            style={{ boxShadow: 'inset 0 0 24px rgba(0,0,0,0.6), 0 4px 14px rgba(0,0,0,0.4)' }}
           >
-            <Mail size={16} />
-            {t('hero.cta')}
-          </Link>
-        </div>
+            <Unit value={time.dias} label={t('countdown.units.dias')} />
+            <Sep />
+            <Unit value={time.horas} label={t('countdown.units.horas')} />
+            <Sep />
+            <Unit value={time.minutos} label={t('countdown.units.minutos')} />
+            <Sep />
+            <Unit value={time.segundos} label={t('countdown.units.segundos')} />
+          </div>
+        )}
       </div>
     </section>
   );
